@@ -1,0 +1,39 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  outline: none;
+  width: 100%;
+
+  .mat-mdc-list-item.active {
+    background-color: #e8eaf6;
+  }
+  &:hover,
+  &:focus {
+    > .mat-mdc-list-item:not(.expanded) {
+      background-color: #c5cae9 !important;
+    }
+  }
+}
+
+// .mat-mdc-list-item-unscoped-content {
+//   flex-direction: row;
+//   box-sizing: border-box;
+//   display: flex;
+// }
+
+// .icon-wrap {
+//   flex: 1 1 0%;
+//   box-sizing: border-box;
+//   flex-direction: row;
+//   display: flex;
+// }
+
+.mat-mdc-list-item {
+  padding: 8px 0;
+  display: flex;
+  width: auto;
+
+  .routeIcon {
+    margin-right: 20px;
+  }
+}

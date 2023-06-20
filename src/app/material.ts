@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   imports: [
@@ -48,6 +49,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ReactiveFormsModule,
     MatSidenavModule,
     MatSnackBarModule,
+    MatMenuModule,
   ],
 })
 export class MaterialModule {}

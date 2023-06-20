@@ -1,14 +1,23 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>Menu</mat-toolbar>
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
+    <mat-toolbar>Logo goes here</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item href="/dashboard">Dashboard</a>
+      <!-- <a mat-list-item href="/dashboard">Dashboard</a>
       <a mat-list-item href="/admin">Admin</a>
-      <a mat-list-item href="/medic">Medic</a>
-      <a mat-list-item href="/patient">Patient</a>
+      <a mat-list-item href="/medic">Medics</a>
+      <a mat-list-item href="/patient">Patients</a>
+ -->
+      <app-menu-list-item
+        *ngFor="let item of navItems"
+        [item]="item"
+      ></app-menu-list-item>
     </mat-nav-list>
   </mat-sidenav>
 
@@ -19,13 +28,22 @@
         aria-label="Toggle sidenav"
         mat-icon-button
         (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
+        *ngIf="isHandset$ | async"
+      >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>BodyGuard</span>
+
+      <button class="profile-menu" mat-button [matMenuTriggerFor]="menu">
+        {{ user?.role === 0 ? 'Admin' : user?.email }}
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item [routerLink]="'profile'">Profile</button>
+        <button mat-menu-item (click)="logout()">Logout</button>
+      </mat-menu>
     </mat-toolbar>
-
-    <router-outlet></router-outlet>
-
+    <main>
+      <app-breadcrumbs></app-breadcrumbs>
+      <router-outlet></router-outlet>
+    </main>
   </mat-sidenav-content>
 </mat-sidenav-container>

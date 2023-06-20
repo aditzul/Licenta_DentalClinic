@@ -1,9 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Role, User } from '../_models/user';
 import { AuthenticationService } from '../_services/authentication.service';
+import { NavItem } from '../_models/nav-item';
+import { NavService } from '../_services/nav.service';
 
 @Component({
   selector: 'app-nav',
@@ -20,6 +22,37 @@ export class NavComponent {
       shareReplay()
     );
   user?: User | null;
+  navItems: NavItem[] = [
+    {
+      displayName: 'Dashboard',
+      route: 'dashboard',
+      iconName: 'home',
+      hidden: false,
+    },
+    {
+      displayName: 'Patients',
+      route: 'patients',
+      iconName: 'home',
+      hidden: false,
+    },
+    {
+      displayName: 'Admin',
+      iconName: 'home',
+      hidden: this.isAdmin,
+      children: [
+        {
+          displayName: 'Users',
+          route: 'admin/users',
+          iconName: 'home',
+        },
+        {
+          displayName: 'Medics',
+          route: 'admin/medics',
+          iconName: 'home',
+        },
+      ]
+    },
+  ];
 
   constructor(private authenticationService: AuthenticationService) {
     this.authenticationService.user.subscribe(

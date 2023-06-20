@@ -1,7 +1,7 @@
 export enum Role {
     Admin =  0,
-    Patient = 1,
-    Medic =  2
+    Medic = 1,
+    Patient =  2
 }
 export interface User {
     id: number;
