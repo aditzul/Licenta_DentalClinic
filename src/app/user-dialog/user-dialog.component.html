@@ -1,0 +1,54 @@
+<h1 mat-dialog-title>{{ isAdd ? "Add" : "Edit" }} User</h1>
+<div mat-dialog-content>
+  <form [formGroup]="userForm">
+    <mat-form-field>
+      <mat-label>Username</mat-label>
+      <input matInput type="text" formControlName="username" />
+      <mat-hint
+        *ngIf="submitted && userForm.controls.username.errors"
+        class="mat-mdc-form-field-error"
+      >
+        Username is required
+      </mat-hint>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        type="password"
+        formControlName="password"
+        class="form-control"
+      />
+      <mat-hint
+        *ngIf="submitted && userForm.controls.password.errors"
+        class="mat-mdc-form-field-error"
+      >
+        Password is required
+      </mat-hint>
+    </mat-form-field>
+
+    <mat-label>Role: </mat-label>
+    <mat-button-toggle-group name="role" formControlName="role">
+      <mat-button-toggle value="0" matTooltip="Admin">
+        <mat-icon fontIcon="settings"></mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle value="1" matTooltip="Medic"
+        ><mat-icon fontIcon="work"></mat-icon
+      ></mat-button-toggle>
+      <mat-button-toggle value="2" matTooltip="Patient"
+        ><mat-icon fontIcon="person"></mat-icon
+      ></mat-button-toggle>
+    </mat-button-toggle-group>
+  </form>
+</div>
+<div mat-dialog-actions class="form-buttons">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button
+    mat-button
+    (click)="onSubmit()"
+    [disabled]="userForm.status === 'INVALID'"
+  >
+    Ok
+  </button>
+</div>

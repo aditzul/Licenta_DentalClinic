@@ -20,7 +20,6 @@ export class LoginComponent implements OnInit {
   submitted = false;
 
   constructor(
-    private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,

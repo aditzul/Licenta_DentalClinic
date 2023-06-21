@@ -34,16 +34,15 @@
       </button>
 
       <button class="profile-menu" mat-button [matMenuTriggerFor]="menu">
-        {{ user?.role === 0 ? 'Admin' : user?.email }}
+        {{ user?.role === 0 ? "Admin" : user?.email }}
       </button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item [routerLink]="'profile'">Profile</button>
         <button mat-menu-item (click)="logout()">Logout</button>
       </mat-menu>
     </mat-toolbar>
-    <main>
-      <app-breadcrumbs></app-breadcrumbs>
-      <router-outlet></router-outlet>
-    </main>
+
+    <app-breadcrumbs></app-breadcrumbs>
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

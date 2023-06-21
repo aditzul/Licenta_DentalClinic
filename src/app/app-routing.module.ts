@@ -9,6 +9,7 @@ import { NavComponent } from './nav/nav.component';
 import { PatientsComponent } from './patients/patients.component';
 import { UsersComponent } from './users/users.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AdminUserDetailsComponent } from './admin-user-details/admin-user-details.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,14 @@ const routes: Routes = [
             component: UsersComponent,
             canActivate: [AuthGuard],
             data: { roles: [Role.Admin], breadcrumb: 'Users' },
+            children: [
+              {
+                path: ':id',
+                canActivate: [AuthGuard],
+                data: { roles: [Role.Admin], breadcrumb: ':id' },
+                component: AdminUserDetailsComponent,
+              },
+            ]
           },
           {
             path: 'medics',
@@ -45,7 +54,6 @@ const routes: Routes = [
             canActivate: [AuthGuard],
             data: { roles: [Role.Admin], breadcrumb: 'Medics' },
           },
-
         ],
       },
       {

@@ -15,6 +15,8 @@ import { PatientsComponent } from './patients/patients.component';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
+import { AdminUserDetailsComponent } from './admin-user-details/admin-user-details.component';
+import { UserDialogComponent } from './user-dialog/user-dialog.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { UserDetailsComponent } from './user-details/user-details.component';
     PatientsComponent,
     BreadcrumbsComponent,
     ProfileComponent,
-    UserDetailsComponent
+    UserDetailsComponent,
+    AdminUserDetailsComponent,
+    UserDialogComponent
   ],
   imports: [
     BrowserModule,

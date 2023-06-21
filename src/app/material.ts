@@ -14,6 +14,10 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   imports: [
@@ -32,6 +36,10 @@ import { MatMenuModule } from '@angular/material/menu';
     ReactiveFormsModule,
     MatSidenavModule,
     MatSnackBarModule,
+    MatTableModule,
+    MatDialogModule,
+    MatButtonToggleModule,
+    MatTooltipModule,
   ],
   exports: [
     MatNativeDateModule,
@@ -50,6 +58,10 @@ import { MatMenuModule } from '@angular/material/menu';
     MatSidenavModule,
     MatSnackBarModule,
     MatMenuModule,
+    MatTableModule,
+    MatDialogModule,
+    MatButtonToggleModule,
+    MatTooltipModule,
   ],
 })
 export class MaterialModule {}

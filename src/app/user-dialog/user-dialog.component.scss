@@ -1,0 +1,19 @@
+form {
+  display: flex;
+  flex-direction: column;
+  min-width: 400px;
+}
+
+mat-button-toggle-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+
+  mat-button-toggle {
+    flex: 1;
+  }
+}
+
+.form-buttons {
+  justify-content: space-between;
+}
