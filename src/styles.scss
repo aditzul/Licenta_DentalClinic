@@ -1,6 +1,8 @@
 // src/styles.scss
-
 @use "@angular/material" as mat;
+
+@import "~@fortawesome/fontawesome-free/css/all.css";
+
 
 @include mat.core();
 
@@ -18,6 +20,13 @@ $my-app-theme: mat.define-light-theme(
   )
 );
 
+$my-app-primary: #3f51b5;
+$my-app-success: #4CAF50;
+$my-app-error: #f44336;
+$my-app-light-blue: #03A9F4;
+$my-app-yellow: #FF9800;
+
+
 @include mat.all-component-themes($my-app-theme);
 
 html,
@@ -29,10 +38,51 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.main, main {
-  padding: 20px
+.main,
+main {
+  padding: 20px;
 }
 
 main {
   padding: 0 20px;
+}
+
+.mat-mdc-snack-bar-container.successSnack > div.mdc-snackbar__surface {
+  background-color: $my-app-primary;
+
+  .mdc-snackbar__label {
+    color: white;
+  }
+
+  .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled) {
+    color: $my-app-success;
+  }
+}
+
+.mat-mdc-snack-bar-container.errorSnack > div.mdc-snackbar__surface {
+  // background-color: $my-app-error;
+
+  .mdc-snackbar__label {
+    color: $my-app-error;
+  }
+
+  .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled) {
+    color: $my-app-error;
+  }
+}
+
+.cards mat-card.blue {
+  background: $my-app-light-blue;
+}
+
+.cards mat-card.yellow {
+  background: $my-app-yellow;
+}
+
+.cards mat-card.green {
+  background: $my-app-success;
+}
+
+.cards mat-card.red {
+  background: $my-app-error;
 }

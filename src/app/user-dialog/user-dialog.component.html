@@ -1,32 +1,40 @@
 <h1 mat-dialog-title>{{ isAdd ? "Add" : "Edit" }} User</h1>
 <div mat-dialog-content>
-  <form [formGroup]="userForm">
-    <mat-form-field>
-      <mat-label>Username</mat-label>
-      <input matInput type="text" formControlName="username" />
-      <mat-hint
-        *ngIf="submitted && userForm.controls.username.errors"
-        class="mat-mdc-form-field-error"
-      >
-        Username is required
-      </mat-hint>
-    </mat-form-field>
+  <form [formGroup]="userForm" class="user-form">
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input matInput type="text" formControlName="username" />
+        <mat-hint
+          *ngIf="
+            userForm.controls.username.touched &&
+            userForm.controls.username.errors
+          "
+          class="mat-mdc-form-field-error"
+        >
+          Username is required
+        </mat-hint>
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Password</mat-label>
-      <input
-        matInput
-        type="password"
-        formControlName="password"
-        class="form-control"
-      />
-      <mat-hint
-        *ngIf="submitted && userForm.controls.password.errors"
-        class="mat-mdc-form-field-error"
-      >
-        Password is required
-      </mat-hint>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+          class="form-control"
+        />
+        <mat-hint
+          *ngIf="
+            userForm.controls.password.touched &&
+            userForm.controls.password.errors
+          "
+          class="mat-mdc-form-field-error"
+        >
+          Password is required
+        </mat-hint>
+      </mat-form-field>
+    </div>
 
     <mat-label>Role: </mat-label>
     <mat-button-toggle-group name="role" formControlName="role">
@@ -41,14 +49,180 @@
       ></mat-button-toggle>
     </mat-button-toggle-group>
   </form>
+
+  <form
+    [formGroup]="detailsForm"
+    class="details-form"
+    *ngIf="
+      userForm.controls.role.value === '1' ||
+      userForm.controls.role.value === '2'
+    "
+  >
+    <mat-label
+      >{{
+        userForm.controls.role.value === "1" ? "Medic" : "Patient"
+      }}
+      Details:</mat-label
+    >
+
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>Fullname</mat-label>
+        <input matInput type="text" formControlName="fullname" />
+        <mat-hint
+          *ngIf="
+            detailsForm.controls.fullname.touched &&
+            detailsForm.controls.fullname.errors
+          "
+          class="mat-mdc-form-field-error"
+        >
+          Fullname is required
+        </mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Age</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="age"
+          class="form-control"
+        />
+        <mat-hint
+          *ngIf="
+            detailsForm.controls.age.touched && detailsForm.controls.age.errors
+          "
+          class="mat-mdc-form-field-error"
+        >
+          Age is required
+        </mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <div class="sex-container">
+        <mat-button-toggle-group name="sex" formControlName="sex">
+          <mat-button-toggle value="m" matTooltip="Male">
+            <mat-icon
+              fontIcon="wc"
+              style="clip-path: inset(0% 50% 0% 0%)"
+            ></mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle value="f" matTooltip="Female"
+            ><mat-icon
+              fontIcon="wc"
+              style="clip-path: inset(0% 0% 0% 50%)"
+            ></mat-icon
+          ></mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
+      <mat-form-field>
+        <mat-label>Address</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="address"
+          class="form-control"
+        />
+        <mat-hint
+          *ngIf="
+            detailsForm.controls.address.touched &&
+            detailsForm.controls.address.errors
+          "
+          class="mat-mdc-form-field-error"
+        >
+          Address is required
+        </mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>Phone</mat-label>
+        <input matInput type="tel" formControlName="phone" />
+        <mat-hint
+          *ngIf="
+            detailsForm.controls.phone.touched &&
+            detailsForm.controls.phone.errors
+          "
+          class="mat-mdc-form-field-error"
+        >
+          Phone is required
+        </mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+          class="form-control"
+          name="email"
+        />
+        <mat-hint
+          *ngIf="
+            detailsForm.controls.email.touched &&
+            detailsForm.controls.email.errors
+          "
+          class="mat-mdc-form-field-error"
+        >
+          Email is required
+        </mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field *ngIf="userForm.controls.role.value === '1'">
+        <mat-label>Ocupation</mat-label>
+        <input matInput type="text" formControlName="occupation" />
+        <mat-hint
+          *ngIf="
+            detailsForm.controls.occupation.touched &&
+            detailsForm.controls.occupation.errors
+          "
+          class="mat-mdc-form-field-error"
+        >
+          Ocupation is required
+        </mat-hint>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="userForm.controls.role.value === '2'">
+        <mat-label>CNP</mat-label>
+        <input matInput type="text" formControlName="cnp" />
+        <mat-hint
+          *ngIf="
+            detailsForm.controls.cnp.touched && detailsForm.controls.cnp.errors
+          "
+          class="mat-mdc-form-field-error"
+        >
+          CNP is required
+        </mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Assignation Code</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="assignatioN_CODE"
+          class="form-control"
+        />
+        <mat-hint
+          *ngIf="
+            detailsForm.controls.assignatioN_CODE.touched &&
+            detailsForm.controls.assignatioN_CODE.errors
+          "
+          class="mat-mdc-form-field-error"
+        >
+          Assignation Code is required
+        </mat-hint>
+      </mat-form-field>
+    </div>
+  </form>
 </div>
 <div mat-dialog-actions class="form-buttons">
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button
-    mat-button
-    (click)="onSubmit()"
-    [disabled]="userForm.status === 'INVALID'"
-  >
-    Ok
-  </button>
+  <button mat-button (click)="onSubmit()" [disabled]="isDisabled()">Ok</button>
 </div>

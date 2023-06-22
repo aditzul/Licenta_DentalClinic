@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavComponent } from './nav/nav.component';
 import { LoginComponent } from './login/login.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MedicComponent } from './medic/medic.component';
 import { MaterialModule } from './material';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -17,6 +17,9 @@ import { ProfileComponent } from './profile/profile.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
 import { AdminUserDetailsComponent } from './admin-user-details/admin-user-details.component';
 import { UserDialogComponent } from './user-dialog/user-dialog.component';
+import { SnackbarInterceptor } from './_helpers/SnackBarInterceptor';
+import { SimpleCardComponent } from './simple-card/simple-card.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,8 @@ import { UserDialogComponent } from './user-dialog/user-dialog.component';
     ProfileComponent,
     UserDetailsComponent,
     AdminUserDetailsComponent,
-    UserDialogComponent
+    UserDialogComponent,
+    SimpleCardComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +45,14 @@ import { UserDialogComponent } from './user-dialog/user-dialog.component';
     HttpClientModule,
     MaterialModule
   ],
-  providers: [],
+  providers: [
+    DatePipe,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SnackbarInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

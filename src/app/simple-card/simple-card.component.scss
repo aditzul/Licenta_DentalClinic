@@ -1,0 +1,38 @@
+:host {
+  flex: 1;
+}
+
+mat-card {
+  color: white;
+}
+
+mat-card-header {
+  font-weight: 500;
+}
+
+
+mat-card-content {
+  padding: 16px 16px 30px;
+}
+
+.card-inside {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+
+  p {
+    margin: 0;
+  }
+
+  mat-icon {
+    position: absolute;
+    right: 0;
+    top: -32px;
+    font-size: 38px;
+    height: 38px;
+    width: 48px;
+    color: #fafafa;
+    opacity: 0.3;
+  }
+}

@@ -42,4 +42,8 @@ export class UserService {
       { headers, responseType: 'text' as const }
     );
   }
+
+  getLastId(): Observable<number> {
+    return this.http.get<number>(`${environment.apiUrl}/User/GetLastID`);
+  }
 }

@@ -18,6 +18,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   imports: [
@@ -40,6 +41,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatDialogModule,
     MatButtonToggleModule,
     MatTooltipModule,
+    MatProgressSpinnerModule,
   ],
   exports: [
     MatNativeDateModule,
@@ -62,6 +64,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatDialogModule,
     MatButtonToggleModule,
     MatTooltipModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class MaterialModule {}

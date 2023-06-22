@@ -1,1 +1,39 @@
-<p>dashboard works!</p>
+<main>
+  <div class="cards section">
+    <app-simple-card
+      [title]="cardsData.totalPatients"
+      message="Total Patients"
+      icon="fa-users"
+      classes="blue"
+    ></app-simple-card>
+    <app-simple-card
+      [title]="cardsData.malePatients"
+      message="Male Patients"
+      icon="fa-mars"
+      classes="green"
+    ></app-simple-card>
+    <app-simple-card
+      [title]="cardsData.femalePatients"
+      message="Female Patients"
+      icon="fa-venus"
+      classes="yellow"
+    ></app-simple-card>
+    <app-simple-card
+      [title]="cardsData.averageAge"
+      message="Average Patient Age"
+      icon="fa-user-clock"
+      classes="red"
+    ></app-simple-card>
+  </div>
+
+  <div class="section charts">
+    <div class="chart-container">
+      <h2>Patients distributed by Sex</h2>
+      <canvas id="sexChart">{{ sexChart }}</canvas>
+    </div>
+    <div class="chart-container">
+      <h2>Patients distributed by Age groups</h2>
+      <canvas id="ageChart">{{ ageChart }}</canvas>
+    </div>
+  </div>
+</main>

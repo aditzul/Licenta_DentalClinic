@@ -60,11 +60,7 @@ export class LoginComponent implements OnInit {
           // get return url from query parameters or default to home page
           const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
           this.router.navigateByUrl(returnUrl);
-        },
-        error: (error) => {
-          this._snackBar.open(error.error.detail, 'Dismiss')
-          this.loading = false;
-        },
+        }
       });
   }
 }
