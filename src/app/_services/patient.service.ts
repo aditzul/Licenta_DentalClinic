@@ -10,15 +10,11 @@ export class PatientService {
   constructor(private http: HttpClient) {}
 
   getAllPatients(): Observable<Patient[]> {
-    return this.http.get<Patient[]>(
-      `${environment.apiUrl}/Pacient/GetAllPacient`
-    );
+    return this.http.get<Patient[]>(`${environment.apiUrl}/Pacient/GetAllPacient`);
   }
 
   getPatientByUserId(user: User): Observable<Patient> {
-    return this.http.get<Patient>(
-      `${environment.apiUrl}/Pacient/GetPacientbyUid/${user.id}`
-    );
+    return this.http.get<Patient>(`${environment.apiUrl}/Pacient/GetPacientbyUid/${user.id}`);
   }
 
   addPatient(patient: Patient): Observable<any> {
@@ -37,14 +33,8 @@ export class PatientService {
   }
 
   deletePatient(patient: Patient): Observable<any> {
-    const headers = new HttpHeaders().set(
-      'Content-Type',
-      'text/plain; charset=utf-8'
-    );
+    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
 
-    return this.http.delete(
-      `${environment.apiUrl}/Pacient/DeleteUser/${patient.id}`,
-      { headers, responseType: 'text' as const }
-    );
+    return this.http.delete(`${environment.apiUrl}/Pacient/DeleteUser/${patient.id}`, { headers, responseType: 'text' as const });
   }
 }

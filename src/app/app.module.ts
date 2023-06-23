@@ -20,6 +20,7 @@ import { UserDialogComponent } from './user-dialog/user-dialog.component';
 import { SnackbarInterceptor } from './_helpers/SnackBarInterceptor';
 import { SimpleCardComponent } from './simple-card/simple-card.component';
 import { DatePipe } from '@angular/common';
+import { PatientTableComponent } from './patient-table/patient-table.component';
 
 @NgModule({
   declarations: [
@@ -36,23 +37,18 @@ import { DatePipe } from '@angular/common';
     UserDetailsComponent,
     AdminUserDetailsComponent,
     UserDialogComponent,
-    SimpleCardComponent
+    SimpleCardComponent,
+    PatientTableComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    MaterialModule
-  ],
+  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, HttpClientModule, MaterialModule],
   providers: [
     DatePipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: SnackbarInterceptor,
-      multi: true
-    }
+      multi: true,
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

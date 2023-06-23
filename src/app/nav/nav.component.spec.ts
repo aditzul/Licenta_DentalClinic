@@ -15,14 +15,7 @@ describe('NavComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [NavComponent],
-      imports: [
-        NoopAnimationsModule,
-        MatButtonModule,
-        MatIconModule,
-        MatListModule,
-        MatSidenavModule,
-        MatToolbarModule,
-      ]
+      imports: [NoopAnimationsModule, MatButtonModule, MatIconModule, MatListModule, MatSidenavModule, MatToolbarModule],
     }).compileComponents();
   }));
 

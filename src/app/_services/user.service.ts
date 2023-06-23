@@ -32,15 +32,9 @@ export class UserService {
   }
 
   deleteUser(user: User): Observable<any> {
-    const headers = new HttpHeaders().set(
-      'Content-Type',
-      'text/plain; charset=utf-8'
-    );
+    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
 
-    return this.http.delete(
-      `${environment.apiUrl}/User/DeleteUser/${user.id}`,
-      { headers, responseType: 'text' as const }
-    );
+    return this.http.delete(`${environment.apiUrl}/User/DeleteUser/${user.id}`, { headers, responseType: 'text' as const });
   }
 
   getLastId(): Observable<number> {

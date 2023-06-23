@@ -4,22 +4,15 @@
 </mat-form-field> -->
 <main>
   <mat-toolbar color="primary">
-    <mat-button-toggle-group
-      [(ngModel)]="roleFilter"
-      (change)="filterChange($event)"
-    >
+    <mat-button-toggle-group [(ngModel)]="roleFilter" (change)="filterChange($event)">
       <mat-button-toggle color="warn" value="clear" matTooltip="Clear">
         <mat-icon fontIcon="filter_list"></mat-icon>
       </mat-button-toggle>
       <mat-button-toggle value="admin" matTooltip="Admin">
         <mat-icon fontIcon="settings"></mat-icon>
       </mat-button-toggle>
-      <mat-button-toggle value="medic" matTooltip="Medic"
-        ><mat-icon fontIcon="work"></mat-icon
-      ></mat-button-toggle>
-      <mat-button-toggle value="patient" matTooltip="Patient"
-        ><mat-icon fontIcon="person"></mat-icon
-      ></mat-button-toggle>
+      <mat-button-toggle value="medic" matTooltip="Medic"><mat-icon fontIcon="work"></mat-icon></mat-button-toggle>
+      <mat-button-toggle value="patient" matTooltip="Patient"><mat-icon fontIcon="person"></mat-icon></mat-button-toggle>
     </mat-button-toggle-group>
 
     <button mat-icon-button (click)="addUser()">
@@ -27,11 +20,7 @@
     </button>
   </mat-toolbar>
 
-  <table
-    mat-table
-    [dataSource]="dataSource"
-    class="mat-elevation-z8 user-table"
-  >
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 user-table">
     <!-- ID Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef>ID</th>
@@ -83,9 +72,7 @@
       <td *ngIf="roleFilter === 'clear'" class="mat-cell" colspan="4">
         <mat-spinner></mat-spinner>
       </td>
-      <td *ngIf="roleFilter !== 'clear'" class="mat-cell" colspan="4">
-        No user found with the role "{{ roleFilter }}"
-      </td>
+      <td *ngIf="roleFilter !== 'clear'" class="mat-cell" colspan="4">No user found with the role "{{ roleFilter }}"</td>
     </tr>
   </table>
 

@@ -28,10 +28,7 @@ export class BreadcrumbsComponent implements OnInit {
         this.breadcrumbs = breadcrumbs;
       });
 
-    this.resolveBreadcrumbs(this.route).then(
-      (breadcrumbs: Breadcrumb[] | undefined) =>
-        (this.breadcrumbs = breadcrumbs)
-    );
+    this.resolveBreadcrumbs(this.route).then((breadcrumbs: Breadcrumb[] | undefined) => (this.breadcrumbs = breadcrumbs));
   }
 
   resolveBreadcrumbs(route: ActivatedRoute): Promise<Breadcrumb[] | undefined> {
@@ -39,7 +36,7 @@ export class BreadcrumbsComponent implements OnInit {
     route.url.subscribe((data) => {
       console.log(this.router.url);
     });
-    
+
     return route.data
       .pipe(
         first(),
@@ -56,19 +53,17 @@ export class BreadcrumbsComponent implements OnInit {
         }),
         switchMap((breadcrumbs: Breadcrumb[]) => {
           if (route.firstChild) {
-            return this.resolveBreadcrumbs(route.firstChild).then(
-              (childBreadcrumbs: Breadcrumb[] | undefined) => {
-                if (childBreadcrumbs?.length && childBreadcrumbs?.length > 0) {
-                  const breadcrumb: Breadcrumb = {
-                    label: route.routeConfig?.data?.breadcrumb || '',
-                    url: this.createUrl(route),
-                  };
-                  return [breadcrumb, ...childBreadcrumbs];
-                } else {
-                  return [];
-                }
+            return this.resolveBreadcrumbs(route.firstChild).then((childBreadcrumbs: Breadcrumb[] | undefined) => {
+              if (childBreadcrumbs?.length && childBreadcrumbs?.length > 0) {
+                const breadcrumb: Breadcrumb = {
+                  label: route.routeConfig?.data?.breadcrumb || '',
+                  url: this.createUrl(route),
+                };
+                return [breadcrumb, ...childBreadcrumbs];
+              } else {
+                return [];
               }
-            );
+            });
           } else {
             return Promise.resolve(breadcrumbs);
           }
@@ -79,9 +74,7 @@ export class BreadcrumbsComponent implements OnInit {
 
   createUrl(route: ActivatedRoute): string {
     const urlSegments = route.pathFromRoot
-      .map((r: ActivatedRoute) =>
-        r.snapshot.url.map((segment) => segment.toString())
-      )
+      .map((r: ActivatedRoute) => r.snapshot.url.map((segment) => segment.toString()))
       .reduce((prev, curr) => prev.concat(curr));
 
     return `/${urlSegments.join('/')}`;

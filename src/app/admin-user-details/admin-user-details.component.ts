@@ -9,6 +9,5 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AdminUserDetailsComponent {
   constructor(private route: ActivatedRoute, private router: Router) {
     const xxx = this.route.snapshot.params['id'];
-
   }
 }

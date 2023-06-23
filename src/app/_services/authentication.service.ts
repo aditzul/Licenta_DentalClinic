@@ -12,9 +12,7 @@ export class AuthenticationService {
   public user: Observable<User | null>;
 
   constructor(private router: Router, private http: HttpClient) {
-    this.userSubject = new BehaviorSubject(
-      JSON.parse(localStorage.getItem('user')!)
-    );
+    this.userSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('user')!));
     this.user = this.userSubject.asObservable();
   }
 
@@ -23,16 +21,14 @@ export class AuthenticationService {
   }
 
   login(username: string, password: string) {
-    return this.http
-      .post<any>(`${environment.apiUrl}/User/Login`, { username, password })
-      .pipe(
-        map((user) => {
-          // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('user', JSON.stringify(user));
-          this.userSubject.next(user);
-          return user;
-        })
-      );
+    return this.http.post<any>(`${environment.apiUrl}/User/Login`, { username, password }).pipe(
+      map((user) => {
+        // store user details and jwt token in local storage to keep user logged in between page refreshes
+        localStorage.setItem('user', JSON.stringify(user));
+        this.userSubject.next(user);
+        return user;
+      })
+    );
   }
 
   logout() {

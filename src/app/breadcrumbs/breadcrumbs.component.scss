@@ -14,14 +14,14 @@
 }
 
 .breadcrumbs li::after {
-  content: '>';
+  content: ">";
   margin-left: 5px;
   margin-right: 5px;
   color: #777;
 }
 
 .breadcrumbs li:last-child::after {
-  content: '';
+  content: "";
 }
 
 .breadcrumbs a {

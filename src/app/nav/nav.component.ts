@@ -15,12 +15,10 @@ import { NavService } from '../_services/nav.service';
 export class NavComponent {
   private breakpointObserver = inject(BreakpointObserver);
 
-  isHandset$: Observable<boolean> = this.breakpointObserver
-    .observe(Breakpoints.Handset)
-    .pipe(
-      map((result) => result.matches),
-      shareReplay()
-    );
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
+    map((result) => result.matches),
+    shareReplay()
+  );
   user?: User | null;
   navItems: NavItem[] = [
     {
@@ -50,14 +48,12 @@ export class NavComponent {
           route: 'admin/medics',
           iconName: 'home',
         },
-      ]
+      ],
     },
   ];
 
   constructor(private authenticationService: AuthenticationService) {
-    this.authenticationService.user.subscribe(
-      (user: User | null) => (this.user = user)
-    );
+    this.authenticationService.user.subscribe((user: User | null) => (this.user = user));
   }
 
   get isAdmin() {

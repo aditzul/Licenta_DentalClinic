@@ -46,7 +46,7 @@ const routes: Routes = [
                 data: { roles: [Role.Admin], breadcrumb: ':id' },
                 component: AdminUserDetailsComponent,
               },
-            ]
+            ],
           },
           {
             path: 'medics',

@@ -39,48 +39,34 @@ export class DashboardComponent implements OnInit {
 
     this.patientService.getAllPatients().subscribe((patients: Patient[]) => {
       this.medicService.getAllMedics().subscribe((medics: Medic[]) => {
-        this.currentMedic =
-          medics.find((m) => m.useR_ID === this.currentUser.id) || {};
+        this.currentMedic = medics.find((m) => m.useR_ID === this.currentUser.id) || {};
 
         if (this.currentUser?.role == Role.Admin) {
           this.patients = patients;
           this.medics = medics;
         } else {
-          this.patients = patients.filter(
-            (p) => p.assignatioN_CODE === this.currentMedic.assignatioN_CODE
-          );
+          this.patients = patients.filter((p) => p.assignatioN_CODE === this.currentMedic.assignatioN_CODE);
+          this.medics.push(this.currentMedic);
         }
 
-        this.cardsData.totalPatients = patients.length.toString();
-        this.cardsData.femalePatients =
-          this.computePercentage(
-            this.patients.length,
-            this.patients.filter((p) => p.sex === 'f').length
-          )
-            .toFixed(2)
-            .toString() + '%';
-
-        this.cardsData.malePatients =
-          this.computePercentage(
-            this.patients.length,
-            this.patients.filter((p) => p.sex === 'm').length
-          )
-            .toFixed(2)
-            .toString() + '%';
-
-        this.cardsData.averageAge = (
-          this.patients.reduce(
-            (accum: number, reducer: any) => accum + reducer.age,
-            0
-          ) / this.patients.length
-        )
-          .toFixed(2)
-          .toString();
-
+        this.createCardsData();
         this.createSexChart(this.patients);
         this.createAgeChart(this.patients);
       });
     });
+  }
+
+  createCardsData() {
+    const malePatients = this.patients.filter((p) => p.sex === Sex.Male).length;
+    const femalePatients = this.patients.filter((p) => p.sex === Sex.Female).length;
+
+    this.cardsData.totalPatients = this.patients.length.toString();
+
+    this.cardsData.femalePatients = this.computePercentage(this.patients.length, femalePatients).toFixed(2).toString() + '%';
+
+    this.cardsData.malePatients = this.computePercentage(this.patients.length, malePatients).toFixed(2).toString() + '%';
+
+    this.cardsData.averageAge = (this.patients.reduce((accum: number, reducer: any) => accum + reducer.age, 0) / this.patients.length).toFixed(2).toString();
   }
 
   createAgeChart(patients: Patient[]) {
@@ -127,32 +113,19 @@ export class DashboardComponent implements OnInit {
         datasets: [
           {
             label: 'Total',
-            data: [
-              ...Object.keys(patientsByAge).map(
-                (key) => patientsByAge[key].age.length
-              ),
-            ],
+            data: [...Object.keys(patientsByAge).map((key) => patientsByAge[key].age.length)],
             backgroundColor: '#f44336',
             stack: 'stack1',
           },
           {
             label: 'Males',
-            data: [
-              ...Object.keys(patientsByAge).map(
-                (key) => patientsByAge[key].males.length
-              ),
-            ],
+            data: [...Object.keys(patientsByAge).map((key) => patientsByAge[key].males.length)],
             backgroundColor: '#4CAF50',
             stack: 'stack2',
-
           },
           {
             label: 'Female',
-            data: [
-              ...Object.keys(patientsByAge).map(
-                (key) => patientsByAge[key].females.length
-              ),
-            ],
+            data: [...Object.keys(patientsByAge).map((key) => patientsByAge[key].females.length)],
             backgroundColor: '#FF9800',
             stack: 'stack2',
           },
@@ -199,39 +172,23 @@ export class DashboardComponent implements OnInit {
 
       data: {
         // values on X-Axis
-        labels: [
-          ...sortedDates.map((d) => this.datePipe.transform(d, 'dd.MM.yyyy')),
-        ],
+        labels: [...sortedDates.map((d) => this.datePipe.transform(d, 'dd.MM.yyyy'))],
         datasets: [
           {
             label: 'Total',
-            data: [
-              ...Object.keys(patientsByDate).map(
-                (key) =>
-                  patientsByDate[key].male.length +
-                  patientsByDate[key].female.length
-              ),
-            ],
+            data: [...Object.keys(patientsByDate).map((key) => patientsByDate[key].male.length + patientsByDate[key].female.length)],
             backgroundColor: '#03a9f4',
             stack: 'stack1',
           },
           {
             label: 'Males',
-            data: [
-              ...Object.keys(patientsByDate).map(
-                (key) => patientsByDate[key].male.length
-              ),
-            ],
+            data: [...Object.keys(patientsByDate).map((key) => patientsByDate[key].male.length)],
             backgroundColor: '#4CAF50',
             stack: 'stack2',
           },
           {
             label: 'Female',
-            data: [
-              ...Object.keys(patientsByDate).map(
-                (key) => patientsByDate[key].female.length
-              ),
-            ],
+            data: [...Object.keys(patientsByDate).map((key) => patientsByDate[key].female.length)],
             backgroundColor: '#FF9800',
             stack: 'stack2',
           },

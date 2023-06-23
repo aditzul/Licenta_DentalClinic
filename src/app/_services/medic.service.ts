@@ -13,9 +13,7 @@ export class MedicService {
   }
 
   getMedic(medic: Medic): Observable<Medic> {
-    return this.http.get<any>(
-      `${environment.apiUrl}/Medic/GetMedic/${medic.id}`
-    );
+    return this.http.get<any>(`${environment.apiUrl}/Medic/GetMedic/${medic.id}`);
   }
 
   addMedic(medic: Medic): Observable<Medic> {
@@ -34,14 +32,8 @@ export class MedicService {
   }
 
   deleteMedic(medic: Medic): Observable<string> {
-    const headers = new HttpHeaders().set(
-      'Content-Type',
-      'text/plain; charset=utf-8'
-    );
+    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
 
-    return this.http.delete(
-      `${environment.apiUrl}/Medic/DeleteMedic/${medic.id}`,
-      { headers, responseType: 'text' as const }
-    );
+    return this.http.delete(`${environment.apiUrl}/Medic/DeleteMedic/${medic.id}`, { headers, responseType: 'text' as const });
   }
 }

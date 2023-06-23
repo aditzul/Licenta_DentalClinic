@@ -19,22 +19,11 @@ export class UsersComponent implements OnInit {
   users: User[] = [];
   patients: Patient[] = [];
   medics: Medic[] = [];
-  displayedColumns: string[] = [
-    'id',
-    'role',
-    'username',
-    'createD_AT',
-    'actions',
-  ];
+  displayedColumns: string[] = ['id', 'role', 'username', 'createD_AT', 'actions'];
   dataSource = new MatTableDataSource(this.users);
   roleFilter?: string = 'clear';
 
-  constructor(
-    private userService: UserService,
-    private patientService: PatientService,
-    private medicService: MedicService,
-    public dialog: MatDialog
-  ) {}
+  constructor(private userService: UserService, private patientService: PatientService, private medicService: MedicService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.refreshData();
@@ -89,7 +78,7 @@ export class UsersComponent implements OnInit {
         user: {},
         patient: null,
         medic: null,
-        allMedics: this.medics
+        allMedics: this.medics,
       },
     });
 
@@ -130,7 +119,7 @@ export class UsersComponent implements OnInit {
         user,
         patient,
         medic,
-        allMedics: this.medics
+        allMedics: this.medics,
       },
     });
 

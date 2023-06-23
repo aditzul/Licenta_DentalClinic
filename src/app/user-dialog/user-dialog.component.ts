@@ -20,10 +20,7 @@ export class UserDialogComponent {
   detailsForm!: FormGroup;
   submitted: boolean = false;
 
-  constructor(
-    public dialogRef: MatDialogRef<UserDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: UserDialog
-  ) {
+  constructor(public dialogRef: MatDialogRef<UserDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: UserDialog) {
     this.user = data.user;
     this.patient = data.patient;
     this.medic = data.medic;
@@ -51,10 +48,7 @@ export class UserDialogComponent {
     this.userForm = new FormGroup({
       username: new FormControl(this.user.email || '', Validators.required),
       password: new FormControl(this.user.password || '', Validators.required),
-      role: new FormControl(
-        this.user.role?.toString() || Role.Admin.toString(),
-        Validators.required
-      ),
+      role: new FormControl(this.user.role?.toString() || Role.Admin.toString(), Validators.required),
     });
 
     // TODO:
@@ -70,10 +64,7 @@ export class UserDialogComponent {
       address: new FormControl(cd?.address || '', Validators.required),
       phone: new FormControl(cd?.phone || '', Validators.required),
       email: new FormControl(cd?.email || '', Validators.required),
-      assignatioN_CODE: new FormControl(
-        ' ',
-        Validators.required
-      ),
+      assignatioN_CODE: new FormControl(cd?.assignatioN_CODE || ' ', Validators.required),
       occupation: new FormControl(cd?.occupation || ' ', Validators.required),
       cnp: new FormControl(cd?.cnp || ' ', Validators.required),
     });
@@ -108,8 +99,7 @@ export class UserDialogComponent {
       details.address = this.detailsForm.controls['address'].value;
       details.phone = this.detailsForm.controls['phone'].value;
       details.email = this.detailsForm.controls['email'].value;
-      details.assignatioN_CODE =
-        this.detailsForm.controls['assignatioN_CODE'].value;
+      details.assignatioN_CODE = this.detailsForm.controls['assignatioN_CODE'].value;
 
       if (currentRole == Role.Medic) {
         details.id = this.medic?.id;
@@ -133,10 +123,7 @@ export class UserDialogComponent {
       return true;
     }
 
-    if (
-      this.userForm.controls['role'].value !== '0' &&
-      this.detailsForm.status === 'INVALID'
-    ) {
+    if (this.userForm.controls['role'].value !== '0' && this.detailsForm.status === 'INVALID') {
       return true;
     }
 

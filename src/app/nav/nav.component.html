@@ -14,22 +14,13 @@
       <a mat-list-item href="/medic">Medics</a>
       <a mat-list-item href="/patient">Patients</a>
  -->
-      <app-menu-list-item
-        *ngFor="let item of navItems"
-        [item]="item"
-      ></app-menu-list-item>
+      <app-menu-list-item *ngFor="let item of navItems" [item]="item"></app-menu-list-item>
     </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async"
-      >
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
 
