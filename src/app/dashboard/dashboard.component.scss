@@ -1,12 +1,12 @@
 .section {
-  padding-bottom: 15px;
+  padding-bottom: 16px;
 
   &.charts {
     display: flex;
     flex-direction: column;
     .chart-container {
       width: 100%;
-      flex:1;
+      flex: 1;
     }
   }
 }
@@ -19,12 +19,7 @@
 
   app-simple-card {
     min-width: calc(50% - 30px);
-    mat-card: {
-      height: 100%;
-    }
   }
-
-
 }
 
 @media (min-width: 1200px) {
@@ -34,15 +29,14 @@
       flex-wrap: nowrap;
       .chart-container {
         width: 50%;
-        flex:1;
+        flex: 1;
       }
     }
   }
-
-  .cards app-simple-card {
-    min-width: calc(25% - 30px);  }
 }
 
 @media (min-width: 792px) {
-
+  .cards app-simple-card {
+    min-width: calc(25% - 30px);
+  }
 }

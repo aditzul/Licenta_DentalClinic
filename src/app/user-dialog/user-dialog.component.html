@@ -201,7 +201,7 @@
         </mat-hint>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field *ngIf="userForm.controls.role.value === '1'">
         <mat-label>Assignation Code</mat-label>
         <input
           matInput
@@ -209,6 +209,33 @@
           formControlName="assignatioN_CODE"
           class="form-control"
         />
+        <mat-hint
+          *ngIf="
+            detailsForm.controls.assignatioN_CODE.touched &&
+            detailsForm.controls.assignatioN_CODE.errors
+          "
+          class="mat-mdc-form-field-error"
+        >
+          Assignation Code is required
+        </mat-hint>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="userForm.controls.role.value === '2'">
+        <mat-label>Assignation Code</mat-label>
+        <mat-select
+          formControlName="assignatioN_CODE"
+          class="form-control"
+          value="allMedics[0].assignatioN_CODE"
+          [disabled]="allMedics.length === 1"
+        >
+          <mat-option value=" ">None</mat-option>
+          <mat-option
+            *ngFor="let medic of allMedics"
+            [value]="medic.assignatioN_CODE"
+          >
+            {{ medic.assignatioN_CODE }}
+          </mat-option>
+        </mat-select>
         <mat-hint
           *ngIf="
             detailsForm.controls.assignatioN_CODE.touched &&

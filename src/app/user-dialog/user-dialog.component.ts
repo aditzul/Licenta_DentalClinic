@@ -14,6 +14,7 @@ export class UserDialogComponent {
   user: User;
   patient: Patient | null;
   medic: Medic | null;
+  allMedics: Medic[] = [];
   isAdd: boolean;
   userForm!: FormGroup;
   detailsForm!: FormGroup;
@@ -26,6 +27,7 @@ export class UserDialogComponent {
     this.user = data.user;
     this.patient = data.patient;
     this.medic = data.medic;
+    this.allMedics = data.allMedics;
     this.isAdd = Object.keys(this.user).length === 0;
   }
 
@@ -55,6 +57,12 @@ export class UserDialogComponent {
       ),
     });
 
+    // TODO:
+    // let initialAssignationCode = cd?.assignatioN_CODE;
+    // if (!initialAssignationCode) {
+    //   initialAssignationCode = this.allMedics[0].assignatioN_CODE || '';
+    // }
+
     this.detailsForm = new FormGroup({
       fullname: new FormControl(cd?.fullname || '', Validators.required),
       age: new FormControl(cd?.age || '', Validators.required),
@@ -63,7 +71,7 @@ export class UserDialogComponent {
       phone: new FormControl(cd?.phone || '', Validators.required),
       email: new FormControl(cd?.email || '', Validators.required),
       assignatioN_CODE: new FormControl(
-        cd?.assignatioN_CODE || '',
+        ' ',
         Validators.required
       ),
       occupation: new FormControl(cd?.occupation || ' ', Validators.required),

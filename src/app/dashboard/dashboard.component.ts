@@ -91,26 +91,24 @@ export class DashboardComponent implements OnInit {
       '46 - 99': {},
     };
 
-    Object.keys(patientsByAge).forEach(key => {
+    Object.keys(patientsByAge).forEach((key) => {
       const ref = patientsByAge[key];
       ref.min = parseInt(key.split('-')[0].trim());
       ref.max = parseInt(key.split('-')[1].trim());
       ref.females = [];
       ref.males = [];
       ref.age = [];
-    })
-
-    console.log(patients);
+    });
 
     patients.forEach((patient: Patient) => {
-      Object.keys(patientsByAge).forEach(key => {
+      Object.keys(patientsByAge).forEach((key) => {
         const ref = patientsByAge[key];
         const age = patient.age || 0;
-        if(age >= ref.min && age <= ref.max) {
+        if (age >= ref.min && age <= ref.max) {
           if (patient.sex === Sex.Male) {
             ref.males.push(patient.id);
           }
-    
+
           if (patient.sex === Sex.Female) {
             ref.females.push(patient.id);
           }
@@ -120,9 +118,6 @@ export class DashboardComponent implements OnInit {
       });
     });
 
-    console.log(patientsByAge);
-
-
     this.ageChart = new Chart('ageChart', {
       type: 'bar', //this denotes tha type of chart
 
@@ -131,13 +126,14 @@ export class DashboardComponent implements OnInit {
         labels: [...Object.keys(patientsByAge)],
         datasets: [
           {
-            label: 'Age',
+            label: 'Total',
             data: [
               ...Object.keys(patientsByAge).map(
                 (key) => patientsByAge[key].age.length
               ),
             ],
             backgroundColor: '#f44336',
+            stack: 'stack1',
           },
           {
             label: 'Males',
@@ -147,6 +143,8 @@ export class DashboardComponent implements OnInit {
               ),
             ],
             backgroundColor: '#4CAF50',
+            stack: 'stack2',
+
           },
           {
             label: 'Female',
@@ -156,11 +154,12 @@ export class DashboardComponent implements OnInit {
               ),
             ],
             backgroundColor: '#FF9800',
+            stack: 'stack2',
           },
         ],
       },
       options: {
-        aspectRatio: 2,
+        aspectRatio: 2.5,
       },
     });
   }
@@ -205,6 +204,18 @@ export class DashboardComponent implements OnInit {
         ],
         datasets: [
           {
+            label: 'Total',
+            data: [
+              ...Object.keys(patientsByDate).map(
+                (key) =>
+                  patientsByDate[key].male.length +
+                  patientsByDate[key].female.length
+              ),
+            ],
+            backgroundColor: '#03a9f4',
+            stack: 'stack1',
+          },
+          {
             label: 'Males',
             data: [
               ...Object.keys(patientsByDate).map(
@@ -212,6 +223,7 @@ export class DashboardComponent implements OnInit {
               ),
             ],
             backgroundColor: '#4CAF50',
+            stack: 'stack2',
           },
           {
             label: 'Female',
@@ -221,11 +233,12 @@ export class DashboardComponent implements OnInit {
               ),
             ],
             backgroundColor: '#FF9800',
+            stack: 'stack2',
           },
         ],
       },
       options: {
-        aspectRatio: 2,
+        aspectRatio: 2.5,
       },
     });
   }

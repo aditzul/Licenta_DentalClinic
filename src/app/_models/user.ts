@@ -19,5 +19,6 @@ export interface UserDialog {
   user: User;
   medic: Medic | null;
   patient: Patient | null;
+  allMedics: Medic[]
 }
 

@@ -89,6 +89,7 @@ export class UsersComponent implements OnInit {
         user: {},
         patient: null,
         medic: null,
+        allMedics: this.medics
       },
     });
 
@@ -129,6 +130,7 @@ export class UsersComponent implements OnInit {
         user,
         patient,
         medic,
+        allMedics: this.medics
       },
     });
 

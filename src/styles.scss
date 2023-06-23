@@ -3,7 +3,6 @@
 
 @import "~@fortawesome/fontawesome-free/css/all.css";
 
-
 @include mat.core();
 
 $my-app-primary: mat.define-palette(mat.$indigo-palette);
@@ -21,11 +20,10 @@ $my-app-theme: mat.define-light-theme(
 );
 
 $my-app-primary: #3f51b5;
-$my-app-success: #4CAF50;
+$my-app-success: #4caf50;
 $my-app-error: #f44336;
-$my-app-light-blue: #03A9F4;
-$my-app-yellow: #FF9800;
-
+$my-app-light-blue: #03a9f4;
+$my-app-yellow: #ff9800;
 
 @include mat.all-component-themes($my-app-theme);
 
@@ -69,6 +67,10 @@ main {
   .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled) {
     color: $my-app-error;
   }
+}
+
+.cards mat-card {
+  height: 100%;
 }
 
 .cards mat-card.blue {
