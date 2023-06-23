@@ -16,12 +16,13 @@
   z-index: 1;
 }
 
-main {
-  padding: 20px;
-}
-
 mat-toolbar {
   justify-content: flex-end;
+}
+
+.mat-drawer-content {
+  display: flex;
+  flex-direction: column;
 }
 
 @media only screen and (max-width: 600px) {

@@ -2,7 +2,7 @@
   <mat-label>Filter</mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
 </mat-form-field> -->
-<main>
+<main class="table-container">
   <mat-toolbar color="primary">
     <mat-button-toggle-group [(ngModel)]="roleFilter" (change)="filterChange($event)">
       <mat-button-toggle color="warn" value="clear" matTooltip="Clear">

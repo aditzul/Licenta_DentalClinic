@@ -39,10 +39,15 @@ body {
 .main,
 main {
   padding: 20px;
-}
 
-main {
-  padding: 0 20px;
+  mat-spinner.main-spinner {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+  }
 }
 
 .mat-mdc-snack-bar-container.successSnack > div.mdc-snackbar__surface {
@@ -87,4 +92,55 @@ main {
 
 .cards mat-card.red {
   background: $my-app-error;
+}
+
+span.mat-mdc-list-item-unscoped-content.mdc-list-item__primary-text {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+mat-icon {
+  font-size: 24px;
+}
+
+mat-toolbar {
+  min-height: 64px;
+}
+
+.table-container {
+  mat-toolbar {
+    justify-content: space-between;
+  }
+
+  .mat-column-id,
+  .mat-column-age {
+    width: 32px;
+    text-align: center;
+  }
+
+  .mat-column-username {
+    width: 50%;
+  }
+
+  .mat-column-role,
+  .mat-column-sex {
+    width: 50px;
+    text-align: center;
+  }
+
+  .mat-column-actions {
+    width: 150px;
+    text-align: center;
+  }
+
+  .mat-mdc-no-data-row td {
+    width: 100%;
+    padding: 20px;
+    font-weight: 500;
+
+    mat-spinner {
+      margin: auto;
+    }
+  }
 }

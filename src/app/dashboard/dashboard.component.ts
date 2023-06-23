@@ -26,6 +26,8 @@ export class DashboardComponent implements OnInit {
     malePatients: '',
     averageAge: '',
   };
+  loaded = false;
+  lastPatients: Patient[] = [];
 
   constructor(
     private patientService: PatientService,
@@ -39,6 +41,7 @@ export class DashboardComponent implements OnInit {
 
     this.patientService.getAllPatients().subscribe((patients: Patient[]) => {
       this.medicService.getAllMedics().subscribe((medics: Medic[]) => {
+        this.loaded = true;
         this.currentMedic = medics.find((m) => m.useR_ID === this.currentUser.id) || {};
 
         if (this.currentUser?.role == Role.Admin) {
@@ -50,10 +53,19 @@ export class DashboardComponent implements OnInit {
         }
 
         this.createCardsData();
-        this.createSexChart(this.patients);
-        this.createAgeChart(this.patients);
+        this.lastPatients = this.computeLastPatients(this.patients);
+
+        setTimeout(() => {
+          this.createSexChart(this.patients);
+          this.createAgeChart(this.patients);
+        }, 0);
       });
     });
+  }
+
+  computeLastPatients(patients: Patient[]): Patient[] {
+    const sortedByDate = patients.sort((a,b) => this.sortByDate(<string>a.createD_AT, <string>b.createD_AT));
+    return sortedByDate.slice(-5).reverse();
   }
 
   createCardsData() {
@@ -61,11 +73,8 @@ export class DashboardComponent implements OnInit {
     const femalePatients = this.patients.filter((p) => p.sex === Sex.Female).length;
 
     this.cardsData.totalPatients = this.patients.length.toString();
-
     this.cardsData.femalePatients = this.computePercentage(this.patients.length, femalePatients).toFixed(2).toString() + '%';
-
     this.cardsData.malePatients = this.computePercentage(this.patients.length, malePatients).toFixed(2).toString() + '%';
-
     this.cardsData.averageAge = (this.patients.reduce((accum: number, reducer: any) => accum + reducer.age, 0) / this.patients.length).toFixed(2).toString();
   }
 
@@ -160,12 +169,7 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-    const sortedDates = Object.keys(patientsByDate).sort((a, b) => {
-      const dateB = new Date(b).getTime();
-      const dateA = new Date(a).getTime();
-
-      return dateA - dateB;
-    });
+    const sortedDates = Object.keys(patientsByDate).sort(this.sortByDate);
 
     this.sexChart = new Chart('sexChart', {
       type: 'bar', //this denotes tha type of chart
@@ -202,5 +206,12 @@ export class DashboardComponent implements OnInit {
 
   computePercentage(total: number, rest: number) {
     return (rest / total) * 100;
+  }
+
+  sortByDate(a: string, b: string): number {
+    const dateB = new Date(b).getTime();
+    const dateA = new Date(a).getTime();
+
+    return dateA - dateB;
   }
 }

@@ -1,4 +1,4 @@
-<main>
+<main *ngIf="loaded">
   <div class="cards section">
     <app-simple-card [title]="cardsData.totalPatients" message="Total Patients" icon="fa-users" classes="blue"></app-simple-card>
     <app-simple-card [title]="cardsData.malePatients" message="Male Patients" icon="fa-mars" classes="green"></app-simple-card>
@@ -18,6 +18,10 @@
   </div>
 
   <div class="section table">
-    <app-patient-table [patients]="patients"></app-patient-table>
+    <app-patient-table [patients]="lastPatients" [isComplex]="true" title="Last Patients"></app-patient-table>
   </div>
+</main>
+
+<main *ngIf="!loaded">
+  <mat-spinner class="main-spinner"></mat-spinner>
 </main>

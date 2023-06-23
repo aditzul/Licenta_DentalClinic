@@ -10,9 +10,7 @@
 >
   <mat-icon class="routeIcon" [fontIcon]="item.iconName"></mat-icon>
   {{ item.displayName }}
-  <span class="icon-wrap" *ngIf="item.children && item.children.length">
-    <mat-icon [@indicatorRotate]="expanded ? 'expanded' : 'collapsed'" [fontIcon]="'expand_more'"> </mat-icon>
-  </span>
+  <mat-icon *ngIf="item.children && item.children.length" [@indicatorRotate]="expanded ? 'expanded' : 'collapsed'" [fontIcon]="'expand_more'"> </mat-icon>
 </a>
 <div *ngIf="expanded">
   <app-menu-list-item *ngFor="let child of item.children" [item]="child" [depth]="depth + 1"> </app-menu-list-item>
