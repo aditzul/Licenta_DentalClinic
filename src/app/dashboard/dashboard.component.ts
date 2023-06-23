@@ -56,20 +56,26 @@ export class DashboardComponent implements OnInit {
           this.computePercentage(
             this.patients.length,
             this.patients.filter((p) => p.sex === 'f').length
-          ).toFixed(2).toString() + '%';
+          )
+            .toFixed(2)
+            .toString() + '%';
 
         this.cardsData.malePatients =
           this.computePercentage(
             this.patients.length,
             this.patients.filter((p) => p.sex === 'm').length
-          ).toFixed(2).toString() + '%';
+          )
+            .toFixed(2)
+            .toString() + '%';
 
         this.cardsData.averageAge = (
           this.patients.reduce(
             (accum: number, reducer: any) => accum + reducer.age,
             0
           ) / this.patients.length
-        ).toFixed(2).toString();
+        )
+          .toFixed(2)
+          .toString();
 
         this.createSexChart(this.patients);
         this.createAgeChart(this.patients);
@@ -78,28 +84,51 @@ export class DashboardComponent implements OnInit {
   }
 
   createAgeChart(patients: Patient[]) {
-    const patientsByAge: any = {};
+    const patientsByAge: any = {
+      '0 - 16': {},
+      '17 - 30': {},
+      '31 - 45': {},
+      '46 - 99': {},
+    };
+
+    Object.keys(patientsByAge).forEach(key => {
+      const ref = patientsByAge[key];
+      ref.min = parseInt(key.split('-')[0].trim());
+      ref.max = parseInt(key.split('-')[1].trim());
+      ref.females = [];
+      ref.males = [];
+      ref.age = [];
+    })
+
+    console.log(patients);
 
     patients.forEach((patient: Patient) => {
-      const label = patient.age || 0;
+      Object.keys(patientsByAge).forEach(key => {
+        const ref = patientsByAge[key];
+        const age = patient.age || 0;
+        if(age >= ref.min && age <= ref.max) {
+          if (patient.sex === Sex.Male) {
+            ref.males.push(patient.id);
+          }
+    
+          if (patient.sex === Sex.Female) {
+            ref.females.push(patient.id);
+          }
 
-      if (!patientsByAge[label]) {
-        patientsByAge[label] = {
-          age: [],
-        };
-      }
-
-      patientsByAge[label].age.push(patient.id);
+          ref.age.push(patient.id);
+        }
+      });
     });
 
-    const sortedAge = Object.keys(patientsByAge).sort((a, b) => parseInt(a) - parseInt(b));
+    console.log(patientsByAge);
+
 
     this.ageChart = new Chart('ageChart', {
       type: 'bar', //this denotes tha type of chart
 
       data: {
         // values on X-Axis
-        labels: [...sortedAge],
+        labels: [...Object.keys(patientsByAge)],
         datasets: [
           {
             label: 'Age',
@@ -109,7 +138,25 @@ export class DashboardComponent implements OnInit {
               ),
             ],
             backgroundColor: '#f44336',
-          }
+          },
+          {
+            label: 'Males',
+            data: [
+              ...Object.keys(patientsByAge).map(
+                (key) => patientsByAge[key].males.length
+              ),
+            ],
+            backgroundColor: '#4CAF50',
+          },
+          {
+            label: 'Female',
+            data: [
+              ...Object.keys(patientsByAge).map(
+                (key) => patientsByAge[key].females.length
+              ),
+            ],
+            backgroundColor: '#FF9800',
+          },
         ],
       },
       options: {
