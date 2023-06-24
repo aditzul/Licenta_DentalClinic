@@ -35,6 +35,10 @@
       & > .column {
         flex: 1 0 25%;
       }
+
+      .row {
+        margin: 23px 0;
+      }
     }
   }
 }
@@ -86,9 +90,18 @@ mat-card.sensor-table {
   }
 }
 
+.comments {
+  
+  form {
+    margin-top: 16px;
+  }  
+}
+
 .full-width {
   width: 100%;
 }
+
+
 
 @media (min-width: 792px) {
   .container {

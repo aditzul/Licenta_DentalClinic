@@ -27,7 +27,7 @@
         {{ user?.role === 0 ? "Admin" : user?.email }}
       </button>
       <mat-menu #menu="matMenu">
-        <button *ngIf="user?.role !== 2" mat-menu-item [routerLink]="'profile'">Profile</button>
+        <button *ngIf="false" mat-menu-item [routerLink]="'profile'">Profile</button>
         <button mat-menu-item (click)="logout()">Logout</button>
       </mat-menu>
     </mat-toolbar>

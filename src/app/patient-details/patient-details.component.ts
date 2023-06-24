@@ -29,6 +29,12 @@ export class PatientDetailsComponent implements OnInit {
   graphsError = false;
   newComment = '';
   loadingComment = false;
+  loadingHistory = false;
+  newHistory = {
+    hospital: '',
+    intervention: '',
+    interventioN_DATE: '',
+  };
 
   chartColors = {
     red: 'rgb(244, 67, 54)',
@@ -73,11 +79,38 @@ export class PatientDetailsComponent implements OnInit {
         this.showSensorData(data[0]);
       });
 
-      this.patientService.getMedicalDataByPatientId(patient).subscribe((history) => {
-        this.medicalHistory = history;
-      });
-
+      this.getAllHistory();
       this.getAllComments();
+    });
+  }
+
+  addNewHistory() {
+    this.loadingHistory = true;
+    const { hospital, intervention, interventioN_DATE } = this.newHistory;
+
+    if (hospital && intervention && interventioN_DATE) {
+      const history = Object.assign(this.newHistory, {
+        patienT_ID: this.patient.id,
+      });
+      this.patientService.AddMedicalDataByPatientId(<PatientHistory>history).subscribe((data) => {
+        this.loadingHistory = false;
+        this.newHistory.hospital = '';
+        this.newHistory.interventioN_DATE = '';
+        this.newHistory.intervention = '';
+
+        this.getAllHistory();
+      });
+    } else {
+      alert('invalid fields on history, check console');
+      console.log('hospital: ', hospital);
+      console.log('intervention: ', intervention);
+      console.log('interventioN_DATE: ', interventioN_DATE);
+    }
+  }
+
+  getAllHistory() {
+    this.patientService.getMedicalDataByPatientId(this.patient).subscribe((history) => {
+      this.medicalHistory = history;
     });
   }
 
@@ -89,13 +122,13 @@ export class PatientDetailsComponent implements OnInit {
       mediC_ID: this.medic.id,
       comment: this.newComment,
       commenT_TYPE: true,
-    }
+    };
 
-    this.patientService.addCommentDataByPatientId(<PatientComment>comment).subscribe(data => {
+    this.patientService.addCommentDataByPatientId(<PatientComment>comment).subscribe((data) => {
       this.getAllComments();
       this.loadingComment = false;
-      this.newComment = ''
-    })
+      this.newComment = '';
+    });
   }
 
   getAllComments() {

@@ -136,6 +136,10 @@ mat-toolbar {
   .mat-column-actions {
     width: 150px;
     text-align: center;
+
+    button {
+      vertical-align: middle;
+    }
   }
 
   .patient-table {

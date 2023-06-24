@@ -14,7 +14,6 @@ export class AuthGuard implements CanActivate {
       const { roles } = route.data;
       if (roles && !roles.includes(user.role)) {
         // role not authorized so redirect to home page
-        console.log("here", user);
         if(user.role == Role.Patient) {
           this.router.navigate(['/patientView']);
           return false;

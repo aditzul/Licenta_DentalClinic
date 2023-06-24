@@ -134,9 +134,8 @@
     </div>
   </div>
 
-  <mat-toolbar *ngIf="!medicalHistory.length" color="warn"> No Medical History Data </mat-toolbar>
-  <mat-toolbar *ngIf="medicalHistory.length" color="primary"> History Data </mat-toolbar>
-  <div *ngIf="medicalHistory.length" class="column-container medical-history">
+  <mat-toolbar color="primary"> History Data </mat-toolbar>
+  <div class="column-container medical-history">
     <div *ngFor="let history of medicalHistory" class="column">
       <mat-card appearance="outlined" class="medical-history">
         <mat-card-header>
@@ -159,6 +158,36 @@
             <span class="value">{{ history.interventioN_DATE | date : "dd.MM.yyyy - HH:mm:ss" }}</span>
           </p>
           <mat-divider></mat-divider>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="column">
+      <mat-card appearance="outlined" class="medical-history">
+        <mat-card-header>
+          <mat-card-title>New Entry</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form (ngSubmit)="addNewHistory()">
+            <mat-form-field class="full-width">
+              <mat-label>Hospital</mat-label>
+              <input name="hospital" [(ngModel)]="newHistory.hospital" matInput type="text" placeholder="Hospital..." />
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <mat-label>Intervention</mat-label>
+              <input name="intervention" [(ngModel)]="newHistory.intervention" matInput type="text" placeholder="Intervention..." />
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <mat-label>Intervention Date</mat-label>
+              <input name="date" [(ngModel)]="newHistory.interventioN_DATE" matInput type="datetime-local" placeholder="start date" />
+            </mat-form-field>
+
+            <button mat-raised-button color="primary">
+              <span *ngIf="loadingHistory" class="spinner-border spinner-border-sm me-1"></span>
+              Send
+            </button>
+          </form>
         </mat-card-content>
       </mat-card>
     </div>

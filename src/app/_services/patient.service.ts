@@ -95,4 +95,14 @@ export class PatientService {
   getMedicalDataByPatientId(patient: Patient): Observable<PatientHistory[]> {
     return this.http.get<PatientHistory[]>(`${environment.apiUrl}/MedicalHistory/GetAllMedicalHistory/${patient.id}`);
   }
+
+  AddMedicalDataByPatientId(history: PatientHistory): Observable<any> {
+    const historyDTO: PatientHistory = Object.assign(history, {
+      createD_AT: new Date().toISOString(),
+    });
+
+    return this.http.post<PatientComment[]>(`${environment.apiUrl}/MedicalHistory/AddMedicalHistory`, {
+      ...historyDTO,
+    });
+  }
 }
