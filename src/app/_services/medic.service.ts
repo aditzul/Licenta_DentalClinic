@@ -1,3 +1,4 @@
+import { switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -35,5 +36,13 @@ export class MedicService {
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
 
     return this.http.delete(`${environment.apiUrl}/Medic/DeleteMedic/${medic.id}`, { headers, responseType: 'text' as const });
+  }
+
+  getMedicByAssignCode(assignCode: string): Observable<Medic> {
+    return <Observable<Medic>>this.getAllMedics().pipe(
+      switchMap((medics: Medic[]): Observable<Medic> => {
+        return of(medics.find((m) => m.assignatioN_CODE === assignCode) || {});
+      })
+    );
   }
 }

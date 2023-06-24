@@ -7,13 +7,12 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="(isHandset$ | async) === false"
   >
-    <mat-toolbar>Logo goes here</mat-toolbar>
+    <mat-toolbar>
+      <a class="logo-container" [routerLink]="['/']">
+        <img src="/assets/logo.png" alt="logo" />
+      </a>
+    </mat-toolbar>
     <mat-nav-list>
-      <!-- <a mat-list-item href="/dashboard">Dashboard</a>
-      <a mat-list-item href="/admin">Admin</a>
-      <a mat-list-item href="/medic">Medics</a>
-      <a mat-list-item href="/patient">Patients</a>
- -->
       <app-menu-list-item *ngFor="let item of navItems" [item]="item"></app-menu-list-item>
     </mat-nav-list>
   </mat-sidenav>
@@ -28,7 +27,7 @@
         {{ user?.role === 0 ? "Admin" : user?.email }}
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item [routerLink]="'profile'">Profile</button>
+        <button *ngIf="user?.role !== 2" mat-menu-item [routerLink]="'profile'">Profile</button>
         <button mat-menu-item (click)="logout()">Logout</button>
       </mat-menu>
     </mat-toolbar>

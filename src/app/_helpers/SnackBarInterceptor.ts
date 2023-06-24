@@ -13,10 +13,12 @@ export class SnackbarInterceptor implements HttpInterceptor {
       tap((e) => {
         if (request.method == 'POST' || request.method == 'PUT') {
           if (e instanceof HttpResponse && (e.status === 200 || e.status === 204)) {
-            this.snackBar.open('Saved successfully.', 'close', {
-              duration: 2000,
-              panelClass: 'successSnack',
-            });
+            if (!request.url.includes('/Login')) {
+              this.snackBar.open('Saved successfully.', 'close', {
+                duration: 2000,
+                panelClass: 'successSnack',
+              });
+            }
           }
         }
         if (request.method === 'DELETE') {

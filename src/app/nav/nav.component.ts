@@ -20,44 +20,46 @@ export class NavComponent {
     shareReplay()
   );
   user?: User | null;
-  navItems: NavItem[] = [
-    {
-      displayName: 'Dashboard',
-      route: 'dashboard',
-      iconName: 'home',
-      hidden: false,
-    },
-    {
-      displayName: 'Patients',
-      route: 'patients',
-      iconName: 'home',
-      hidden: false,
-    },
-    {
-      displayName: 'Admin',
-      iconName: 'home',
-      hidden: this.isAdmin,
-      children: [
-        {
-          displayName: 'Users',
-          route: 'admin/users',
-          iconName: 'home',
-        },
-        {
-          displayName: 'Medics',
-          route: 'admin/medics',
-          iconName: 'home',
-        },
-      ],
-    },
-  ];
+  navItems: NavItem[] = [];
 
   constructor(private authenticationService: AuthenticationService) {
-    this.authenticationService.user.subscribe((user: User | null) => (this.user = user));
+    this.authenticationService.user.subscribe((user: User | null) => {
+      this.user = user;
+      this.navItems = [
+        {
+          displayName: 'Dashboard',
+          route: 'dashboard',
+          iconName: 'fa-chart-line',
+          hidden: this.isPatient,
+        },
+        {
+          displayName: 'Patients',
+          route: 'patients',
+          iconName: 'fa-hospital-user',
+          hidden: this.isPatient,
+        },
+        {
+          displayName: 'Admin',
+          iconName: 'fa-user-gear',
+          hidden: !this.isAdmin,
+          children: [
+            {
+              displayName: 'Users',
+              route: 'admin/users',
+              iconName: 'fa-users',
+            },
+          ],
+        },
+      ];
+    });
   }
 
   get isAdmin() {
     return this.user?.role === Role.Admin;
+  }
+
+  get isPatient() {
+    return this.user?.role === Role.Patient;
   }
 
   logout() {

@@ -3,13 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './_helpers/auth.guard';
 import { Role } from './_models/user';
-import { MedicComponent } from './medic/medic.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NavComponent } from './nav/nav.component';
 import { PatientsComponent } from './patients/patients.component';
 import { UsersComponent } from './users/users.component';
 import { ProfileComponent } from './profile/profile.component';
-import { AdminUserDetailsComponent } from './admin-user-details/admin-user-details.component';
+import { PatientViewComponent } from './patient-view/patient-view.component';
+import { PatientDetailsComponent } from './patient-details/patient-details.component';
 
 const routes: Routes = [
   {
@@ -39,21 +39,7 @@ const routes: Routes = [
             component: UsersComponent,
             canActivate: [AuthGuard],
             data: { roles: [Role.Admin], breadcrumb: 'Users' },
-            children: [
-              {
-                path: ':id',
-                canActivate: [AuthGuard],
-                data: { roles: [Role.Admin], breadcrumb: ':id' },
-                component: AdminUserDetailsComponent,
-              },
-            ],
-          },
-          {
-            path: 'medics',
-            component: MedicComponent,
-            canActivate: [AuthGuard],
-            data: { roles: [Role.Admin], breadcrumb: 'Medics' },
-          },
+          }
         ],
       },
       {
@@ -67,12 +53,26 @@ const routes: Routes = [
         component: PatientsComponent,
         canActivate: [AuthGuard],
         data: { roles: [Role.Admin, Role.Medic], breadcrumb: 'Patients' },
+        children: [
+          {
+            path: ':userId',
+            canActivate: [AuthGuard],
+            data: { roles: [Role.Admin, Role.Medic], breadcrumb: 'Details' },
+            component: PatientDetailsComponent,
+          },
+        ],
       },
       {
         path: 'profile',
         component: ProfileComponent,
         canActivate: [AuthGuard],
         data: { roles: [Role.Admin, Role.Medic], breadcrumb: 'Profile' },
+      },
+      {
+        path: 'patientView',
+        component: PatientViewComponent,
+        canActivate: [AuthGuard],
+        data: { roles: [Role.Patient], breadcrumb: 'Patient View' },
       },
     ],
   },

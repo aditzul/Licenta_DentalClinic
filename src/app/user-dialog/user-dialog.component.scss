@@ -21,6 +21,12 @@ form {
       mat-button-toggle {
         align-items: center;
         display: flex;
+
+        mat-icon {
+          font-size: 30px;
+          height: 40px;
+          width: 70px;
+        }
       }
     }
   }
@@ -33,6 +39,12 @@ mat-button-toggle-group {
 
   mat-button-toggle {
     flex: 1;
+
+    mat-icon {
+      font-size: 30px;
+      height: 40px;
+      width: 100px;
+    }
   }
 }
 

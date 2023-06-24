@@ -1,1 +1,11 @@
-<p>patients works!</p>
+<main *ngIf="!hideMain && loaded">
+  <app-patient-table [patients]="patients" title="All Patients" [isEdit]="true"></app-patient-table>
+</main>
+
+<main *ngIf="!hideMain && !loaded">
+  <mat-spinner class="main-spinner"></mat-spinner>
+</main>
+
+<main *ngIf="hideMain">
+  <router-outlet></router-outlet>
+</main>

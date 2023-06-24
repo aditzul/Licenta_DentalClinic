@@ -1,6 +1,6 @@
 import { MedicService } from './../_services/medic.service';
 import { Role, User } from './../_models/user';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { UserService } from '../_services/user.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,6 +9,8 @@ import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { PatientService } from '../_services/patient.service';
 import { Patient } from '../_models/patient';
 import { Medic } from '../_models/medic';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-users',
@@ -19,14 +21,31 @@ export class UsersComponent implements OnInit {
   users: User[] = [];
   patients: Patient[] = [];
   medics: Medic[] = [];
-  displayedColumns: string[] = ['id', 'role', 'username', 'createD_AT', 'actions'];
+  displayedColumns: string[] = ['id', 'role', 'email', 'createD_AT', 'actions'];
   dataSource = new MatTableDataSource(this.users);
   roleFilter?: string = 'clear';
+  @ViewChild(MatPaginator) paginator: MatPaginator = <MatPaginator>{};
+  @ViewChild(MatSort) sort: MatSort = <MatSort>{};
 
   constructor(private userService: UserService, private patientService: PatientService, private medicService: MedicService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.refreshData();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+
+    this.dataSource.sortingDataAccessor = (item: any, property) => {
+      switch (property) {
+        case 'email': {
+          return item[property].toLowerCase();
+        }
+        default: {
+          return item[property];
+        }
+      }
+    };
   }
 
   filterChange(event: MatButtonToggleChange | any) {
@@ -48,6 +67,11 @@ export class UsersComponent implements OnInit {
         break;
       default:
         this.dataSource.data = users;
+    }
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+      this.dataSource.sort = this.sort;
     }
   }
 

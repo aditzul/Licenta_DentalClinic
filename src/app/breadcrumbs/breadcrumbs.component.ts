@@ -32,11 +32,6 @@ export class BreadcrumbsComponent implements OnInit {
   }
 
   resolveBreadcrumbs(route: ActivatedRoute): Promise<Breadcrumb[] | undefined> {
-    // console.log(route.snapshot);
-    route.url.subscribe((data) => {
-      console.log(this.router.url);
-    });
-
     return route.data
       .pipe(
         first(),

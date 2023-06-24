@@ -22,10 +22,10 @@
     <mat-label>Role: </mat-label>
     <mat-button-toggle-group name="role" formControlName="role">
       <mat-button-toggle value="0" matTooltip="Admin">
-        <mat-icon fontIcon="settings"></mat-icon>
+        <mat-icon fontSet="fa-solid" fontIcon="fa-user-gear"></mat-icon>
       </mat-button-toggle>
-      <mat-button-toggle value="1" matTooltip="Medic"><mat-icon fontIcon="work"></mat-icon></mat-button-toggle>
-      <mat-button-toggle value="2" matTooltip="Patient"><mat-icon fontIcon="person"></mat-icon></mat-button-toggle>
+      <mat-button-toggle value="1" matTooltip="Medic"><mat-icon fontSet="fa-solid" fontIcon="fa-stethoscope"></mat-icon></mat-button-toggle>
+      <mat-button-toggle value="2" matTooltip="Patient"><mat-icon fontSet="fa-solid" fontIcon="fa-hospital-user"></mat-icon></mat-button-toggle>
     </mat-button-toggle-group>
   </form>
 
@@ -52,9 +52,9 @@
       <div class="sex-container">
         <mat-button-toggle-group name="sex" formControlName="sex">
           <mat-button-toggle value="m" matTooltip="Male">
-            <mat-icon fontIcon="wc" style="clip-path: inset(0% 50% 0% 0%)"></mat-icon>
+            <mat-icon fontIcon="fa-mars" fontSet="fa-solid"></mat-icon>
           </mat-button-toggle>
-          <mat-button-toggle value="f" matTooltip="Female"><mat-icon fontIcon="wc" style="clip-path: inset(0% 0% 0% 50%)"></mat-icon></mat-button-toggle>
+          <mat-button-toggle value="f" matTooltip="Female"><mat-icon fontIcon="fa-venus" fontSet="fa-solid"></mat-icon></mat-button-toggle>
         </mat-button-toggle-group>
       </div>
 

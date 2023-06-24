@@ -64,7 +64,7 @@ export class DashboardComponent implements OnInit {
   }
 
   computeLastPatients(patients: Patient[]): Patient[] {
-    const sortedByDate = patients.sort((a,b) => this.sortByDate(<string>a.createD_AT, <string>b.createD_AT));
+    const sortedByDate = patients.sort((a, b) => this.sortByDate(<string>a.createD_AT, <string>b.createD_AT));
     return sortedByDate.slice(-5).reverse();
   }
 

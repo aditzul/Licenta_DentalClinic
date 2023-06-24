@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthenticationService } from '../_services/authentication.service';
+import { Role } from '../_models/user';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
@@ -13,6 +14,11 @@ export class AuthGuard implements CanActivate {
       const { roles } = route.data;
       if (roles && !roles.includes(user.role)) {
         // role not authorized so redirect to home page
+        console.log("here", user);
+        if(user.role == Role.Patient) {
+          this.router.navigate(['/patientView']);
+          return false;
+        }
         this.router.navigate(['/']);
         return false;
       }

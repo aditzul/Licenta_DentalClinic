@@ -20,6 +20,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   imports: [
@@ -44,6 +46,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatTooltipModule,
     MatProgressSpinnerModule,
     MatSelectModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
   exports: [
     MatNativeDateModule,
@@ -68,6 +72,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatTooltipModule,
     MatProgressSpinnerModule,
     MatSelectModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
 })
 export class MaterialModule {}
