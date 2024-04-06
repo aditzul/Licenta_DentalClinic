@@ -21,6 +21,17 @@ import { DatePipe } from '@angular/common';
 import { PatientTableComponent } from './patient-table/patient-table.component';
 import { PatientViewComponent } from './patient-view/patient-view.component';
 import { PatientDetailsComponent } from './patient-details/patient-details.component';
+import { ConfirmDialogComponent } from './_helpers/confirm-dialog/confirm-dialog.component';
+import { PatientDialogComponent } from './patient-dialog/patient-dialog.component';
+import { AppointmentsComponent } from './appointments/appointments.component';
+import { AppointmentDialogComponent } from './appointment-dialog/appointment-dialog.component';
+import { CalendarDateFormatter, CalendarEventTitleFormatter, CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { CustomDateFormatter } from './_shared/custom-date-formatter.provider';
+import { CustomEventTitleFormatter } from './_shared/custom-event-title-formatter.provider';
+import { NoRightClickDirective } from './_directives/no-right-click.directive';
+import { MatTabsModule } from '@angular/material/tabs';
+import { CdkMenuModule } from '@angular/cdk/menu';
 
 @NgModule({
   declarations: [
@@ -39,14 +50,36 @@ import { PatientDetailsComponent } from './patient-details/patient-details.compo
     PatientTableComponent,
     PatientViewComponent,
     PatientDetailsComponent,
+    ConfirmDialogComponent,
+    PatientDialogComponent,
+    AppointmentsComponent,
+    AppointmentDialogComponent,
+    NoRightClickDirective,
   ],
-  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, HttpClientModule, MaterialModule],
+  imports: [
+    BrowserModule, 
+    AppRoutingModule, 
+    BrowserAnimationsModule, 
+    HttpClientModule, 
+    MaterialModule,
+    MatTabsModule,
+    CdkMenuModule,
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
+  ],
   providers: [
     DatePipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: SnackbarInterceptor,
       multi: true,
+    },
+    {
+      provide: CalendarDateFormatter,
+      useClass: CustomDateFormatter,
+    },
+    {
+      provide: CalendarEventTitleFormatter,
+      useClass: CustomEventTitleFormatter,
     },
   ],
   bootstrap: [AppComponent],

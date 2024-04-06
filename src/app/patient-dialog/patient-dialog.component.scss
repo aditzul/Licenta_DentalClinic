@@ -1,0 +1,54 @@
+form {
+    display: flex;
+    flex-direction: column;
+  
+    &.details-form {
+      margin-top: 20px;
+    }
+  
+    .form-row {
+      display: flex;
+      gap: 10px;
+    }
+  
+    .sex-container {
+      height: 56px;
+      flex: 1;
+  
+      mat-button-toggle-group {
+        height: 100%;
+  
+        mat-button-toggle {
+          align-items: center;
+          display: flex;
+  
+          mat-icon {
+            font-size: 30px;
+            height: 40px;
+            width: 70px;
+          }
+        }
+      }
+    }
+  }
+  
+  mat-button-toggle-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  
+    mat-button-toggle {
+      flex: 1;
+  
+      mat-icon {
+        font-size: 30px;
+        height: 40px;
+        width: 100px;
+      }
+    }
+  }
+  
+  .form-buttons {
+    justify-content: space-between;
+  }
+  

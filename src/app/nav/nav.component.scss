@@ -28,6 +28,7 @@ mat-toolbar {
 .logo-container {
   display: flex;
   flex: 1;
+  overflow: hidden;
 
   img {
     width: 100%;

@@ -39,28 +39,47 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.currentUser = this.authService.userValue || {};
 
-    this.patientService.getAllPatients().subscribe((patients: Patient[]) => {
-      this.medicService.getAllMedics().subscribe((medics: Medic[]) => {
-        this.loaded = true;
-        this.currentMedic = medics.find((m) => m.useR_ID === this.currentUser.id) || {};
+    this.loadPatients();
 
-        if (this.currentUser?.role == Role.Admin) {
-          this.patients = patients;
-          this.medics = medics;
-        } else {
-          this.patients = patients.filter((p) => p.assignatioN_CODE === this.currentMedic.assignatioN_CODE);
-          this.medics.push(this.currentMedic);
-        }
-
-        this.createCardsData();
-        this.lastPatients = this.computeLastPatients(this.patients);
-
-        setTimeout(() => {
-          this.createSexChart(this.patients);
-          this.createAgeChart(this.patients);
-        }, 0);
-      });
+    this.medicService.getAllMedics().subscribe((medics: Medic[]) => {
+      this.medics = medics;
     });
+  }
+
+  loadPatients() {
+    const userRole = this.authService.userValue?.role;
+
+    if (userRole === Role.Admin) {
+      // User is an Admin, load all patients
+      this.patientService.getAllPatients().subscribe((patients: Patient[]) => {
+        this.patients = patients;
+        this.processData();
+      });
+    } else if (userRole === Role.Medic) {
+      // User is a Medic, load patients by Medic ID
+      const medicId = this.authService.userValue?.id;
+      if (medicId) {
+        this.patientService.getPatientsByMedicID(medicId.toString()).subscribe((response: any) => {
+          this.patients = response.assignedPatients;
+          this.processData();
+        });
+      } else {
+        console.error('Medic ID not found in user details.');
+      }
+    }
+  }
+
+  processData() {
+    this.loaded = true;
+    this.currentMedic = this.medics.find((m) => m.useR_ID === this.currentUser.id) || {};
+
+    this.createCardsData();
+    this.lastPatients = this.computeLastPatients(this.patients);
+
+    setTimeout(() => {
+      this.createSexChart(this.patients);
+      this.createAgeChart(this.patients);
+    }, 0);
   }
 
   computeLastPatients(patients: Patient[]): Patient[] {
@@ -101,14 +120,14 @@ export class DashboardComponent implements OnInit {
         const age = patient.age || 0;
         if (age >= ref.min && age <= ref.max) {
           if (patient.sex === Sex.Male) {
-            ref.males.push(patient.id);
+            ref.males.push(patient.patienT_ID);
           }
 
           if (patient.sex === Sex.Female) {
-            ref.females.push(patient.id);
+            ref.females.push(patient.patienT_ID);
           }
 
-          ref.age.push(patient.id);
+          ref.age.push(patient.patienT_ID);
         }
       });
     });
@@ -161,11 +180,11 @@ export class DashboardComponent implements OnInit {
       }
 
       if (patient.sex === Sex.Male) {
-        patientsByDate[label].male.push(patient.id);
+        patientsByDate[label].male.push(patient.patienT_ID);
       }
 
       if (patient.sex === Sex.Female) {
-        patientsByDate[label].female.push(patient.id);
+        patientsByDate[label].female.push(patient.patienT_ID);
       }
     });
 

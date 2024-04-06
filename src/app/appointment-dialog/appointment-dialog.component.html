@@ -1,0 +1,29 @@
+<h1 mat-dialog-title>Programare noua - {{ inputData.startDate | date : "dd.MM.yyyy" }}</h1>
+<div mat-dialog-content>
+  <form>
+    <input type="time" [(ngModel)]="inputData.startTime" name="startTime">
+    <input type="time" [(ngModel)]="inputData.endTime" name="endTime">
+  </form>
+  <div class="example-container">
+    <mat-form-field>
+      <mat-label>Selecteaza pacient</mat-label>
+      <mat-select [(ngModel)]="inputData.selectedPatient" name="selectedPatient">
+        <mat-option *ngFor="let patient of patients" [value]="{ mediC_ID: patient.mediC_ID, patienT_ID: patient.patienT_ID, fullname: patient.fullname }">
+          {{ patient.fullname }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Status</mat-label>
+      <mat-select [(ngModel)]="inputData.selectedStatus" name="selectedStatus">
+        <mat-option id='1' value="Confirmat">Confirmata</mat-option>
+        <mat-option id='1' value="Anulat">Anulata</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="saveCalendarEventDialog()">Salveaza</button>
+  <button mat-button mat-dialog-close>Anuleaza</button>
+</div>

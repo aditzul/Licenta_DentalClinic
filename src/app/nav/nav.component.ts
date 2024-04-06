@@ -39,6 +39,12 @@ export class NavComponent {
           hidden: this.isPatient,
         },
         {
+          displayName: 'Appointments',
+          route: 'appointments',
+          iconName: 'fa-calendar-alt',
+          hidden: this.isPatient,
+        },
+        {
           displayName: 'Admin',
           iconName: 'fa-user-gear',
           hidden: !this.isAdmin,

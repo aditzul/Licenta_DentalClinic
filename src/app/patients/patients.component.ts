@@ -1,14 +1,14 @@
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { PatientService } from '../_services/patient.service';
-import { MedicService } from '../_services/medic.service';
-import { AuthenticationService } from '../_services/authentication.service';
-import { DatePipe } from '@angular/common';
-import { Patient } from '../_models/patient';
-import { Medic } from '../_models/medic';
-import { Role, User } from '../_models/user';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { Observable, filter, map, of, switchMap } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs/operators';
+
+import { AuthenticationService } from '../_services/authentication.service';
+import { MedicService } from '../_services/medic.service';
+import { PatientService } from '../_services/patient.service';
+import { Medic } from '../_models/medic';
+import { Patient } from '../_models/patient';
+import { Role, User } from '../_models/user';
 
 @Component({
   selector: 'app-patients',
@@ -30,6 +30,7 @@ export class PatientsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {}
+
   ngOnInit() {
     this.currentUser = this.authService.userValue || {};
     this.router.events
@@ -64,19 +65,29 @@ export class PatientsComponent implements OnInit {
   }
 
   getData() {
-    this.patientService.getAllPatients().subscribe((patients: Patient[]) => {
-      this.medicService.getAllMedics().subscribe((medics: Medic[]) => {
+    if (!this.currentUser) {
+      return; // If currentUser is undefined, exit the function
+    }
+  
+    if (this.currentUser.role === Role.Admin) {
+      // User is an Admin, load all patients
+      this.patientService.getAllPatients().subscribe((patients) => {
         this.loaded = true;
-        this.currentMedic = medics.find((m) => m.useR_ID === this.currentUser.id) || {};
-
-        if (this.currentUser?.role == Role.Admin) {
-          this.patients = patients;
-          this.medics = medics;
-        } else {
-          this.patients = patients.filter((p) => p.assignatioN_CODE === this.currentMedic.assignatioN_CODE);
-          this.medics.push(this.currentMedic);
-        }
+        this.patients = patients;
       });
-    });
-  }
+    } else if (this.currentUser.role === Role.Medic) {
+      // User is a Medic, load patients by Medic ID
+      const medicId = this.currentUser.id;
+  
+      if (medicId) {
+        this.patientService.getPatientsByMedicID(medicId.toString()).subscribe((assignedPatientsData) => {
+          this.loaded = true;
+          this.patients = assignedPatientsData?.assignedPatients || [];
+        });
+      } else {
+        console.error('Medic ID not found in user details.');
+      }
+    }
+  }  
+  
 }

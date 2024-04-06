@@ -5,6 +5,11 @@
   position: absolute;
   top: 0;
 }
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -43,6 +48,16 @@
   }
 }
 
+.comment-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+mat-card.patient-details {
+  align-items: center;
+  text-align: center;
+}
+
 mat-card.patient-details,
 mat-card.medical-history,
 mat-card.comments {
@@ -61,31 +76,6 @@ mat-card.comments {
           display: inline-flex;
         }
       }
-    }
-  }
-}
-
-mat-card.sensor-table {
-  height: 100%;
-  table.sensor-table {
-    tr.selected {
-      background-color: #f0f0f0;
-    }
-  }
-}
-
-.charts {
-  display: flex;
-  flex-direction: column;
-  .chart-container {
-    width: 100%;
-    flex: 1;
-    max-height: 300px;
-    justify-content: center;
-    display: flex;
-
-    canvas {
-      // margin: auto;
     }
   }
 }
@@ -135,5 +125,26 @@ mat-card.sensor-table {
     .chart-container {
       max-height: 450px;
     }
+  }
+}
+
+.patient-logo {
+  height: 120px;
+  width: 120px;
+  display: block;
+  margin: 0px auto;
+  position: relative;
+  overflow: hidden;
+
+  img {
+    width: inherit;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    height: 100px;
+    object-fit: contain;
   }
 }

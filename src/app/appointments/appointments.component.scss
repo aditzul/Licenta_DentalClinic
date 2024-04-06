@@ -1,0 +1,18 @@
+.appointments-toolbar {
+    display: flex;
+    justify-content: space-between;
+
+    .left-buttons {
+        display: flex; 
+        justify-content: left;
+    }
+
+    .right-buttons {
+        display: flex; 
+        justify-content: right;
+    }
+}
+
+.cal-time-label-column {
+    user-select: none;
+  }

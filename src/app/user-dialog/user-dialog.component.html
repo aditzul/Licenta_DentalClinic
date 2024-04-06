@@ -1,19 +1,19 @@
-<h1 mat-dialog-title>{{ isAdd ? "Add" : "Edit" }} User</h1>
+<h1 mat-dialog-title>{{ isAdd ? 'Add' : 'Edit' }} User</h1>
 <div mat-dialog-content>
   <form [formGroup]="userForm" class="user-form">
     <div class="form-row">
       <mat-form-field>
         <mat-label>Username</mat-label>
         <input matInput type="text" formControlName="username" />
-        <mat-hint *ngIf="userForm.controls.username.touched && userForm.controls.username.errors" class="mat-mdc-form-field-error">
+        <mat-hint *ngIf="userForm.get('username')?.touched && userForm.get('username')?.errors" class="mat-mdc-form-field-error">
           Username is required
-        </mat-hint>
+        </mat-hint>        
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Password</mat-label>
         <input matInput type="password" formControlName="password" class="form-control" />
-        <mat-hint *ngIf="userForm.controls.password.touched && userForm.controls.password.errors" class="mat-mdc-form-field-error">
+        <mat-hint *ngIf="userForm.get('password')?.touched && userForm.get('password')?.errors" class="mat-mdc-form-field-error">
           Password is required
         </mat-hint>
       </mat-form-field>
@@ -25,18 +25,17 @@
         <mat-icon fontSet="fa-solid" fontIcon="fa-user-gear"></mat-icon>
       </mat-button-toggle>
       <mat-button-toggle value="1" matTooltip="Medic"><mat-icon fontSet="fa-solid" fontIcon="fa-stethoscope"></mat-icon></mat-button-toggle>
-      <mat-button-toggle value="2" matTooltip="Patient"><mat-icon fontSet="fa-solid" fontIcon="fa-hospital-user"></mat-icon></mat-button-toggle>
     </mat-button-toggle-group>
   </form>
 
-  <form [formGroup]="detailsForm" class="details-form" *ngIf="userForm.controls.role.value === '1' || userForm.controls.role.value === '2'">
-    <mat-label>{{ userForm.controls.role.value === "1" ? "Medic" : "Patient" }} Details:</mat-label>
+  <form [formGroup]="detailsForm" class="details-form" *ngIf="userForm.get('role')?.value === '1' || userForm.get('role')?.value === '2'">
+    <mat-label>{{ userForm.get('role')?.value === '1' ? 'Medic' : '' }} Details:</mat-label>
 
     <div class="form-row">
       <mat-form-field>
         <mat-label>Fullname</mat-label>
         <input matInput type="text" formControlName="fullname" />
-        <mat-hint *ngIf="detailsForm.controls.fullname.touched && detailsForm.controls.fullname.errors" class="mat-mdc-form-field-error">
+        <mat-hint *ngIf="detailsForm.get('fullname')?.touched && detailsForm.get('fullname')?.errors" class="mat-mdc-form-field-error">
           Fullname is required
         </mat-hint>
       </mat-form-field>
@@ -44,7 +43,7 @@
       <mat-form-field>
         <mat-label>Age</mat-label>
         <input matInput type="number" formControlName="age" class="form-control" />
-        <mat-hint *ngIf="detailsForm.controls.age.touched && detailsForm.controls.age.errors" class="mat-mdc-form-field-error"> Age is required </mat-hint>
+        <mat-hint *ngIf="detailsForm.get('age')?.touched && detailsForm.get('age')?.errors" class="mat-mdc-form-field-error"> Age is required </mat-hint>
       </mat-form-field>
     </div>
 
@@ -61,7 +60,7 @@
       <mat-form-field>
         <mat-label>Address</mat-label>
         <input matInput type="text" formControlName="address" class="form-control" />
-        <mat-hint *ngIf="detailsForm.controls.address.touched && detailsForm.controls.address.errors" class="mat-mdc-form-field-error">
+        <mat-hint *ngIf="detailsForm.get('address')?.touched && detailsForm.get('address')?.errors" class="mat-mdc-form-field-error">
           Address is required
         </mat-hint>
       </mat-form-field>
@@ -71,7 +70,7 @@
       <mat-form-field>
         <mat-label>Phone</mat-label>
         <input matInput type="tel" formControlName="phone" />
-        <mat-hint *ngIf="detailsForm.controls.phone.touched && detailsForm.controls.phone.errors" class="mat-mdc-form-field-error">
+        <mat-hint *ngIf="detailsForm.get('phone')?.touched && detailsForm.get('phone')?.errors" class="mat-mdc-form-field-error">
           Phone is required
         </mat-hint>
       </mat-form-field>
@@ -79,45 +78,8 @@
       <mat-form-field>
         <mat-label>Email</mat-label>
         <input matInput type="email" formControlName="email" class="form-control" name="email" />
-        <mat-hint *ngIf="detailsForm.controls.email.touched && detailsForm.controls.email.errors" class="mat-mdc-form-field-error">
+        <mat-hint *ngIf="detailsForm.get('email')?.touched && detailsForm.get('email')?.errors" class="mat-mdc-form-field-error">
           Email is required
-        </mat-hint>
-      </mat-form-field>
-    </div>
-
-    <div class="form-row">
-      <mat-form-field *ngIf="userForm.controls.role.value === '1'">
-        <mat-label>Ocupation</mat-label>
-        <input matInput type="text" formControlName="occupation" />
-        <mat-hint *ngIf="detailsForm.controls.occupation.touched && detailsForm.controls.occupation.errors" class="mat-mdc-form-field-error">
-          Ocupation is required
-        </mat-hint>
-      </mat-form-field>
-
-      <mat-form-field *ngIf="userForm.controls.role.value === '2'">
-        <mat-label>CNP</mat-label>
-        <input matInput type="text" formControlName="cnp" />
-        <mat-hint *ngIf="detailsForm.controls.cnp.touched && detailsForm.controls.cnp.errors" class="mat-mdc-form-field-error"> CNP is required </mat-hint>
-      </mat-form-field>
-
-      <mat-form-field *ngIf="userForm.controls.role.value === '1'">
-        <mat-label>Assignation Code</mat-label>
-        <input matInput type="text" formControlName="assignatioN_CODE" class="form-control" />
-        <mat-hint *ngIf="detailsForm.controls.assignatioN_CODE.touched && detailsForm.controls.assignatioN_CODE.errors" class="mat-mdc-form-field-error">
-          Assignation Code is required
-        </mat-hint>
-      </mat-form-field>
-
-      <mat-form-field *ngIf="userForm.controls.role.value === '2'">
-        <mat-label>Assignation Code</mat-label>
-        <mat-select formControlName="assignatioN_CODE" class="form-control" value="allMedics[0].assignatioN_CODE" [disabled]="allMedics.length === 1">
-          <mat-option value=" ">None</mat-option>
-          <mat-option *ngFor="let medic of allMedics" [value]="medic.assignatioN_CODE">
-            {{ medic.assignatioN_CODE }}
-          </mat-option>
-        </mat-select>
-        <mat-hint *ngIf="detailsForm.controls.assignatioN_CODE.touched && detailsForm.controls.assignatioN_CODE.errors" class="mat-mdc-form-field-error">
-          Assignation Code is required
         </mat-hint>
       </mat-form-field>
     </div>

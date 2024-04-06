@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://bodyguard.zapto.org:4433/api',
+  apiUrl: 'https://localhost:44347/api',
 };

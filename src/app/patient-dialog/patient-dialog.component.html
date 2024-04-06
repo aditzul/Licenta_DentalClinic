@@ -1,0 +1,101 @@
+<h1 mat-dialog-title>{{ isAdd ? 'Add' : 'Edit' }} Patient</h1>
+<div mat-dialog-content>
+<form *ngIf="patientForm" [formGroup]="patientForm" class="patient-form">
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>Fullname</mat-label>
+        <input matInput type="text" formControlName="fullname" />
+        <mat-hint *ngIf="patientForm.get('fullname')?.touched && patientForm.get('fullname')?.errors" class="mat-mdc-form-field-error">
+          Fullname is required
+        </mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>CNP</mat-label>
+        <input matInput type="text" formControlName="cnp" />
+        <mat-hint *ngIf="patientForm.get('cnp')?.touched && patientForm.get('cnp')?.errors" class="mat-mdc-form-field-error">
+          CNP is required and must be a 13-digit number
+        </mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>Birth Date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="birth_date" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-hint *ngIf="patientForm.get('birth_date')?.touched && patientForm.get('birth_date')?.errors" class="mat-mdc-form-field-error">
+          Birth Date is required
+        </mat-hint>
+      </mat-form-field>
+
+      <div class="sex-container">
+        <mat-button-toggle-group name="sex" formControlName="sex">
+          <mat-button-toggle value="m" matTooltip="Male">
+            <mat-icon fontIcon="fa-mars" fontSet="fa-solid"></mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle value="f" matTooltip="Female"><mat-icon fontIcon="fa-venus" fontSet="fa-solid"></mat-icon></mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+
+    <div class="form-row">
+
+      <mat-form-field>
+        <mat-label>Address</mat-label>
+        <input matInput type="text" formControlName="address" />
+        <mat-hint *ngIf="patientForm.get('address')?.touched && patientForm.get('address')?.errors" class="mat-mdc-form-field-error">
+          Address is required
+        </mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>Phone</mat-label>
+        <input matInput type="tel" formControlName="phone" />
+        <mat-hint *ngIf="patientForm.get('phone')?.touched && patientForm.get('phone')?.errors" class="mat-mdc-form-field-error">
+          Phone is required and must be a 10-digit number
+        </mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" />
+        <mat-hint *ngIf="patientForm.get('email')?.touched && patientForm.get('email')?.errors" class="mat-mdc-form-field-error">
+          Email is required and must be a valid email address
+        </mat-hint>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field>
+      <mat-label>Physical File</mat-label>
+      <input matInput type="text" formControlName="phisical_file" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Secondary Contact</mat-label>
+      <input matInput type="text" formControlName="secondary_contact" />
+      <mat-hint *ngIf="patientForm.get('secondary_contact')?.touched && patientForm.get('secondary_contact')?.errors" class="mat-mdc-form-field-error">
+        Secondary Contact is required
+      </mat-hint>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Medic</mat-label>
+        <mat-select formControlName="medic_user_id" class="form-control">
+          <mat-option *ngFor="let medic of allMedics" [value]="medic.useR_ID">
+            {{ medic.fullname }}
+          </mat-option>
+        </mat-select>
+        <mat-hint *ngIf="patientForm.get('medic_user_id')?.touched && patientForm.get('medic_user_id')?.errors" class="mat-mdc-form-field-error">
+          Medic is required
+        </mat-hint>
+      </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions class="form-buttons">
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="onSubmit()">Ok</button>
+</div>

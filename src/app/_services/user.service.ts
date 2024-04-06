@@ -9,11 +9,15 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getAllUsers(): Observable<User[]> {
-    return this.http.get<any>(`${environment.apiUrl}/User/GetAllUser`);
+    return this.http.get<any>(`${environment.apiUrl}/User/GetAllUsers`);
   }
 
   getUser(user: User): Observable<User> {
     return this.http.get<any>(`${environment.apiUrl}/User/GetUser/${user.id}`);
+  }
+
+  isUserExists(username: string): Observable<boolean> {
+    return this.http.get<boolean>(`${environment.apiUrl}/User/IsUserExists/${username}`);
   }
 
   addUser(user: User): Observable<any> {

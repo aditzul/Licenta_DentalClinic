@@ -1,15 +1,16 @@
-import { PatientComment, PatientHistory, SensorSessionData } from './../_models/patient';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Patient } from '../_models/patient';
-import { Medic } from '../_models/medic';
 import { PatientService } from '../_services/patient.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MedicService } from '../_services/medic.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { Chart } from 'chart.js';
-import { color, each } from 'chart.js/helpers';
-import { DatePipe } from '@angular/common';
+import { Patient, PatientComment, PatientHistory } from '../_models/patient';
+import { Medic } from '../_models/medic';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmDialogComponent, ConfirmDialogData } from '../_helpers/confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { PatientDialogComponent } from '../patient-dialog/patient-dialog.component';
+
 
 @Component({
   selector: 'app-patient-details',
@@ -19,13 +20,9 @@ import { DatePipe } from '@angular/common';
 export class PatientDetailsComponent implements OnInit {
   patient: Patient = {};
   medic: Medic = {};
-  sensorSessionData: SensorSessionData[] = [];
-  loaded = false;
-  displayedColumns: string[] = ['id', 'temperatureAvg', 'heartAvg', 'EKGAvg', 'createD_AT', 'actions'];
-  dataSource = new MatTableDataSource(this.sensorSessionData);
-  selectedSession: SensorSessionData = <SensorSessionData>{};
+  displayedColumns: string[] = ['id', 'hospital', 'intervention', 'interventioN_DATE', 'actions'];
   comments: PatientComment[] = [];
-  medicalHistory: PatientHistory[] = [];
+  medicalHistory: MatTableDataSource<PatientHistory> = new MatTableDataSource<PatientHistory>();
   graphsError = false;
   newComment = '';
   loadingComment = false;
@@ -48,40 +45,74 @@ export class PatientDetailsComponent implements OnInit {
   public pulseChart: any;
 
   @ViewChild(MatPaginator) paginator: MatPaginator = <MatPaginator>{};
-  constructor(private patientService: PatientService, private medicService: MedicService, private route: ActivatedRoute, private datePipe: DatePipe) {}
+  medics: any
+
+  constructor(
+    private patientService: PatientService,
+    private medicService: MedicService,
+    private route: ActivatedRoute,
+    private snackBar: MatSnackBar,    
+    private dialog: MatDialog,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
       const { userId } = params;
-
       this.getData(userId);
     });
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    this.medicalHistory.paginator = this.paginator;
   }
 
   getData(userId: string) {
-    this.patientService.getPatientByUserId(userId).subscribe((patient: Patient) => {
+    this.patientService.getPatientById(userId).subscribe((patient: Patient) => {
       this.patient = patient;
 
-      this.medicService.getMedicByAssignCode(<string>patient.assignatioN_CODE).subscribe((medic: Medic) => {
-        this.patient = patient;
-        this.medic = medic;
-      });
-
-      this.patientService.getSensorDataByPatientId(patient).subscribe((data: SensorSessionData[]) => {
-        this.sensorSessionData = data;
-        this.dataSource.data = data;
-        this.graphsError = !data || data['length'] === 0;
-        this.loaded = true;
-        this.showSensorData(data[0]);
-      });
+      // Use MEDIC_ID directly from patient
+      if (patient.mediC_ID) {
+        // Use your existing service method to fetch the medic
+        const medicId = Number(patient.mediC_ID);
+        this.medicService.getMedic({ id: medicId }).subscribe((medic: Medic) => {
+          this.medic = medic;
+        });
+      }
 
       this.getAllHistory();
       this.getAllComments();
     });
+  }
+
+  editPatient(patient: Patient) {
+    const patientId: number = patient.patienT_ID as number;
+    
+    this.patientService.getPatientById(patientId.toString()).subscribe(
+      (patientDetails: Patient) => {
+        const dialogRef = this.dialog.open(PatientDialogComponent, {
+          data: {
+            patient: patientDetails,
+            allMedics: this.medics,
+          },
+        });
+  
+        dialogRef.afterClosed().subscribe((result) => {
+          if (!result) return;
+          const { patient, details } = result;
+  
+          this.patientService.updatePatient(patient).subscribe(() => {
+            this.getData(patientId.toString());
+          });
+          this.patientService.updatePatient(<Patient>details).subscribe(() => {
+            this.getData(patientId.toString());
+          });
+        });
+      },
+      (error) => {
+        console.error('Error fetching patient details:', error);
+      }
+    );
   }
 
   addNewHistory() {
@@ -90,7 +121,7 @@ export class PatientDetailsComponent implements OnInit {
 
     if (hospital && intervention && interventioN_DATE) {
       const history = Object.assign(this.newHistory, {
-        patienT_ID: this.patient.id,
+        patienT_ID: this.patient.patienT_ID,
       });
       this.patientService.AddMedicalDataByPatientId(<PatientHistory>history).subscribe((data) => {
         this.loadingHistory = false;
@@ -110,7 +141,7 @@ export class PatientDetailsComponent implements OnInit {
 
   getAllHistory() {
     this.patientService.getMedicalDataByPatientId(this.patient).subscribe((history) => {
-      this.medicalHistory = history;
+      this.medicalHistory.data = history;
     });
   }
 
@@ -118,132 +149,51 @@ export class PatientDetailsComponent implements OnInit {
     this.loadingComment = true;
 
     const comment = {
-      patienT_ID: this.patient.id,
+      patienT_ID: this.patient.patienT_ID,
       mediC_ID: this.medic.id,
       comment: this.newComment,
       commenT_TYPE: true,
     };
+    if (comment.comment == '') {
+      this.snackBar.open('Nu poti adauga un comentariu gol.', 'close', {
+        duration: 2000,
+        panelClass: 'errorSnack',
+      });
+    } else {
+      this.patientService.addCommentDataByPatientId(<PatientComment>comment).subscribe((data) => {
+        this.getAllComments();
+        this.loadingComment = false;
+        this.newComment = '';
+      });
+    }
+  }
 
-    this.patientService.addCommentDataByPatientId(<PatientComment>comment).subscribe((data) => {
-      this.getAllComments();
-      this.loadingComment = false;
-      this.newComment = '';
+  deleteComment(comment: PatientComment) {
+    this.loadingComment = true;
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Confirmation',
+        message: 'Are you sure you want to delete this comment?',
+      } as ConfirmDialogData,
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        // User clicked 'Yes', proceed with deletion
+        this.patientService.deleteComment(comment.id).subscribe(
+          () => {
+            this.getAllComments();
+            this.loadingComment = false;
+          },
+        );
+      }
     });
   }
 
   getAllComments() {
     this.patientService.getCommentDataByPatientId(this.patient).subscribe((comments) => {
       this.comments = comments;
-    });
-  }
-
-  showSensorData(data: SensorSessionData) {
-    this.selectedSession = data;
-
-    each(Chart.instances, function (instance) {
-      instance.destroy();
-    });
-    this.createEkgChart();
-    this.createTempPulseChart();
-  }
-
-  createTempPulseChart() {
-    if (!this.selectedSession) return;
-
-    const tempDataSet = this.selectedSession.session.map((point) => point.temperature);
-    const pulseDataSet = this.selectedSession.session.map((point) => point.pulse);
-    const labels = this.selectedSession.session.map((point) => this.datePipe.transform(point.createD_AT, 'HH:mm:ss'));
-
-    this.tempChart = new Chart('tempChart', {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [
-          {
-            label: 'Temperature',
-            backgroundColor: this.chartColors.blue,
-            borderColor: this.chartColors.black,
-            fill: false,
-            data: tempDataSet,
-          },
-        ],
-      },
-      options: {
-        aspectRatio: 2.5,
-        responsive: true,
-        plugins: {
-          legend: {
-            display: false,
-          },
-          title: {
-            display: true,
-            text: `Temperature Chart for entry ID ${this.selectedSession.entrY_ID}`,
-          },
-        },
-      },
-    });
-
-    this.pulseChart = new Chart('pulseChart', {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [
-          {
-            label: 'Pulse',
-            backgroundColor: this.chartColors.red,
-            borderColor: this.chartColors.black,
-            fill: false,
-            data: tempDataSet,
-          },
-        ],
-      },
-      options: {
-        aspectRatio: 2.5,
-        responsive: true,
-
-        plugins: {
-          legend: {
-            display: false,
-          },
-          title: {
-            display: true,
-            text: `Heartrate Chart for entry ID ${this.selectedSession.entrY_ID}`,
-          },
-        },
-      },
-    });
-  }
-
-  createEkgChart() {
-    if (!this.selectedSession) return;
-
-    this.ekgChart = new Chart('ekgChart', {
-      type: 'line',
-      data: {
-        labels: this.selectedSession.session.map((point) => this.datePipe.transform(point.createD_AT, 'HH:mm:ss')),
-        datasets: [
-          {
-            label: `Entry ID: ${this.selectedSession.entrY_ID}`,
-            backgroundColor: color(this.chartColors.purple).rgbString(),
-            borderColor: this.chartColors.black,
-            fill: false,
-            data: this.selectedSession.session.map((point) => point.ekg),
-          },
-        ],
-      },
-      options: {
-        aspectRatio: 2.5,
-        responsive: true,
-        plugins: {
-          legend: {
-            display: false,
-          },
-          title: {
-            display: true,
-            text: `EKG Chart for entry ID ${this.selectedSession.entrY_ID}`,
-          },
-        },
-      },
     });
   }
 }

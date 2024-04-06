@@ -7,7 +7,5 @@ export interface Medic {
   address?: string;
   phone?: string;
   email?: string;
-  occupation?: string;
-  assignatioN_CODE?: string;
   createD_AT?: string;
 }

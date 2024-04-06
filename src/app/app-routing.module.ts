@@ -10,6 +10,7 @@ import { UsersComponent } from './users/users.component';
 import { ProfileComponent } from './profile/profile.component';
 import { PatientViewComponent } from './patient-view/patient-view.component';
 import { PatientDetailsComponent } from './patient-details/patient-details.component';
+import { AppointmentsComponent } from './appointments/appointments.component';
 
 const routes: Routes = [
   {
@@ -61,6 +62,12 @@ const routes: Routes = [
             component: PatientDetailsComponent,
           },
         ],
+      },
+      {
+        path: 'appointments',
+        component: AppointmentsComponent,
+        canActivate: [AuthGuard],
+        data: { roles: [Role.Admin, Role.Medic], breadcrumb: 'Appointments' },
       },
       {
         path: 'profile',

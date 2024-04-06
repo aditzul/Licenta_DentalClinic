@@ -1,15 +1,21 @@
 export interface Patient {
-  id?: number;
-  useR_ID?: number;
+  patienT_ID?: number;
   fullname?: string;
-  age?: number;
+  cnp?: string;
+  birtH_DATE?: string;
   sex?: Sex;
+  age?: number;
   address?: string;
   phone?: string;
   email?: string;
-  cnp?: string;
-  assignatioN_CODE?: string;
+  phisicaL_FILE?: string;
+  secondarY_CONTACT?: string;
+  mediC_ID?: string;
   createD_AT?: string;
+}
+
+export interface AssignedPatientsData {
+  assignedPatients: Patient[];
 }
 
 export enum Sex {
@@ -54,4 +60,16 @@ export interface PatientHistory {
   intervention: string;
   interventioN_DATE: string;
   createD_AT: string;
+}
+
+export interface PatientDialog {
+  patient: Patient | null;
+}
+
+export interface PatientHistory {
+  ChangeDate?: Date
+  ChangedBy?: string;
+  FieldName?: string;
+  OldValue?: string;
+  NewValue?: string;
 }

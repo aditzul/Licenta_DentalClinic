@@ -31,7 +31,7 @@ export class SnackbarInterceptor implements HttpInterceptor {
         }
       }),
       catchError((error) => {
-        const message = error?.error?.detail || error.error.title || error.message;
+        const message = error?.error?.detail || error.error.title || error.error;
         this.snackBar.open(message, 'close', {
           panelClass: 'errorSnack',
         });

@@ -51,7 +51,7 @@ export class BreadcrumbsComponent implements OnInit {
             return this.resolveBreadcrumbs(route.firstChild).then((childBreadcrumbs: Breadcrumb[] | undefined) => {
               if (childBreadcrumbs?.length && childBreadcrumbs?.length > 0) {
                 const breadcrumb: Breadcrumb = {
-                  label: route.routeConfig?.data?.breadcrumb || '',
+                  label: route.routeConfig?.data?.['breadcrumb'] || '',
                   url: this.createUrl(route),
                 };
                 return [breadcrumb, ...childBreadcrumbs];

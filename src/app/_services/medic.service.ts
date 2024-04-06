@@ -39,10 +39,12 @@ export class MedicService {
   }
 
   getMedicByAssignCode(assignCode: string): Observable<Medic> {
-    return <Observable<Medic>>this.getAllMedics().pipe(
-      switchMap((medics: Medic[]): Observable<Medic> => {
-        return of(medics.find((m) => m.assignatioN_CODE === assignCode) || {});
+    return this.getAllMedics().pipe(
+      switchMap((medics: Medic[]) => {
+        return of(medics.find((m) => m.id?.toString() === assignCode) || {});
       })
     );
   }
+  
+
 }
