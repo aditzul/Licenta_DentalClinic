@@ -72,9 +72,9 @@ export class PatientDetailsComponent implements OnInit {
       this.patient = patient;
 
       // Use MEDIC_ID directly from patient
-      if (patient.mediC_ID) {
+      if (patient.MEDIC_ID) {
         // Use your existing service method to fetch the medic
-        const medicId = Number(patient.mediC_ID);
+        const medicId = Number(patient.MEDIC_ID);
         this.medicService.getMedic({ id: medicId }).subscribe((medic: Medic) => {
           this.medic = medic;
         });
@@ -86,7 +86,7 @@ export class PatientDetailsComponent implements OnInit {
   }
 
   editPatient(patient: Patient) {
-    const patientId: number = patient.patienT_ID as number;
+    const patientId: number = patient.ID as number;
     
     this.patientService.getPatientById(patientId.toString()).subscribe(
       (patientDetails: Patient) => {
@@ -121,7 +121,7 @@ export class PatientDetailsComponent implements OnInit {
 
     if (hospital && intervention && interventioN_DATE) {
       const history = Object.assign(this.newHistory, {
-        patienT_ID: this.patient.patienT_ID,
+        patienT_ID: this.patient.ID,
       });
       this.patientService.AddMedicalDataByPatientId(<PatientHistory>history).subscribe((data) => {
         this.loadingHistory = false;
@@ -149,8 +149,8 @@ export class PatientDetailsComponent implements OnInit {
     this.loadingComment = true;
 
     const comment = {
-      patienT_ID: this.patient.patienT_ID,
-      mediC_ID: this.medic.id,
+      patienT_ID: this.patient.ID,
+      MEDIC_ID: this.medic.id,
       comment: this.newComment,
       commenT_TYPE: true,
     };
@@ -160,7 +160,7 @@ export class PatientDetailsComponent implements OnInit {
         panelClass: 'errorSnack',
       });
     } else {
-      this.patientService.addCommentDataByPatientId(<PatientComment>comment).subscribe((data) => {
+      this.patientService.AddComment(<PatientComment>comment).subscribe((data) => {
         this.getAllComments();
         this.loadingComment = false;
         this.newComment = '';
@@ -192,7 +192,7 @@ export class PatientDetailsComponent implements OnInit {
   }
 
   getAllComments() {
-    this.patientService.getCommentDataByPatientId(this.patient).subscribe((comments) => {
+    this.patientService.GetAllCommentsByPatientID(this.patient).subscribe((comments) => {
       this.comments = comments;
     });
   }

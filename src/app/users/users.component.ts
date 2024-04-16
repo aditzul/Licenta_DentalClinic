@@ -20,7 +20,8 @@ import { ConfirmDialogComponent, ConfirmDialogData } from '../_helpers/confirm-d
 export class UsersComponent implements OnInit {
   users: User[] = [];
   medics: Medic[] = [];
-  displayedColumns: string[] = ['id', 'role', 'email', 'createD_AT', 'actions'];
+  visibleRowIndex: number = -1;
+  displayedColumns: string[] = ['id', 'role', 'username', 'createD_AT', 'actions'];
   dataSource = new MatTableDataSource(this.users);
   roleFilter?: string = 'clear';
   @ViewChild(MatPaginator) paginator: MatPaginator = <MatPaginator>{};
@@ -37,14 +38,7 @@ export class UsersComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
 
     this.dataSource.sortingDataAccessor = (item: any, property) => {
-      switch (property) {
-        case 'email': {
-          return item[property].toLowerCase();
-        }
-        default: {
-          return item[property];
-        }
-      }
+      return item[property];
     };
   }
 
@@ -83,12 +77,6 @@ export class UsersComponent implements OnInit {
     });
   }
 
-/*   deleteUser(user: User) {
-    this.userService.deleteUser(user).subscribe(() => {
-      this.refreshData();
-    });
-  } */
-
   deleteUser(user: User) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
@@ -124,10 +112,10 @@ export class UsersComponent implements OnInit {
       const { user, details } = result;
   
       // Check if the username already exists
-      this.userService.isUserExists(user.email).subscribe((exists: boolean) => {
+      this.userService.isUserExists(user.username).subscribe((exists: boolean) => {
         if (exists) {
           // Display an error message or handle the situation where the username already exists
-          this.snackBar.open('Utilizatorul ' + user.email + ' exista deja.', 'close', {
+          this.snackBar.open('Utilizatorul ' + user.username + ' exista deja.', 'close', {
             duration: 2000,
             panelClass: 'errorSnack',
           });
@@ -183,3 +171,7 @@ export class UsersComponent implements OnInit {
     });
   }
 }
+function displayPassword() {
+  throw new Error('Function not implemented.');
+}
+

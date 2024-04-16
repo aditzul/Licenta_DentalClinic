@@ -8,8 +8,8 @@
     <mat-form-field>
       <mat-label>Selecteaza pacient</mat-label>
       <mat-select [(ngModel)]="inputData.selectedPatient" name="selectedPatient">
-        <mat-option *ngFor="let patient of patients" [value]="{ mediC_ID: patient.mediC_ID, patienT_ID: patient.patienT_ID, fullname: patient.fullname }">
-          {{ patient.fullname }}
+        <mat-option *ngFor="let patient of patients" [value]="{ MEDIC_ID: patient.MEDIC_ID, patienT_ID: patient.ID, fullname: patient.FIRST_NAME + ' ' + patient.LAST_NAME}">
+          {{ patient.FIRST_NAME }} {{ patient.LAST_NAME }}
         </mat-option>
       </mat-select>
     </mat-form-field>

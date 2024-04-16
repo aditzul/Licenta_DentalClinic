@@ -1,0 +1,30 @@
+<main>
+  <div class="container">
+    <mat-toolbar color="primary">SMSO API</mat-toolbar>
+    <div class="column-container">
+        <div class="column details">
+            <form *ngIf="smsoApiForm" [formGroup]="smsoApiForm" class="smso-api-form">
+              <div class="form-row">
+                <mat-form-field appearance="fill" class="full-width">
+                  <mat-label>API Key</mat-label>
+                  <input matInput type="text" formControlName="apiKey" />
+                  <mat-error *ngIf="smsoApiForm.get('apiKey')?.hasError('required')">API Key is required</mat-error>
+                </mat-form-field>
+              </div>
+              
+              <div class="form-row">
+                <mat-form-field appearance="fill" class="full-width">
+                  <mat-label>Sender ID</mat-label>
+                  <input matInput type="text" formControlName="senderId" />
+                  <mat-error *ngIf="smsoApiForm.get('senderId')?.hasError('required')">Sender ID is required</mat-error>
+                </mat-form-field>
+              </div>
+              
+                <div class="form-row">
+                  <button mat-raised-button color="primary" (click)="saveForm()">Save</button>
+                </div>
+              </form>                   
+        </div>
+    </div>
+</div>
+</main>

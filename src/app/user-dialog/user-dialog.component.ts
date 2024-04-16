@@ -40,20 +40,21 @@ export class UserDialogComponent {
     }
 
     this.userForm = new FormGroup({
-      username: new FormControl(this.user.email || '', Validators.required),
+      username: new FormControl(this.user.username || '', Validators.required),
       password: new FormControl(this.user.password || '', Validators.required),
       role: new FormControl(this.user.role?.toString() || Role.Admin.toString(), Validators.required),
     });
 
     this.detailsForm = new FormGroup({
-      fullname: new FormControl(cd?.fullname || '', Validators.required),
-      age: new FormControl(cd?.age || '', Validators.required),
-      sex: new FormControl(cd?.sex || 'm', Validators.required),
-      address: new FormControl(cd?.address || '', Validators.required),
-      phone: new FormControl(cd?.phone || '', Validators.required),
-      email: new FormControl(cd?.email || '', Validators.required),
-      cnp: new FormControl(cd?.cnp || ' ', Validators.required),
-      mediC_ID: new FormControl(this.allMedics.length > 0 ? this.allMedics[0].id : ''),
+      FIRST_NAME: new FormControl(cd?.FIRST_NAME || '', Validators.required),
+      LAST_NAME: new FormControl(cd?.LAST_NAME || '', Validators.required),
+      AGE: new FormControl(cd?.AGE || '', Validators.required),
+      SEX: new FormControl(cd?.SEX || 'M', Validators.required),
+      ADDRESS: new FormControl(cd?.ADDRESS || '', Validators.required),
+      PHONE: new FormControl(cd?.PHONE || '', Validators.required),
+      USERNAME: new FormControl(cd?.USERNAME || '', Validators.required),
+      CNP: new FormControl(cd?.CNP || ' ', Validators.required),
+      MEDIC_ID: new FormControl(this.allMedics.length > 0 ? this.allMedics[0].id : ''),
     });
   }
 
@@ -72,7 +73,7 @@ export class UserDialogComponent {
     }
 
     // User Form
-    user.email = this.userForm.controls['username'].value;
+    user.username = this.userForm.controls['username'].value;
     user.password = this.userForm.controls['password'].value;
     user.role = this.userForm.controls['role'].value;
 
@@ -81,11 +82,11 @@ export class UserDialogComponent {
     if (currentRole != Role.Admin) {
       details.useR_ID = user.id;
       details.fullname = this.detailsForm.controls['fullname'].value;
-      details.age = this.detailsForm.controls['age'].value;
+      details.AGE = this.detailsForm.controls['age'].value;
       details.sex = this.detailsForm.controls['sex'].value;
       details.address = this.detailsForm.controls['address'].value;
-      details.phone = this.detailsForm.controls['phone'].value;
-      details.email = this.detailsForm.controls['email'].value;
+      details.PHONE = this.detailsForm.controls['phone'].value;
+      details.EMAIL = this.detailsForm.controls['email'].value;
 
       if (currentRole == Role.Medic) {
         details.id = this.medic?.id;

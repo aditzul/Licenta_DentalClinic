@@ -10,7 +10,7 @@ export class MedicService {
   constructor(private http: HttpClient) {}
 
   getAllMedics(): Observable<Medic[]> {
-    return this.http.get<any>(`${environment.apiUrl}/Medic/GetAllMedics`);
+    return this.http.get<any>(`${environment.apiUrl}/Users/GetAllMedics`);
   }
 
   getMedic(medic: Medic): Observable<Medic> {

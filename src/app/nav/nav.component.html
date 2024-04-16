@@ -24,7 +24,7 @@
       </button>
 
       <button class="profile-menu" mat-button [matMenuTriggerFor]="menu">
-        {{ user?.role === 0 ? "Admin" : user?.email }}
+        {{ user?.role === 0 ? "Admin" : user?.username }}
       </button>
       <mat-menu #menu="matMenu">
         <button *ngIf="false" mat-menu-item [routerLink]="'profile'">Profile</button>

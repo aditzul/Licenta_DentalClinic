@@ -5,14 +5,14 @@
         <mat-card-header>
           <mat-card-title>
             <div class="patient-logo">
-              <img [src]="patient.sex === 'f' ? '../../assets/images/female-icon.png' : '../../assets/images/male-icon.png'" alt="Gender Icon" />
+              <img [src]="patient.SEX === 'F' ? '../../assets/images/female-icon.png' : '../../assets/images/male-icon.png'" alt="Gender Icon" />
             </div>
           </mat-card-title>
-          <mat-card-title>{{ patient.fullname }}</mat-card-title>
+          <mat-card-title>{{ patient.FIRST_NAME }} {{ patient.LAST_NAME }}</mat-card-title>
           <mat-card-subtitle
-            ><strong>{{ patient.age }} Ani</strong></mat-card-subtitle
+            ><strong>{{ patient.AGE }} Ani</strong></mat-card-subtitle
           >
-          <mat-card-subtitle>{{ patient.sex === "f" ? "Pacientă" : "Pacient" }} clinică</mat-card-subtitle>
+          <mat-card-subtitle>{{ patient.SEX === "F" ? "Pacientă" : "Pacient" }} clinică</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <mat-divider></mat-divider>
@@ -32,28 +32,28 @@
           <mat-divider></mat-divider>
           <p class="row">
             <span class="label">CNP: </span>
-            <span class="value">{{ patient.cnp }}</span>
+            <span class="value">{{ patient.CNP }}</span>
           </p>
           <mat-divider></mat-divider>
           <p class="row">
             <span class="label">Sex: </span>
-            <span class="value" *ngIf="patient.sex; else editButton">
-              <mat-icon *ngIf="patient.sex === 'f'" fontSet="fa-solid" fontIcon="fa-venus"></mat-icon>
-              <mat-icon *ngIf="patient.sex === 'm'" fontSet="fa-solid" fontIcon="fa-mars"></mat-icon>
+            <span class="value" *ngIf="patient.SEX; else editButton">
+              <mat-icon *ngIf="patient.SEX === 'F'" fontSet="fa-solid" fontIcon="fa-venus"></mat-icon>
+              <mat-icon *ngIf="patient.SEX === 'M'" fontSet="fa-solid" fontIcon="fa-mars"></mat-icon>
             </span>
           </p>
           <mat-divider></mat-divider>
           <p class="row">
             <span class="label">Data nastere: </span>
-            <span class="value" *ngIf="patient.birtH_DATE; else editButton">
-              {{ patient.birtH_DATE | date : "dd.MM.yyyy" }}
+            <span class="value" *ngIf="patient.BIRTH_DATE; else editButton">
+              {{ patient.BIRTH_DATE | date : "dd.MM.yyyy" }}
             </span>
           </p>
           <mat-divider></mat-divider>
           <p class="row">
             <span class="label">Nr. dosar fizic: </span>
-            <span class="value" *ngIf="patient.phisicaL_FILE; else editButton">
-              {{ patient.phisicaL_FILE }}
+            <span class="value" *ngIf="patient.PHISICAL_FILE; else editButton">
+              {{ patient.PHISICAL_FILE }}
             </span>
           </p>
         </mat-card-content>
@@ -68,29 +68,36 @@
           <mat-divider></mat-divider>
           <p class="row">
             <span class="label">Telefon: </span>
-            <span class="value" *ngIf="patient.phone; else editButton">
-              {{ patient.phone }}
+            <span class="value" *ngIf="patient.PHONE; else editButton">
+              {{ patient.PHONE }}
             </span>
           </p>
           <mat-divider></mat-divider>
           <p class="row">
             <span class="label">Email: </span>
-            <span class="value" *ngIf="patient.email; else editButton">
-              {{ patient.email }}
+            <span class="value" *ngIf="patient.EMAIL; else editButton">
+              {{ patient.EMAIL }}
             </span>
           </p>
           <mat-divider></mat-divider>
           <p class="row">
             <span class="label">Contact secundar: </span>
-            <span class="value" *ngIf="patient.secondarY_CONTACT; else editButton">
-              {{ patient.secondarY_CONTACT }}
+            <span class="value" *ngIf="patient.SECONDARY_CONTACT_NAME; else editButton">
+              {{ patient.SECONDARY_CONTACT_NAME }}
+            </span>
+          </p>
+          <mat-divider></mat-divider>
+          <p class="row">
+            <span class="label">Telefon contact secundar: </span>
+            <span class="value" *ngIf="patient.SECONDARY_CONTACT_PHONE; else editButton">
+              {{ patient.SECONDARY_CONTACT_PHONE }}
             </span>
           </p>
           <mat-divider></mat-divider>
           <p class="row">
             <span class="label">Adresa: </span>
-            <span class="value" *ngIf="patient.address; else editButton">
-              {{ patient.address }}
+            <span class="value" *ngIf="patient.ADDRESS; else editButton">
+              {{ patient.ADDRESS }}
             </span>
           </p>
         </mat-card-content>

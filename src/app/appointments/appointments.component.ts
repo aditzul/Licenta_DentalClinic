@@ -287,8 +287,8 @@ export class AppointmentsComponent implements OnInit {
     const end = dialogData.end;
     const title = dialogData.title;
     const meta = dialogData.meta;
-    const patienT_ID = dialogData.patienT_ID;
-    const mediC_ID = dialogData.mediC_ID;
+    const patienT_ID = dialogData.PATIENT_ID;
+    const MEDIC_ID = dialogData.MEDIC_ID;
   
     let primaryColor = '';
 
@@ -335,7 +335,7 @@ export class AppointmentsComponent implements OnInit {
           title: title,
           meta: meta,
           patienT_ID: patienT_ID,
-          mediC_ID: mediC_ID,
+          MEDIC_ID: MEDIC_ID,
         }).subscribe(
           (response) => {
             console.log('Appointment added successfully:', response);

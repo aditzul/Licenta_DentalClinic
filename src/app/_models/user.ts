@@ -4,15 +4,17 @@ import { Patient } from './patient';
 export enum Role {
   Admin = 0,
   Medic = 1,
-  Patient = 2,
 }
 
 export interface User {
   id?: number;
-  email?: string;
+  username?: string;
   password?: string;
+  first_name?: string;
+  last_name?: string;
+  phone?: string;
   role?: Role;
-  createD_AT?: string;
+  created_at?: string;
 }
 
 export interface UserDialog {

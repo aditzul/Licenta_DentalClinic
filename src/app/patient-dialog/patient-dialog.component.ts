@@ -4,7 +4,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Patient, PatientDialog } from '../_models/patient';
 import { Medic } from '../_models/medic';
 import { MedicService } from '../_services/medic.service';
-import { PatientService } from '../_services/patient.service';
 
 @Component({
   selector: 'app-patient-dialog',
@@ -22,9 +21,8 @@ export class PatientDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<PatientDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: PatientDialog,
     private medicService: MedicService,
-    private patientService: PatientService
   ) {
-    this.isAdd = !this.data.patient; // Use data.patient instead of this.patient
+    this.isAdd = !this.data.patient?.ID
   }
 
   ngOnInit() {
@@ -46,16 +44,16 @@ export class PatientDialogComponent implements OnInit {
 
   initializeForm() {
     this.patientForm = new FormGroup({
-      fullname: new FormControl(this.patient?.fullname || '', Validators.required),
-      cnp: new FormControl(this.patient?.cnp || '', [Validators.required, Validators.pattern(/^\d{13}$/)]),
-      birth_date: new FormControl(this.patient?.birtH_DATE || '', Validators.required),
-      sex: new FormControl(this.patient?.sex || '', Validators.required),
-      address: new FormControl(this.patient?.address || '', Validators.required),
-      phone: new FormControl(this.patient?.phone || '', [Validators.required, Validators.pattern(/^\d{10}$/)]),
-      email: new FormControl(this.patient?.email || '', [Validators.required, Validators.email]),
-      phisical_file: new FormControl(this.patient?.phisicaL_FILE || ''),
-      secondary_contact: new FormControl(this.patient?.secondarY_CONTACT || ''),
-      medic_user_id: new FormControl(this.patient?.mediC_ID || (this.allMedics.length > 0 ? this.allMedics[0].id : '')),
+      first_name: new FormControl(this.patient?.FIRST_NAME || '', Validators.required),
+      cnp: new FormControl(this.patient?.CNP || '', [Validators.required, Validators.pattern(/^\d{13}$/)]),
+      birth_date: new FormControl(this.patient?.BIRTH_DATE || '', Validators.required),
+      sex: new FormControl(this.patient?.SEX || '', Validators.required),
+      address: new FormControl(this.patient?.ADDRESS || '', Validators.required),
+      phone: new FormControl(this.patient?.PHONE || '', [Validators.required, Validators.pattern(/^\d{10}$/)]),
+      email: new FormControl(this.patient?.EMAIL || '', [Validators.required, Validators.email]),
+      phisical_file: new FormControl(this.patient?.PHISICAL_FILE || ''),
+      secondary_contact: new FormControl(this.patient?.SECONDARY_CONTACT_NAME || ''),
+      medic_user_id: new FormControl(this.patient?.MEDIC_ID || (this.allMedics.length > 0 ? this.allMedics[0].id : '')),
     });
   }
 
@@ -69,20 +67,20 @@ export class PatientDialogComponent implements OnInit {
 
     if (this.patient) {
       // If it's an existing patient, set its ID
-      details.patienT_ID = this.patient.patienT_ID;
+      details.PATIENT_ID = this.patient.ID;
     }
 
     // Assign values from form controls to details object
     details.fullname = this.patientForm.get('fullname')?.value;
-    details.cnp = this.patientForm.get('cnp')?.value;
+    details.CNP = this.patientForm.get('cnp')?.value;
     details.birth_date = this.patientForm.get('birth_date')?.value;
     details.sex = this.patientForm.get('sex')?.value;
     details.address = this.patientForm.get('address')?.value;
-    details.phone = this.patientForm.get('phone')?.value;
-    details.email = this.patientForm.get('email')?.value;
-    details.phisical_file = this.patientForm.get('phisical_file')?.value;
+    details.PHONE = this.patientForm.get('phone')?.value;
+    details.EMAIL = this.patientForm.get('email')?.value;
+    details.PHISICAL_FILE = this.patientForm.get('phisical_file')?.value;
     details.secondary_contact = this.patientForm.get('secondary_contact')?.value;
-    details.medic_id = this.patientForm.get('medic_user_id')?.value;
+    details.MEDIC_ID = this.patientForm.get('medic_user_id')?.value;
 
     this.dialogRef.close({
       details,

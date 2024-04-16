@@ -32,6 +32,8 @@ import { CustomEventTitleFormatter } from './_shared/custom-event-title-formatte
 import { NoRightClickDirective } from './_directives/no-right-click.directive';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CdkMenuModule } from '@angular/cdk/menu';
+import { SettingsComponent } from './settings/settings.component';
+import { SmsoApiComponent } from './smso-api/smso-api.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,8 @@ import { CdkMenuModule } from '@angular/cdk/menu';
     AppointmentsComponent,
     AppointmentDialogComponent,
     NoRightClickDirective,
+    SettingsComponent,
+    SmsoApiComponent,
   ],
   imports: [
     BrowserModule, 

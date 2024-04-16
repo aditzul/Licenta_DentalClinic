@@ -1,17 +1,22 @@
 export interface Patient {
-  patienT_ID?: number;
-  fullname?: string;
-  cnp?: string;
-  birtH_DATE?: string;
-  sex?: Sex;
-  age?: number;
-  address?: string;
-  phone?: string;
-  email?: string;
-  phisicaL_FILE?: string;
-  secondarY_CONTACT?: string;
-  mediC_ID?: string;
-  createD_AT?: string;
+  ID?: number;
+  FIRST_NAME?: string;
+  LAST_NAME?: string;
+  CNP?: string;
+  AGE?: number;
+  BIRTH_DATE?: string;
+  SEX?: Sex;
+  COUNTRY?: string;
+  COUNTY?: string;
+  CITY?: string;
+  ADDRESS?: string;
+  PHONE?: string;
+  EMAIL?: string;
+  PHISICAL_FILE?: string;
+  SECONDARY_CONTACT_NAME?: string;
+  SECONDARY_CONTACT_PHONE?: string;
+  MEDIC_ID?: string;
+  CREATED_AT?: string;
 }
 
 export interface AssignedPatientsData {
@@ -19,8 +24,8 @@ export interface AssignedPatientsData {
 }
 
 export enum Sex {
-  Male = 'm',
-  Female = 'f',
+  Male = 'M',
+  Female = 'F',
 }
 
 export interface SensorSessionData {
@@ -47,7 +52,7 @@ export interface SensorData {
 export interface PatientComment {
   id: number;
   patienT_ID: number;
-  mediC_ID: number;
+  MEDIC_ID: number;
   comment: string;
   commenT_TYPE: boolean;
   createD_AT: string;

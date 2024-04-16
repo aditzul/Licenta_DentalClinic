@@ -26,7 +26,7 @@ export class PatientTableComponent implements OnInit {
   @Input() isEdit = false;
   @Input() title = '';
 
-  displayedColumns: string[] = ['id', 'sex', 'fullname', 'age', 'cnp', 'createD_AT', 'actions'];
+  displayedColumns: string[] = ['ID', 'SEX', 'FIRST_NAME', 'LAST_NAME', 'AGE', 'CNP', 'CREATED_AT', 'Actions'];
 
   dataSource = new MatTableDataSource(this.patients);
 
@@ -42,28 +42,27 @@ export class PatientTableComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.dataSource.data = this.patients;
-
-    // Load patients based on user's role
-    this.loadPatients();
-  }
-
-  private loadPatients() {
     const userRole = this.authService.userValue?.role;
   
     if (userRole === Role.Admin) {
       // User is an Admin, load all patients
       this.patientService.getAllPatients().subscribe((response: any) => {
-        this.patients = response;
-        this.dataSource.data = this.patients;
+        if (response.data && response.data.length > 0) {
+          this.dataSource.data = response.data[0]
+        } else {
+          console.error('No patients data found.');
+        }
       });
     } else if (userRole === Role.Medic) {
       // User is a Medic, load patients by Medic ID
       const medicId = this.authService.userValue?.id;
       if (medicId) {
         this.patientService.getPatientsByMedicID(medicId.toString()).subscribe((response: any) => {
-          this.patients = response.assignedPatients;
-          this.dataSource.data = this.patients;
+          if (response.data && response.data.length > 0) {
+            this.dataSource.data = response.data[0];
+          } else {
+            console.error('No patients data found.');
+          }
         });
       } else {
         console.error('Medic ID not found in user details.');
@@ -88,16 +87,12 @@ export class PatientTableComponent implements OnInit {
 
       this.patientService.addPatient(<Patient>details).subscribe(() => {
         this.refreshData();
-
-        this.patientService.getLastId().subscribe((id: number) => {
-          details.patienT_ID = id;
-        });
       });
     });
   }
 
   editPatient(patient: Patient) {
-    const patientId: number = patient.patienT_ID as number;
+    const patientId: number = patient.ID as number;
     this.patientService.getPatientById(patientId.toString()).subscribe(
       (patientDetails: Patient) => {
         const dialogRef = this.dialog.open(PatientDialogComponent, {
@@ -138,7 +133,7 @@ export class PatientTableComponent implements OnInit {
       if (result) {
         this.patientService.deletePatient(patient).subscribe(
           () => {
-            this.dataSource.data = this.dataSource.data.filter(p => p.patienT_ID !== patient.patienT_ID);
+            this.dataSource.data = this.dataSource.data.filter(p => p.ID !== patient.ID);
           },
         );
       }
@@ -146,7 +141,7 @@ export class PatientTableComponent implements OnInit {
   }
 
   goToPatient(patient: Patient) {
-    this.router.navigate([`/patients/${patient.patienT_ID}`]);
+    this.router.navigate([`/patients/${patient.ID}`]);
   }
 
   private refreshData() {

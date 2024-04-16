@@ -11,6 +11,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { PatientViewComponent } from './patient-view/patient-view.component';
 import { PatientDetailsComponent } from './patient-details/patient-details.component';
 import { AppointmentsComponent } from './appointments/appointments.component';
+import { SettingsComponent } from './settings/settings.component';
+import { SmsoApiComponent } from './smso-api/smso-api.component';
 
 const routes: Routes = [
   {
@@ -18,6 +20,12 @@ const routes: Routes = [
     component: NavComponent,
     canActivate: [AuthGuard],
     children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+        data: { breadcrumb: 'Home' },
+      },
       {
         path: '',
         redirectTo: 'dashboard',
@@ -40,8 +48,47 @@ const routes: Routes = [
             component: UsersComponent,
             canActivate: [AuthGuard],
             data: { roles: [Role.Admin], breadcrumb: 'Users' },
+          },
+          {
+            path: 'smso-api',
+            component: SmsoApiComponent,
+            canActivate: [AuthGuard],
+            data: { roles: [Role.Admin], breadcrumb: 'SMSO API' },
           }
         ],
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent,
+        canActivate: [AuthGuard],
+        data: { roles: [Role.Admin], breadcrumb: 'Settings' },
+        children: [
+          {
+            path: 'communication',
+            component: SettingsComponent,
+            data: { breadcrumb: 'Communication' }
+          },
+          {
+            path: 'forms',
+            component: SettingsComponent,
+            data: { breadcrumb: 'Forms' }
+          },
+          {
+            path: 'company-data',
+            component: SettingsComponent,
+            data: { breadcrumb: 'Company Data' }
+          },
+          {
+            path: 'works',
+            component: SettingsComponent,
+            data: { breadcrumb: 'Works' }
+          },
+          {
+            path: 'conditions',
+            component: SettingsComponent,
+            data: { breadcrumb: 'Conditions' }
+          }
+        ]
       },
       {
         path: 'dashboard',
@@ -74,12 +121,6 @@ const routes: Routes = [
         component: ProfileComponent,
         canActivate: [AuthGuard],
         data: { roles: [Role.Admin, Role.Medic], breadcrumb: 'Profile' },
-      },
-      {
-        path: 'patientView',
-        component: PatientViewComponent,
-        canActivate: [AuthGuard],
-        data: { roles: [Role.Patient], breadcrumb: 'Patient View' },
       },
     ],
   },

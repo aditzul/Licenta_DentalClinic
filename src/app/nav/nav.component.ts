@@ -30,19 +30,16 @@ export class NavComponent {
           displayName: 'Dashboard',
           route: 'dashboard',
           iconName: 'fa-chart-line',
-          hidden: this.isPatient,
         },
         {
           displayName: 'Patients',
           route: 'patients',
           iconName: 'fa-hospital-user',
-          hidden: this.isPatient,
         },
         {
           displayName: 'Appointments',
           route: 'appointments',
           iconName: 'fa-calendar-alt',
-          hidden: this.isPatient,
         },
         {
           displayName: 'Admin',
@@ -54,18 +51,50 @@ export class NavComponent {
               route: 'admin/users',
               iconName: 'fa-users',
             },
-          ],
+            {
+              displayName: 'SMSO API',
+              route: 'admin/smso-api',
+              iconName: 'fa-cubes',
+            }
+          ]
         },
+        {
+          displayName: 'Settings',
+          iconName: 'fa-cog',
+          children: [
+            {
+              displayName: 'Communication',
+              route: 'settings/communication',
+              iconName: 'fa-comments',
+            },
+            {
+              displayName: 'Forms',
+              route: 'settings/forms',
+              iconName: 'fa-file-alt',
+            },
+            {
+              displayName: 'Company Data',
+              route: 'settings/company-data',
+              iconName: 'fa-building',
+            },
+            {
+              displayName: 'Works',
+              route: 'settings/works',
+              iconName: 'fa-tools',
+            },
+            {
+              displayName: 'Conditions',
+              route: 'settings/conditions',
+              iconName: 'fa-heartbeat',
+            }
+          ]
+        },      
       ];
     });
   }
 
   get isAdmin() {
     return this.user?.role === Role.Admin;
-  }
-
-  get isPatient() {
-    return this.user?.role === Role.Patient;
   }
 
   logout() {

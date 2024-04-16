@@ -77,8 +77,8 @@
 
       <mat-form-field>
         <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" class="form-control" name="email" />
-        <mat-hint *ngIf="detailsForm.get('email')?.touched && detailsForm.get('email')?.errors" class="mat-mdc-form-field-error">
+        <input matInput type="text" formControlName="username" class="form-control" name="username" />
+        <mat-hint *ngIf="detailsForm.get('username')?.touched && detailsForm.get('username')?.errors" class="mat-mdc-form-field-error">
           Email is required
         </mat-hint>
       </mat-form-field>

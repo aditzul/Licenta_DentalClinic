@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .column-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .column {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 10px;
+
+      &.details {
+        flex: 1;
+      }
+    }
+  }
+}
+
+.full-width {
+  width: 500px;
+}
+
+.form-row {
+  margin-bottom: 16px;
+}

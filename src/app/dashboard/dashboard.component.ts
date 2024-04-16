@@ -51,17 +51,29 @@ export class DashboardComponent implements OnInit {
 
     if (userRole === Role.Admin) {
       // User is an Admin, load all patients
-      this.patientService.getAllPatients().subscribe((patients: Patient[]) => {
-        this.patients = patients;
-        this.processData();
+      this.patientService.getAllPatients().subscribe((response: any) => {
+        // Verificăm dacă există date în răspuns și dacă există obiecte în array-ul "data"
+        if (response.data && response.data.length > 0) {
+          // Setăm primul obiect din array-ul "data" în this.patients
+          this.patients = response.data[0];
+          this.processData();
+        } else {
+          console.error('No patients data found.');
+        }
       });
     } else if (userRole === Role.Medic) {
       // User is a Medic, load patients by Medic ID
       const medicId = this.authService.userValue?.id;
       if (medicId) {
         this.patientService.getPatientsByMedicID(medicId.toString()).subscribe((response: any) => {
-          this.patients = response.assignedPatients;
-          this.processData();
+          // Verificăm dacă există date în răspuns și dacă există obiecte în array-ul "data"
+          if (response.data && response.data.length > 0) {
+            // Setăm primul obiect din array-ul "data" în this.patients
+            this.patients = response.data[0];
+            this.processData();
+          } else {
+            console.error('No patients data found.');
+          }
         });
       } else {
         console.error('Medic ID not found in user details.');
@@ -71,7 +83,8 @@ export class DashboardComponent implements OnInit {
 
   processData() {
     this.loaded = true;
-    this.currentMedic = this.medics.find((m) => m.useR_ID === this.currentUser.id) || {};
+    //this.currentMedic = this.medics.find((m) => m.useR_ID === this.currentUser.id) || {};
+    //console.log(this.currentMedic) - NU MERGE
 
     this.createCardsData();
     this.lastPatients = this.computeLastPatients(this.patients);
@@ -83,18 +96,19 @@ export class DashboardComponent implements OnInit {
   }
 
   computeLastPatients(patients: Patient[]): Patient[] {
-    const sortedByDate = patients.sort((a, b) => this.sortByDate(<string>a.createD_AT, <string>b.createD_AT));
+    const sortedByDate = patients.sort((a, b) => this.sortByDate(<string>a.CREATED_AT, <string>b.CREATED_AT));
     return sortedByDate.slice(-5).reverse();
   }
 
   createCardsData() {
-    const malePatients = this.patients.filter((p) => p.sex === Sex.Male).length;
-    const femalePatients = this.patients.filter((p) => p.sex === Sex.Female).length;
+    const malePatients = this.patients.filter((p) => p.SEX === Sex.Male).length;
+    const femalePatients = this.patients.filter((p) => p.SEX === Sex.Female).length;
 
     this.cardsData.totalPatients = this.patients.length.toString();
     this.cardsData.femalePatients = this.computePercentage(this.patients.length, femalePatients).toFixed(2).toString() + '%';
     this.cardsData.malePatients = this.computePercentage(this.patients.length, malePatients).toFixed(2).toString() + '%';
-    this.cardsData.averageAge = (this.patients.reduce((accum: number, reducer: any) => accum + reducer.age, 0) / this.patients.length).toFixed(2).toString();
+    this.cardsData.averageAge = (this.patients.reduce((accum: number, reducer: any) => accum + reducer.AGE, 0) / this.patients.length).toFixed(2).toString();
+
   }
 
   createAgeChart(patients: Patient[]) {
@@ -117,17 +131,17 @@ export class DashboardComponent implements OnInit {
     patients.forEach((patient: Patient) => {
       Object.keys(patientsByAge).forEach((key) => {
         const ref = patientsByAge[key];
-        const age = patient.age || 0;
+        const age = patient.AGE || 0;
         if (age >= ref.min && age <= ref.max) {
-          if (patient.sex === Sex.Male) {
-            ref.males.push(patient.patienT_ID);
+          if (patient.SEX === Sex.Male) {
+            ref.males.push(patient.ID);
           }
 
-          if (patient.sex === Sex.Female) {
-            ref.females.push(patient.patienT_ID);
+          if (patient.SEX === Sex.Female) {
+            ref.females.push(patient.ID);
           }
 
-          ref.age.push(patient.patienT_ID);
+          ref.age.push(patient.ID);
         }
       });
     });
@@ -169,7 +183,7 @@ export class DashboardComponent implements OnInit {
     const patientsByDate: any = {};
 
     patients.forEach((patient: Patient) => {
-      const date = new Date(<string>patient.createD_AT);
+      const date = new Date(<string>patient.CREATED_AT);
       const label = date.toISOString().split('T')[0];
 
       if (!patientsByDate[label]) {
@@ -179,12 +193,12 @@ export class DashboardComponent implements OnInit {
         };
       }
 
-      if (patient.sex === Sex.Male) {
-        patientsByDate[label].male.push(patient.patienT_ID);
+      if (patient.SEX === Sex.Male) {
+        patientsByDate[label].male.push(patient.ID);
       }
 
-      if (patient.sex === Sex.Female) {
-        patientsByDate[label].female.push(patient.patienT_ID);
+      if (patient.SEX === Sex.Female) {
+        patientsByDate[label].female.push(patient.ID);
       }
     });
 

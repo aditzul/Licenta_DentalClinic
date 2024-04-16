@@ -38,8 +38,8 @@ export class AppointmentDialogComponent implements OnInit {
     const endTime: string = this.inputData.endTime;
     const selectedPatient: string = this.inputData.selectedPatient.fullname;
     const selectedStatus: string = this.inputData.selectedStatus;
-    const patienT_ID = this.inputData.selectedPatient.patienT_ID;
-    const mediC_ID = this.inputData.selectedPatient.mediC_ID
+    const patienT_ID = this.inputData.selectedPatient.PATIENT_ID;
+    const MEDIC_ID = this.inputData.selectedPatient.MEDIC_ID
 
     // Combine date and time to create start and end Date objects
     const startDateTime: Date = new Date(`${startDate.toISOString().split('T')[0]}T${startTime}`);
@@ -52,7 +52,7 @@ export class AppointmentDialogComponent implements OnInit {
       title: selectedPatient,
       meta: selectedStatus,
       patienT_ID: patienT_ID,
-      mediC_ID: mediC_ID,
+      MEDIC_ID: MEDIC_ID,
     });
   }
 }
