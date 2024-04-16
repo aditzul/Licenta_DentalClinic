@@ -11,28 +11,24 @@ export class SnackbarInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       tap((e) => {
-        if (request.method == 'POST' || request.method == 'PUT') {
-          if (e instanceof HttpResponse && (e.status === 200 || e.status === 204)) {
-            if (!request.url.includes('/Login')) {
-              this.snackBar.open('Saved successfully.', 'close', {
+        if (e instanceof HttpResponse) {
+          if (e.status === 200) {
+            const responseBody = e.body;
+            if (responseBody && responseBody.status === 200 && responseBody.message) {
+              const message = responseBody.message;
+              this.snackBar.open(message, 'close', {
                 duration: 2000,
                 panelClass: 'successSnack',
               });
             }
           }
         }
-        if (request.method === 'DELETE') {
-          if (e instanceof HttpResponse && (e.status === 200 || e.status === 204)) {
-            this.snackBar.open('Deleted successfully.', 'close', {
-              duration: 2000,
-              panelClass: 'successSnack',
-            });
-          }
-        }
       }),
       catchError((error) => {
-        const message = error?.error?.detail || error.error.title || error.error;
-        this.snackBar.open(message, 'close', {
+        const message = error?.error?.message || 'Eroare';
+        const errorMessage = error?.error?.error || '';
+        this.snackBar.open(message + ' ' + errorMessage, 'close', {
+          duration: 2000,
           panelClass: 'errorSnack',
         });
         return throwError(error);
