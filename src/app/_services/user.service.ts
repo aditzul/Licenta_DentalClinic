@@ -2,14 +2,16 @@ import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
   constructor(private http: HttpClient) {}
 
   getAllUsers(): Observable<User[]> {
-    return this.http.get<any>(`${environment.apiUrl}/Users/GetAllUsers`);
+    return this.http.get<any>(`${environment.apiUrl}/Users/GetAllUsers`).pipe(
+      map(response => response.data[0])
+    );
   }
 
   getAllMedics(): Observable<User[]> {

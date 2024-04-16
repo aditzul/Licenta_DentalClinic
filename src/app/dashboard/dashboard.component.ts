@@ -46,34 +46,23 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+
   loadPatients() {
     const userRole = this.authService.userValue?.role;
 
     if (userRole === Role.Admin) {
       // User is an Admin, load all patients
-      this.patientService.getAllPatients().subscribe((response: any) => {
-        // Verificăm dacă există date în răspuns și dacă există obiecte în array-ul "data"
-        if (response.data && response.data.length > 0) {
-          // Setăm primul obiect din array-ul "data" în this.patients
-          this.patients = response.data[0];
-          this.processData();
-        } else {
-          console.error('No patients data found.');
-        }
+      this.patientService.getAllPatients().subscribe((patients: Patient[]) => {
+        this.patients = patients;
+        this.processData();
       });
     } else if (userRole === Role.Medic) {
       // User is a Medic, load patients by Medic ID
       const medicId = this.authService.userValue?.id;
       if (medicId) {
         this.patientService.getPatientsByMedicID(medicId.toString()).subscribe((response: any) => {
-          // Verificăm dacă există date în răspuns și dacă există obiecte în array-ul "data"
-          if (response.data && response.data.length > 0) {
-            // Setăm primul obiect din array-ul "data" în this.patients
-            this.patients = response.data[0];
-            this.processData();
-          } else {
-            console.error('No patients data found.');
-          }
+          this.patients = response.assignedPatients;
+          this.processData();
         });
       } else {
         console.error('Medic ID not found in user details.');

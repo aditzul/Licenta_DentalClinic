@@ -42,27 +42,28 @@ export class PatientTableComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.dataSource.data = this.patients;
+
+    // Load patients based on user's role
+    this.loadPatients();
+  }
+
+  private loadPatients() {
     const userRole = this.authService.userValue?.role;
   
     if (userRole === Role.Admin) {
       // User is an Admin, load all patients
       this.patientService.getAllPatients().subscribe((response: any) => {
-        if (response.data && response.data.length > 0) {
-          this.dataSource.data = response.data[0]
-        } else {
-          console.error('No patients data found.');
-        }
+        this.patients = response;
+        this.dataSource.data = this.patients;
       });
     } else if (userRole === Role.Medic) {
       // User is a Medic, load patients by Medic ID
       const medicId = this.authService.userValue?.id;
       if (medicId) {
         this.patientService.getPatientsByMedicID(medicId.toString()).subscribe((response: any) => {
-          if (response.data && response.data.length > 0) {
-            this.dataSource.data = response.data[0];
-          } else {
-            console.error('No patients data found.');
-          }
+          this.patients = response.assignedPatients;
+          this.dataSource.data = this.patients;
         });
       } else {
         console.error('Medic ID not found in user details.');

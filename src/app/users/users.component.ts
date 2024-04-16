@@ -21,7 +21,7 @@ export class UsersComponent implements OnInit {
   users: User[] = [];
   medics: Medic[] = [];
   visibleRowIndex: number = -1;
-  displayedColumns: string[] = ['id', 'role', 'username', 'createD_AT', 'actions'];
+  displayedColumns: string[] = ['ID', 'ROLE', 'USERNAME', 'CREATED_AT', 'ACTIONS'];
   dataSource = new MatTableDataSource(this.users);
   roleFilter?: string = 'clear';
   @ViewChild(MatPaginator) paginator: MatPaginator = <MatPaginator>{};

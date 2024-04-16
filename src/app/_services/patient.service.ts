@@ -10,7 +10,9 @@ export class PatientService {
   constructor(private http: HttpClient) {}
 
   getAllPatients(): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/Patients/GetAllPatients`);
+    return this.http.get<any>(`${environment.apiUrl}/Patients/GetAllPatients`).pipe(
+      map(response => response.data[0])
+    );
   }
 
   getPatientsByMedicID(ID: string): Observable<AssignedPatientsData> {
