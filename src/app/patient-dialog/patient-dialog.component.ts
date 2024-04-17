@@ -22,7 +22,7 @@ export class PatientDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: PatientDialog,
     private medicService: MedicService,
   ) {
-    this.isAdd = !this.data.patient?.ID
+    this.isAdd = !this.data.patient?.id
   }
 
   ngOnInit() {
@@ -44,16 +44,17 @@ export class PatientDialogComponent implements OnInit {
 
   initializeForm() {
     this.patientForm = new FormGroup({
-      first_name: new FormControl(this.patient?.FIRST_NAME || '', Validators.required),
-      cnp: new FormControl(this.patient?.CNP || '', [Validators.required, Validators.pattern(/^\d{13}$/)]),
-      birth_date: new FormControl(this.patient?.BIRTH_DATE || '', Validators.required),
-      sex: new FormControl(this.patient?.SEX || '', Validators.required),
-      address: new FormControl(this.patient?.ADDRESS || '', Validators.required),
-      phone: new FormControl(this.patient?.PHONE || '', [Validators.required, Validators.pattern(/^\d{10}$/)]),
-      email: new FormControl(this.patient?.EMAIL || '', [Validators.required, Validators.email]),
-      phisical_file: new FormControl(this.patient?.PHISICAL_FILE || ''),
-      secondary_contact: new FormControl(this.patient?.SECONDARY_CONTACT_NAME || ''),
-      medic_user_id: new FormControl(this.patient?.MEDIC_ID || (this.allMedics.length > 0 ? this.allMedics[0].id : '')),
+      first_name: new FormControl(this.patient?.first_name || '', Validators.required),
+      cnp: new FormControl(this.patient?.cnp || '', [Validators.required, Validators.pattern(/^\d{13}$/)]),
+      birth_date: new FormControl(this.patient?.birth_date || '', Validators.required),
+      sex: new FormControl(this.patient?.sex || '', Validators.required),
+      address: new FormControl(this.patient?.address || '', Validators.required),
+      phone: new FormControl(this.patient?.phone || '', [Validators.required, Validators.pattern(/^\d{10}$/)]),
+      email: new FormControl(this.patient?.email || '', [Validators.required, Validators.email]),
+      phisical_file: new FormControl(this.patient?.phisical_file || ''),
+      secondary_contact_name: new FormControl(this.patient?.secondary_contact_name || ''),
+      secondary_contact_phone: new FormControl(this.patient?.secondary_contact_phone || ''),
+      medic_id: new FormControl(this.patient?.medic_id || (this.allMedics.length > 0 ? this.allMedics[0].id : '')),
     });
   }
 
@@ -67,7 +68,7 @@ export class PatientDialogComponent implements OnInit {
 
     if (this.patient) {
       // If it's an existing patient, set its ID
-      details.PATIENT_ID = this.patient.ID;
+      details.PATIENT_ID = this.patient.id;
     }
 
     // Assign values from form controls to details object

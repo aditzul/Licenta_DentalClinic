@@ -26,7 +26,7 @@ export class PatientTableComponent implements OnInit {
   @Input() isEdit = false;
   @Input() title = '';
 
-  displayedColumns: string[] = ['ID', 'SEX', 'FIRST_NAME', 'LAST_NAME', 'AGE', 'CNP', 'CREATED_AT', 'Actions'];
+  displayedColumns: string[] = ['id', 'sex', 'first_name', 'last_name', 'age', 'cnp', 'created_at', 'actions'];
 
   dataSource = new MatTableDataSource(this.patients);
 
@@ -48,22 +48,19 @@ export class PatientTableComponent implements OnInit {
     this.loadPatients();
   }
 
-  private loadPatients() {
+  loadPatients() {
     const userRole = this.authService.userValue?.role;
-  
     if (userRole === Role.Admin) {
       // User is an Admin, load all patients
-      this.patientService.getAllPatients().subscribe((response: any) => {
-        this.patients = response;
-        this.dataSource.data = this.patients;
+      this.patientService.getAllPatients().subscribe((patients: Patient[]) => {
+        this.patients = patients;
       });
     } else if (userRole === Role.Medic) {
       // User is a Medic, load patients by Medic ID
       const medicId = this.authService.userValue?.id;
       if (medicId) {
         this.patientService.getPatientsByMedicID(medicId.toString()).subscribe((response: any) => {
-          this.patients = response.assignedPatients;
-          this.dataSource.data = this.patients;
+          this.patients = response;
         });
       } else {
         console.error('Medic ID not found in user details.');
@@ -93,7 +90,7 @@ export class PatientTableComponent implements OnInit {
   }
 
   editPatient(patient: Patient) {
-    const patientId: number = patient.ID as number;
+    const patientId: number = patient.id as number;
     this.patientService.getPatientById(patientId.toString()).subscribe(
       (patientDetails: Patient) => {
         const dialogRef = this.dialog.open(PatientDialogComponent, {
@@ -134,7 +131,7 @@ export class PatientTableComponent implements OnInit {
       if (result) {
         this.patientService.deletePatient(patient).subscribe(
           () => {
-            this.dataSource.data = this.dataSource.data.filter(p => p.ID !== patient.ID);
+            this.dataSource.data = this.dataSource.data.filter(p => p.id !== patient.id);
           },
         );
       }
@@ -142,7 +139,7 @@ export class PatientTableComponent implements OnInit {
   }
 
   goToPatient(patient: Patient) {
-    this.router.navigate([`/patients/${patient.ID}`]);
+    this.router.navigate([`/patients/${patient.id}`]);
   }
 
   private refreshData() {

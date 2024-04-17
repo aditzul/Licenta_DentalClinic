@@ -12,54 +12,54 @@
 
   <table mat-table [dataSource]="dataSource" class="patient-table">
     <!-- ID Column -->
-    <ng-container matColumnDef="ID">
+    <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td mat-cell *matCellDef="let patient">{{ patient.ID }}</td>
+      <td mat-cell *matCellDef="let patient">{{ patient.id }}</td>
     </ng-container>
 
     <!-- Sex Column -->
-    <ng-container matColumnDef="SEX">
+    <ng-container matColumnDef="sex">
       <th mat-header-cell *matHeaderCellDef>Gender</th>
       <td mat-cell *matCellDef="let patient">
-        <mat-icon *ngIf="patient.SEX === 'M'" fontSet="fa-solid" fontIcon="fa-mars"></mat-icon>
-        <mat-icon *ngIf="patient.SEX === 'F'" fontSet="fa-solid" fontIcon="fa-venus"></mat-icon>
+        <mat-icon *ngIf="patient.sex === 'M'" fontSet="fa-solid" fontIcon="fa-mars"></mat-icon>
+        <mat-icon *ngIf="patient.sex === 'F'" fontSet="fa-solid" fontIcon="fa-venus"></mat-icon>
       </td>
     </ng-container>
 
     <!-- First name Column -->
-    <ng-container matColumnDef="FIRST_NAME">
+    <ng-container matColumnDef="first_name">
       <th mat-header-cell *matHeaderCellDef>First name</th>
-      <td mat-cell *matCellDef="let patient">{{ patient.FIRST_NAME }}</td>
+      <td mat-cell *matCellDef="let patient">{{ patient.first_name }}</td>
     </ng-container>
 
     <!-- Last name Column -->
-    <ng-container matColumnDef="LAST_NAME">
+    <ng-container matColumnDef="last_name">
       <th mat-header-cell *matHeaderCellDef>Last name</th>
-      <td mat-cell *matCellDef="let patient">{{ patient.LAST_NAME }}</td>
+      <td mat-cell *matCellDef="let patient">{{ patient.last_name }}</td>
     </ng-container>
 
     <!-- Age Column -->
-    <ng-container matColumnDef="AGE">
+    <ng-container matColumnDef="age">
       <th mat-header-cell *matHeaderCellDef>Age</th>
-      <td mat-cell *matCellDef="let patient">{{ patient.AGE }}</td>
+      <td mat-cell *matCellDef="let patient">{{ patient.age }}</td>
     </ng-container>
 
     <!-- CNP Column -->
-    <ng-container matColumnDef="CNP">
+    <ng-container matColumnDef="cnp">
       <th mat-header-cell *matHeaderCellDef>CNP</th>
-      <td mat-cell *matCellDef="let patient">{{ patient.CNP }}</td>
+      <td mat-cell *matCellDef="let patient">{{ patient.cnp }}</td>
     </ng-container>
 
     <!-- CreatedAt Column -->
-    <ng-container matColumnDef="CREATED_AT">
+    <ng-container matColumnDef="created_at">
       <th mat-header-cell *matHeaderCellDef>Created At</th>
       <td mat-cell *matCellDef="let patient">
-        {{ patient.CREATED_AT | date : "dd.MM.yyyy" }}
+        {{ patient.created_at | date : "dd.MM.yyyy" }}
       </td>
     </ng-container>
 
     <!-- Actions Column -->
-    <ng-container matColumnDef="Actions">
+    <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let patient">
         <button mat-icon-button (click)="editPatient(patient)" *ngIf="isEdit">

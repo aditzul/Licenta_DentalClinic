@@ -37,7 +37,7 @@ export class PatientService {
   }
   
   updatePatient(patient: Patient): Observable<any> {
-    return this.http.put<any>(`${environment.apiUrl}/Patients/UpdatePatient/${patient.ID}`, {
+    return this.http.put<any>(`${environment.apiUrl}/Patients/UpdatePatient/${patient.id}`, {
       ...patient,
     });
   }
@@ -45,11 +45,11 @@ export class PatientService {
   deletePatient(patient: Patient): Observable<any> {
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
 
-    return this.http.delete(`${environment.apiUrl}/Patients/DeletePatient/${patient.ID}`, { headers, responseType: 'text' as const });
+    return this.http.delete(`${environment.apiUrl}/Patients/DeletePatient/${patient.id}`, { headers, responseType: 'text' as const });
   }
 
   GetAllCommentsByPatientID(patient: Patient): Observable<PatientComment[]> {
-    return this.http.get<PatientComment[]>(`${environment.apiUrl}/Comments/GetAllCommentsByPatientID/${patient.ID}`);
+    return this.http.get<PatientComment[]>(`${environment.apiUrl}/Comments/GetAllCommentsByPatientID/${patient.id}`);
   }
 
   AddComment(comment: PatientComment): Observable<any> {
@@ -74,7 +74,7 @@ export class PatientService {
   //TO CHECK HERE BELOW WHAT I KEEP AND WHAT I DELETE
 
   getMedicalDataByPatientId(patient: Patient): Observable<PatientHistory[]> {
-    return this.http.get<PatientHistory[]>(`${environment.apiUrl}/MedicalHistory/GetAllMedicalHistory/${patient.ID}`);
+    return this.http.get<PatientHistory[]>(`${environment.apiUrl}/MedicalHistory/GetAllMedicalHistory/${patient.id}`);
   }
 
   AddMedicalDataByPatientId(history: PatientHistory): Observable<any> {

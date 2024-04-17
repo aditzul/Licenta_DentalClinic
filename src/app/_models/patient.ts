@@ -1,22 +1,22 @@
 export interface Patient {
-  ID?: number;
-  FIRST_NAME?: string;
-  LAST_NAME?: string;
-  CNP?: string;
-  AGE?: number;
-  BIRTH_DATE?: string;
-  SEX?: Sex;
-  COUNTRY?: string;
-  COUNTY?: string;
-  CITY?: string;
-  ADDRESS?: string;
-  PHONE?: string;
-  EMAIL?: string;
-  PHISICAL_FILE?: string;
-  SECONDARY_CONTACT_NAME?: string;
-  SECONDARY_CONTACT_PHONE?: string;
-  MEDIC_ID?: string;
-  CREATED_AT?: string;
+  id?: number;
+  first_name?: string;
+  last_name?: string;
+  cnp?: string;
+  age?: number;
+  birth_date?: string;
+  sex?: Sex;
+  country?: string;
+  county?: string;
+  city?: string;
+  address?: string;
+  phone?: string;
+  email?: string;
+  phisical_file?: string;
+  secondary_contact_name?: string;
+  secondary_contact_phone?: string;
+  medic_id?: string;
+  created_at?: string;
 }
 
 export interface AssignedPatientsData {
