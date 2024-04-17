@@ -12,6 +12,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../_helpers/confirm-dialog/confirm-dialog.component';
 
+
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -19,9 +20,9 @@ import { ConfirmDialogComponent, ConfirmDialogData } from '../_helpers/confirm-d
 })
 export class UsersComponent implements OnInit {
   users: User[] = [];
-  medics: Medic[] = [];
+  // medics: Medic[] = [];
   visibleRowIndex: number = -1;
-  displayedColumns: string[] = ['ID', 'ROLE', 'USERNAME', 'CREATED_AT', 'ACTIONS'];
+  displayedColumns: string[] = ['id', 'role', 'username', 'full_name', 'created_at', 'actions'];
   dataSource = new MatTableDataSource(this.users);
   roleFilter?: string = 'clear';
   @ViewChild(MatPaginator) paginator: MatPaginator = <MatPaginator>{};
@@ -67,14 +68,15 @@ export class UsersComponent implements OnInit {
   }
 
   refreshData() {
-    this.userService.getAllUsers().subscribe((users: User[]) => {
-      this.users = users;
+    this.userService.getAllUsers().subscribe((data: any) => {
+      const usersArray: User[] = Object.values(data);
+      this.users = usersArray;
       this.filterChange({ value: this.roleFilter });
     });
 
-    this.medicService.getAllMedics().subscribe((medics: Medic[]) => {
-      this.medics = medics;
-    });
+    // this.userService.getAllMedics().subscribe((medics: User[]) => {
+    //   this.medics = medics;
+    // });
   }
 
   deleteUser(user: User) {
@@ -103,53 +105,27 @@ export class UsersComponent implements OnInit {
       data: {
         user: {},
         medic: null,
-        allMedics: this.medics,
+        //allMedics: this.medics,
       },
     });
   
     dialogRef.afterClosed().subscribe((result) => {
       if (!result) return;
       const { user, details } = result;
-  
-      // Check if the username already exists
-      this.userService.isUserExists(user.username).subscribe((exists: boolean) => {
-        if (exists) {
-          // Display an error message or handle the situation where the username already exists
-          this.snackBar.open('Utilizatorul ' + user.username + ' exista deja.', 'close', {
-            duration: 2000,
-            panelClass: 'errorSnack',
-          });
-        } else {
-          // Username is unique, proceed with user addition
-          this.userService.addUser(user).subscribe(() => {
-            if (user.role === Role.Admin) {
-              this.refreshData();
-            }
-  
-            this.userService.getLastId().subscribe(async (id: number) => {
-              details.useR_ID = id;
-              
-              const userRole = parseInt(user.role, 10); // Convert user.role to a number
-
-              if (userRole === Role.Medic) {                
-                await this.medicService.addMedic(<Medic>details).toPromise();
-                this.refreshData();
-              }
-            });
-          });
-        }
+      this.userService.addUser(user).subscribe(() => {
+      this.refreshData();
       });
     });
   }
 
   editUser(user: User) {
-    const medic = this.medics.find((m) => m.useR_ID === user.id) || null;
-
+    //const medic = this.medics.find((m) => user.role === Role.Medic) || null;
+    console.log(user)
     const dialogRef = this.dialog.open(UserDialogComponent, {
       data: {
         user,
-        medic,
-        allMedics: this.medics,
+        //medic,
+        //allMedics: this.medics,
       },
     });
 
@@ -158,15 +134,15 @@ export class UsersComponent implements OnInit {
       const { user, details } = result;
 
       this.userService.updateUser(user).subscribe(() => {
-        if (user.role == Role.Admin) {
-          this.refreshData();
-        }
+        // if (user.role == Role.Admin) {
+        this.refreshData();
+        // }
 
-        if (user.role == Role.Medic) {
-          this.medicService.updateMedic(<Medic>details).subscribe(() => {
-            this.refreshData();
-          });
-        }
+        // if (user.role == Role.Medic) {
+        //   this.medicService.updateMedic(<Medic>details).subscribe(() => {
+        //     this.refreshData();
+        //   });
+        // }
       });
     });
   }

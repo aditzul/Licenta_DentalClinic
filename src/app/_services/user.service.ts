@@ -10,12 +10,14 @@ export class UserService {
 
   getAllUsers(): Observable<User[]> {
     return this.http.get<any>(`${environment.apiUrl}/Users/GetAllUsers`).pipe(
-      map(response => response.data[0])
+      map(response => response.data)
     );
   }
 
   getAllMedics(): Observable<User[]> {
-    return this.http.get<any>(`${environment.apiUrl}/Users/GetAllMedics`);
+    return this.http.get<any>(`${environment.apiUrl}/Users/GetAllMedics`).pipe(
+      map(response => response.data)
+    );
   }
 
   getUser(user: User): Observable<User> {
@@ -36,10 +38,9 @@ export class UserService {
   }
 
   updateUser(user: User): Observable<any> {
-    return this.http.put<any>(`${environment.apiUrl}/Users/UpdateUser`, {
-      ...user,
-    });
+    return this.http.put<any>(`${environment.apiUrl}/Users/UpdateUser/${user.id}`, user);
   }
+  
 
   deleteUser(user: User): Observable<any> {
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');

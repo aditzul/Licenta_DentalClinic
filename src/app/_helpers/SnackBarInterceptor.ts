@@ -13,7 +13,15 @@ export class SnackbarInterceptor implements HttpInterceptor {
       tap((e) => {
         if (e instanceof HttpResponse) {
           if (e.status === 200) {
-            const responseBody = e.body;
+            let responseBody = e.body;
+            // Verificați dacă responseBody este un șir de caractere și încercați să-l parsăm într-un obiect JSON
+            if (typeof responseBody === 'string') {
+              try {
+                responseBody = JSON.parse(responseBody);
+              } catch (error) {
+                console.error('Error parsing response body:', error);
+              }
+            }      
             if (responseBody && responseBody.status === 200 && responseBody.message) {
               const message = responseBody.message;
               this.snackBar.open(message, 'close', {
@@ -28,7 +36,6 @@ export class SnackbarInterceptor implements HttpInterceptor {
         const message = error?.error?.message || 'Eroare';
         const errorMessage = error?.error?.error || '';
         this.snackBar.open(message + ' ' + errorMessage, 'close', {
-          duration: 2000,
           panelClass: 'errorSnack',
         });
         return throwError(error);
