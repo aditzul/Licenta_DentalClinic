@@ -11,16 +11,20 @@ export class PatientService {
 
   getAllPatients(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/Patients/GetAllPatients`).pipe(
-      map(response => response.data[0])
+      map(response => response.data)
     );
   }
 
-  getPatientsByMedicID(ID: string): Observable<AssignedPatientsData> {
-    return this.http.get<AssignedPatientsData>(`${environment.apiUrl}/Patients/GetAllPatientsByMedicID/${ID}`);
+  getPatientsByMedicID(ID: string): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/Patients/GetAllPatientsByMedicID/${ID}`).pipe(
+      map(response => response.data)
+    );
   }
   
-  getPatientById(ID: string): Observable<Patient> {
-    return this.http.get<Patient>(`${environment.apiUrl}/Patients/GetPatient/${ID}`);
+  getPatientById(ID: string): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/Patients/GetPatient/${ID}`).pipe(
+      map(response => response.data)
+    );
   }
 
   addPatient(patient: Patient): Observable<any> {

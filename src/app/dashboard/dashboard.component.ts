@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit {
       const medicId = this.authService.userValue?.id;
       if (medicId) {
         this.patientService.getPatientsByMedicID(medicId.toString()).subscribe((response: any) => {
-          this.patients = response.assignedPatients;
+          this.patients = response;
           this.processData();
         });
       } else {
