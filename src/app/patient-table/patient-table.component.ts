@@ -11,11 +11,6 @@ import { PatientDialogComponent } from '../patient-dialog/patient-dialog.compone
 import { AuthenticationService } from '../_services/authentication.service';
 import { Role } from '../_models/user';
 
-// Replace this with the actual type or interface for your data
-interface PatientsData {
-  assignedPatients: Patient[];
-}
-
 @Component({
   selector: 'app-patient-table',
   templateUrl: './patient-table.component.html',
@@ -31,7 +26,6 @@ export class PatientTableComponent implements OnInit {
   dataSource = new MatTableDataSource(this.patients);
 
   @ViewChild(MatPaginator) paginator: MatPaginator = <MatPaginator>{};
-  medics: any;
 
   constructor(
     private router: Router,
@@ -43,23 +37,19 @@ export class PatientTableComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource.data = this.patients;
-
-    // Load patients based on user's role
     this.loadPatients();
   }
 
   loadPatients() {
     const userRole = this.authService.userValue?.role;
     if (userRole === Role.Admin) {
-      // User is an Admin, load all patients
       this.patientService.getAllPatients().subscribe((patients: Patient[]) => {
         this.patients = patients;
       });
     } else if (userRole === Role.Medic) {
-      // User is a Medic, load patients by Medic ID
-      const medicId = this.authService.userValue?.id;
-      if (medicId) {
-        this.patientService.getPatientsByMedicID(medicId.toString()).subscribe((response: any) => {
+      const medic_id = this.authService.userValue?.id;
+      if (medic_id) {
+        this.patientService.getPatientsByMedicID(medic_id.toString()).subscribe((response: any) => {
           this.patients = response;
         });
       } else {
@@ -90,33 +80,19 @@ export class PatientTableComponent implements OnInit {
   }
 
   editPatient(patient: Patient) {
-    const patientId: number = patient.id as number;
-    this.patientService.getPatientById(patientId.toString()).subscribe(
-      (patientDetails: Patient) => {
-        const dialogRef = this.dialog.open(PatientDialogComponent, {
-          data: {
-            patient: patientDetails,
-            allMedics: this.medics,
-          },
-        });
-
-        dialogRef.afterClosed().subscribe((result) => {
-          if (!result) return;
-          const { patient, details } = result;
-
-          this.patientService.updatePatient(patient).subscribe(() => {
-            this.refreshData();
-
-            this.patientService.updatePatient(<Patient>details).subscribe(() => {
-              this.refreshData();
-            });
-          });
-        });
+    const dialogRef = this.dialog.open(PatientDialogComponent, {
+      data: {
+        patient,
       },
-      (error) => {
-        console.error('Error fetching patient details:', error);
-      }
-    );
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) return;
+      const { patient, details } = result;
+      this.patientService.updatePatient(details).subscribe(() => {
+        this.refreshData();
+      });
+    });
   }
 
   deletePatient(patient: Patient) {
@@ -145,7 +121,8 @@ export class PatientTableComponent implements OnInit {
   private refreshData() {
     this.patientService.getAllPatients().subscribe((patients: Patient[]) => {
       this.patients = patients;
-      this.dataSource.data = this.patients;
+      this.dataSource.data = Object.values(this.patients);
     });
   }
+
 }

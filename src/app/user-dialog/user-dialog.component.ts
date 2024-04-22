@@ -21,6 +21,8 @@ export class UserDialogComponent {
 
   ngOnInit() {
 
+    console.log(this.user)
+
     this.userForm = new FormGroup({
       username: new FormControl(this.user.username || '', Validators.required),
       password: new FormControl('', Validators.required),

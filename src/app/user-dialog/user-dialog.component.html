@@ -20,17 +20,19 @@
     </div>
 
     <mat-label>Role: </mat-label>
-    <mat-button-toggle-group name="role" formControlName="role">
-      <mat-button-toggle value="0" matTooltip="Admin">
-        <mat-icon fontSet="fa-solid" fontIcon="fa-user-gear"></mat-icon>
-      </mat-button-toggle>
+      <mat-button-toggle-group name="role" formControlName="role">
+        <mat-button-toggle value="0" matTooltip="Admin">
+          <mat-icon fontSet="fa-solid" fontIcon="fa-user-gear"></mat-icon>
+        </mat-button-toggle>
 
-      <mat-button-toggle value="1" matTooltip="Medic">
-        <mat-icon fontSet="fa-solid" fontIcon="fa-stethoscope"></mat-icon>
-      </mat-button-toggle>
-    </mat-button-toggle-group>
-
-    <mat-label>{{ userForm.get('role')?.value === '1' ? 'Medic' : '' }} Details:</mat-label>
+        <mat-button-toggle value="1" matTooltip="Medic">
+          <mat-icon fontSet="fa-solid" fontIcon="fa-stethoscope"></mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+      <br/>
+    <div class="form-row">
+      <mat-label>Details:</mat-label>
+    </div>
 
     <div class="form-row">
       <mat-form-field>
@@ -48,7 +50,6 @@
           Last name is required
         </mat-hint>
       </mat-form-field>
-
     </div>
 
     <div class="form-row">

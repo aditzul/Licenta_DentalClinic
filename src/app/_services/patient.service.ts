@@ -35,11 +35,9 @@ export class PatientService {
       ...patientDTO,
     });
   }
-  
+
   updatePatient(patient: Patient): Observable<any> {
-    return this.http.put<any>(`${environment.apiUrl}/Patients/UpdatePatient/${patient.id}`, {
-      ...patient,
-    });
+    return this.http.put<any>(`${environment.apiUrl}/Patients/UpdatePatient/${patient.id}`, patient);
   }
 
   deletePatient(patient: Patient): Observable<any> {

@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
-
 import { AuthenticationService } from '../_services/authentication.service';
-import { MedicService } from '../_services/medic.service';
 import { PatientService } from '../_services/patient.service';
 import { Medic } from '../_models/medic';
 import { Patient } from '../_models/patient';
@@ -18,14 +16,12 @@ import { Role, User } from '../_models/user';
 export class PatientsComponent implements OnInit {
   patients: Patient[] = [];
   medics: Medic[] = [];
-  currentMedic: Medic = {};
   currentUser: User = {};
   loaded = false;
   hideMain = false;
 
   constructor(
     private patientService: PatientService,
-    private medicService: MedicService,
     private authService: AuthenticationService,
     private activatedRoute: ActivatedRoute,
     private router: Router

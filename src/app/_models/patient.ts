@@ -7,7 +7,7 @@ export interface Patient {
   birth_date?: string;
   sex?: Sex;
   country?: string;
-  county?: string;
+  state?: string;
   city?: string;
   address?: string;
   phone?: string;

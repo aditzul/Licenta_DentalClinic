@@ -120,7 +120,6 @@ export class UsersComponent implements OnInit {
 
   editUser(user: User) {
     //const medic = this.medics.find((m) => user.role === Role.Medic) || null;
-    console.log(user)
     const dialogRef = this.dialog.open(UserDialogComponent, {
       data: {
         user,
