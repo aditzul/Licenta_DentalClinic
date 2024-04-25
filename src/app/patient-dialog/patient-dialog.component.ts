@@ -60,9 +60,13 @@ export class PatientDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: PatientDialog,
     private userService: UserService,
   ) {
+<<<<<<< HEAD
     this.isAdd = !this.data.patient?.id
     this.countries = this.service.getCountries();
     this.initializeForm();
+=======
+    this.isAdd = !this.data.patient?.ID
+>>>>>>> parent of 3e79fcd (Fixed viewing patients for both admins and medics on all tables)
   }
 
   ngOnInit() {
@@ -100,6 +104,7 @@ export class PatientDialogComponent implements OnInit {
     const countryValue = this.data.patient?.country ? this.service.getCountryByShort(this.data.patient.country) : null;
     const stateValue = this.data.patient?.state
     this.patientForm = new FormGroup({
+<<<<<<< HEAD
       first_name: new FormControl(this.data.patient?.first_name || '', Validators.required),
       last_name: new FormControl(this.data.patient?.last_name || '', Validators.required),
       cnp: new FormControl(this.data.patient?.cnp || '', [Validators.required, Validators.pattern(/^\d{13}$/)]),
@@ -115,6 +120,18 @@ export class PatientDialogComponent implements OnInit {
       country: new FormControl(this.data.patient?.country),
       state: new FormControl(this.data.patient?.state),
       city: this.city,
+=======
+      first_name: new FormControl(this.patient?.FIRST_NAME || '', Validators.required),
+      cnp: new FormControl(this.patient?.CNP || '', [Validators.required, Validators.pattern(/^\d{13}$/)]),
+      birth_date: new FormControl(this.patient?.BIRTH_DATE || '', Validators.required),
+      sex: new FormControl(this.patient?.SEX || '', Validators.required),
+      address: new FormControl(this.patient?.ADDRESS || '', Validators.required),
+      phone: new FormControl(this.patient?.PHONE || '', [Validators.required, Validators.pattern(/^\d{10}$/)]),
+      email: new FormControl(this.patient?.EMAIL || '', [Validators.required, Validators.email]),
+      phisical_file: new FormControl(this.patient?.PHISICAL_FILE || ''),
+      secondary_contact: new FormControl(this.patient?.SECONDARY_CONTACT_NAME || ''),
+      medic_user_id: new FormControl(this.patient?.MEDIC_ID || (this.allMedics.length > 0 ? this.allMedics[0].id : '')),
+>>>>>>> parent of 3e79fcd (Fixed viewing patients for both admins and medics on all tables)
     });
     console.log(countryValue['name'])
   }
@@ -129,7 +146,11 @@ export class PatientDialogComponent implements OnInit {
     const details: any = {};
     if (this.data.patient) {
       // If it's an existing patient, set its ID
+<<<<<<< HEAD
       details.id = this.data.patient.id;
+=======
+      details.PATIENT_ID = this.patient.ID;
+>>>>>>> parent of 3e79fcd (Fixed viewing patients for both admins and medics on all tables)
     }
 
     // Assign values from form controls to details object

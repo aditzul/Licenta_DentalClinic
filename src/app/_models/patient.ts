@@ -1,4 +1,5 @@
 export interface Patient {
+<<<<<<< HEAD
   id?: number;
   first_name?: string;
   last_name?: string;
@@ -17,6 +18,26 @@ export interface Patient {
   secondary_contact_phone?: string;
   medic_id?: string;
   created_at?: string;
+=======
+  ID?: number;
+  FIRST_NAME?: string;
+  LAST_NAME?: string;
+  CNP?: string;
+  AGE?: number;
+  BIRTH_DATE?: string;
+  SEX?: Sex;
+  COUNTRY?: string;
+  COUNTY?: string;
+  CITY?: string;
+  ADDRESS?: string;
+  PHONE?: string;
+  EMAIL?: string;
+  PHISICAL_FILE?: string;
+  SECONDARY_CONTACT_NAME?: string;
+  SECONDARY_CONTACT_PHONE?: string;
+  MEDIC_ID?: string;
+  CREATED_AT?: string;
+>>>>>>> parent of 3e79fcd (Fixed viewing patients for both admins and medics on all tables)
 }
 
 export interface AssignedPatientsData {

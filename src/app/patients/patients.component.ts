@@ -64,19 +64,21 @@ export class PatientsComponent implements OnInit {
     if (!this.currentUser) {
       return; // If currentUser is undefined, exit the function
     }
+  
     if (this.currentUser.role === Role.Admin) {
       // User is an Admin, load all patients
       this.patientService.getAllPatients().subscribe((patients) => {
         this.loaded = true;
-        this.patients = Object.values(patients);
+        this.patients = patients;
       });
     } else if (this.currentUser.role === Role.Medic) {
       // User is a Medic, load patients by Medic ID
       const medicId = this.currentUser.id;
+  
       if (medicId) {
-        this.patientService.getPatientsByMedicID(medicId.toString()).subscribe((response: any) => {
+        this.patientService.getPatientsByMedicID(medicId.toString()).subscribe((assignedPatientsData) => {
           this.loaded = true;
-          this.patients = Object.values(response);
+          this.patients = assignedPatientsData?.assignedPatients || [];
         });
       } else {
         console.error('Medic ID not found in user details.');

@@ -21,7 +21,7 @@ export class PatientTableComponent implements OnInit {
   @Input() isEdit = false;
   @Input() title = '';
 
-  displayedColumns: string[] = ['id', 'sex', 'first_name', 'last_name', 'age', 'cnp', 'created_at', 'actions'];
+  displayedColumns: string[] = ['ID', 'SEX', 'FIRST_NAME', 'LAST_NAME', 'AGE', 'CNP', 'CREATED_AT', 'Actions'];
 
   dataSource = new MatTableDataSource(this.patients);
 
@@ -40,9 +40,11 @@ export class PatientTableComponent implements OnInit {
     this.loadPatients();
   }
 
-  loadPatients() {
+  private loadPatients() {
     const userRole = this.authService.userValue?.role;
+  
     if (userRole === Role.Admin) {
+<<<<<<< HEAD
       this.patientService.getAllPatients().subscribe((patients: Patient[]) => {
         this.patients = patients;
       });
@@ -51,6 +53,20 @@ export class PatientTableComponent implements OnInit {
       if (medic_id) {
         this.patientService.getPatientsByMedicID(medic_id.toString()).subscribe((response: any) => {
           this.patients = response;
+=======
+      // User is an Admin, load all patients
+      this.patientService.getAllPatients().subscribe((response: any) => {
+        this.patients = response;
+        this.dataSource.data = this.patients;
+      });
+    } else if (userRole === Role.Medic) {
+      // User is a Medic, load patients by Medic ID
+      const medicId = this.authService.userValue?.id;
+      if (medicId) {
+        this.patientService.getPatientsByMedicID(medicId.toString()).subscribe((response: any) => {
+          this.patients = response.assignedPatients;
+          this.dataSource.data = this.patients;
+>>>>>>> parent of 3e79fcd (Fixed viewing patients for both admins and medics on all tables)
         });
       } else {
         console.error('Medic ID not found in user details.');
@@ -80,9 +96,34 @@ export class PatientTableComponent implements OnInit {
   }
 
   editPatient(patient: Patient) {
+<<<<<<< HEAD
     const dialogRef = this.dialog.open(PatientDialogComponent, {
       data: {
         patient,
+=======
+    const patientId: number = patient.ID as number;
+    this.patientService.getPatientById(patientId.toString()).subscribe(
+      (patientDetails: Patient) => {
+        const dialogRef = this.dialog.open(PatientDialogComponent, {
+          data: {
+            patient: patientDetails,
+            allMedics: this.medics,
+          },
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+          if (!result) return;
+          const { patient, details } = result;
+
+          this.patientService.updatePatient(patient).subscribe(() => {
+            this.refreshData();
+
+            this.patientService.updatePatient(<Patient>details).subscribe(() => {
+              this.refreshData();
+            });
+          });
+        });
+>>>>>>> parent of 3e79fcd (Fixed viewing patients for both admins and medics on all tables)
       },
     });
 
@@ -107,7 +148,7 @@ export class PatientTableComponent implements OnInit {
       if (result) {
         this.patientService.deletePatient(patient).subscribe(
           () => {
-            this.dataSource.data = this.dataSource.data.filter(p => p.id !== patient.id);
+            this.dataSource.data = this.dataSource.data.filter(p => p.ID !== patient.ID);
           },
         );
       }
@@ -115,7 +156,7 @@ export class PatientTableComponent implements OnInit {
   }
 
   goToPatient(patient: Patient) {
-    this.router.navigate([`/patients/${patient.id}`]);
+    this.router.navigate([`/patients/${patient.ID}`]);
   }
 
   private refreshData() {

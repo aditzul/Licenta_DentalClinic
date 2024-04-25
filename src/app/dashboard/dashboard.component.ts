@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
   patients: Patient[] = [];
   medics: Medic[] = [];
   currentMedic: Medic = {};
-  // currentUser: User = {};
+  currentUser: User = {};
   cardsData = {
     totalPatients: '',
     femalePatients: '',
@@ -37,13 +37,13 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this.currentUser = this.authService.userValue || {};
+    this.currentUser = this.authService.userValue || {};
 
     this.loadPatients();
 
-    // this.medicService.getAllMedics().subscribe((medics: Medic[]) => {
-    //   this.medics = medics;
-    // });
+    this.medicService.getAllMedics().subscribe((medics: Medic[]) => {
+      this.medics = medics;
+    });
   }
 
 
@@ -85,20 +85,18 @@ export class DashboardComponent implements OnInit {
   }
 
   computeLastPatients(patients: Patient[]): Patient[] {
-    const patientsArray = Object.values(this.patients)
-    const sortedByDate = patientsArray.sort((a, b) => this.sortByDate(<string>a.created_at, <string>b.created_at));
+    const sortedByDate = patients.sort((a, b) => this.sortByDate(<string>a.CREATED_AT, <string>b.CREATED_AT));
     return sortedByDate.slice(-5).reverse();
   }
 
   createCardsData() {
-    const patientsArray = Object.values(this.patients)
-    const malePatients = patientsArray.filter((p) => p.sex === Sex.Male).length;
-    const femalePatients = patientsArray.filter((p) => p.sex === Sex.Female).length;
-    
-    this.cardsData.totalPatients = patientsArray.length.toString();
-    this.cardsData.femalePatients = this.computePercentage(patientsArray.length, femalePatients).toFixed(2).toString() + '%';
-    this.cardsData.malePatients = this.computePercentage(patientsArray.length, malePatients).toFixed(2).toString() + '%';
-    this.cardsData.averageAge = (patientsArray.reduce((accum: number, reducer: any) => accum + reducer.age, 0) / patientsArray.length).toFixed(2).toString();
+    const malePatients = this.patients.filter((p) => p.SEX === Sex.Male).length;
+    const femalePatients = this.patients.filter((p) => p.SEX === Sex.Female).length;
+
+    this.cardsData.totalPatients = this.patients.length.toString();
+    this.cardsData.femalePatients = this.computePercentage(this.patients.length, femalePatients).toFixed(2).toString() + '%';
+    this.cardsData.malePatients = this.computePercentage(this.patients.length, malePatients).toFixed(2).toString() + '%';
+    this.cardsData.averageAge = (this.patients.reduce((accum: number, reducer: any) => accum + reducer.AGE, 0) / this.patients.length).toFixed(2).toString();
 
   }
 
@@ -118,21 +116,21 @@ export class DashboardComponent implements OnInit {
       ref.males = [];
       ref.age = [];
     });
-    const patientsArray = Object.values(patients)
-    patientsArray.forEach((patient: Patient) => {
+
+    patients.forEach((patient: Patient) => {
       Object.keys(patientsByAge).forEach((key) => {
         const ref = patientsByAge[key];
-        const age = patient.age || 0;
+        const age = patient.AGE || 0;
         if (age >= ref.min && age <= ref.max) {
-          if (patient.sex === Sex.Male) {
-            ref.males.push(patient.id);
+          if (patient.SEX === Sex.Male) {
+            ref.males.push(patient.ID);
           }
 
-          if (patient.sex === Sex.Female) {
-            ref.females.push(patient.id);
+          if (patient.SEX === Sex.Female) {
+            ref.females.push(patient.ID);
           }
 
-          ref.age.push(patient.id);
+          ref.age.push(patient.ID);
         }
       });
     });
@@ -172,9 +170,9 @@ export class DashboardComponent implements OnInit {
 
   createSexChart(patients: Patient[]) {
     const patientsByDate: any = {};
-    const patientsArray = Object.values(patients)
-    patientsArray.forEach((patient: Patient) => {
-      const date = new Date(<string>patient.created_at);
+
+    patients.forEach((patient: Patient) => {
+      const date = new Date(<string>patient.CREATED_AT);
       const label = date.toISOString().split('T')[0];
 
       if (!patientsByDate[label]) {
@@ -184,12 +182,12 @@ export class DashboardComponent implements OnInit {
         };
       }
 
-      if (patient.sex === Sex.Male) {
-        patientsByDate[label].male.push(patient.id);
+      if (patient.SEX === Sex.Male) {
+        patientsByDate[label].male.push(patient.ID);
       }
 
-      if (patient.sex === Sex.Female) {
-        patientsByDate[label].female.push(patient.id);
+      if (patient.SEX === Sex.Female) {
+        patientsByDate[label].female.push(patient.ID);
       }
     });
 
