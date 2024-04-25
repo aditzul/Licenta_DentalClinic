@@ -1,4 +1,3 @@
-import { LocationService } from './_services/location.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -72,7 +71,6 @@ import { SmsoApiComponent } from './smso-api/smso-api.component';
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
   ],
   providers: [
-    [LocationService],
     DatePipe,
     {
       provide: HTTP_INTERCEPTORS,

@@ -11,13 +11,13 @@ export class PatientService {
 
   getAllPatients(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/Patients/GetAllPatients`).pipe(
-      map(response => response.data)
+      map(response => Object.values(response.data))
     );
   }
 
   getPatientsByMedicID(ID: string): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/Patients/GetAllPatientsByMedicID/${ID}`).pipe(
-      map(response => response.data)
+      map(response => Object.values(response.data))
     );
   }
   
@@ -37,23 +37,17 @@ export class PatientService {
   }
 
   updatePatient(patient: Patient): Observable<any> {
-<<<<<<< HEAD
     return this.http.put<any>(`${environment.apiUrl}/Patients/UpdatePatient/${patient.id}`, patient);
-=======
-    return this.http.put<any>(`${environment.apiUrl}/Patients/UpdatePatient/${patient.ID}`, {
-      ...patient,
-    });
->>>>>>> parent of 3e79fcd (Fixed viewing patients for both admins and medics on all tables)
   }
 
   deletePatient(patient: Patient): Observable<any> {
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
 
-    return this.http.delete(`${environment.apiUrl}/Patients/DeletePatient/${patient.ID}`, { headers, responseType: 'text' as const });
+    return this.http.delete(`${environment.apiUrl}/Patients/DeletePatient/${patient.id}`, { headers, responseType: 'text' as const });
   }
 
   GetAllCommentsByPatientID(patient: Patient): Observable<PatientComment[]> {
-    return this.http.get<PatientComment[]>(`${environment.apiUrl}/Comments/GetAllCommentsByPatientID/${patient.ID}`);
+    return this.http.get<PatientComment[]>(`${environment.apiUrl}/Comments/GetAllCommentsByPatientID/${patient.id}`);
   }
 
   AddComment(comment: PatientComment): Observable<any> {
@@ -78,7 +72,7 @@ export class PatientService {
   //TO CHECK HERE BELOW WHAT I KEEP AND WHAT I DELETE
 
   getMedicalDataByPatientId(patient: Patient): Observable<PatientHistory[]> {
-    return this.http.get<PatientHistory[]>(`${environment.apiUrl}/MedicalHistory/GetAllMedicalHistory/${patient.ID}`);
+    return this.http.get<PatientHistory[]>(`${environment.apiUrl}/MedicalHistory/GetAllMedicalHistory/${patient.id}`);
   }
 
   AddMedicalDataByPatientId(history: PatientHistory): Observable<any> {

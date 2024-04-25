@@ -69,8 +69,7 @@ export class UsersComponent implements OnInit {
 
   refreshData() {
     this.userService.getAllUsers().subscribe((data: any) => {
-      const usersArray: User[] = Object.values(data);
-      this.users = usersArray;
+      this.users = data;
       this.filterChange({ value: this.roleFilter });
     });
 

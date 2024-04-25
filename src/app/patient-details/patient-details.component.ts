@@ -72,10 +72,10 @@ export class PatientDetailsComponent implements OnInit {
       this.patient = patient;
 
       // Use MEDIC_ID directly from patient
-      if (patient.MEDIC_ID) {
+      if (patient.medic_id) {
         // Use your existing service method to fetch the medic
-        const medicId = Number(patient.MEDIC_ID);
-        this.medicService.getMedic({ id: medicId }).subscribe((medic: Medic) => {
+        const medic_id = Number(patient.medic_id);
+        this.medicService.getMedic({ id: medic_id }).subscribe((medic: Medic) => {
           this.medic = medic;
         });
       }
@@ -86,7 +86,7 @@ export class PatientDetailsComponent implements OnInit {
   }
 
   editPatient(patient: Patient) {
-    const patientId: number = patient.ID as number;
+    const patientId: number = patient.id as number;
     
     this.patientService.getPatientById(patientId.toString()).subscribe(
       (patientDetails: Patient) => {
@@ -121,7 +121,7 @@ export class PatientDetailsComponent implements OnInit {
 
     if (hospital && intervention && interventioN_DATE) {
       const history = Object.assign(this.newHistory, {
-        patienT_ID: this.patient.ID,
+        patienT_ID: this.patient.id,
       });
       this.patientService.AddMedicalDataByPatientId(<PatientHistory>history).subscribe((data) => {
         this.loadingHistory = false;
@@ -149,7 +149,7 @@ export class PatientDetailsComponent implements OnInit {
     this.loadingComment = true;
 
     const comment = {
-      patienT_ID: this.patient.ID,
+      patienT_ID: this.patient.id,
       MEDIC_ID: this.medic.id,
       comment: this.newComment,
       commenT_TYPE: true,

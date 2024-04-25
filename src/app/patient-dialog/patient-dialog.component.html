@@ -133,46 +133,29 @@
           Medic is required
         </mat-hint>
       </mat-form-field>
-      <mat-form-field appearance="fill">
+
+      <mat-form-field>
         <mat-label>Country</mat-label>
-        <mat-select
-          [formControl]="country"
-          name="country"
-          [errorStateMatcher]="matcher"
-        >
-          <mat-option *ngFor="let country of countries" [value]="country.shortName">
-            {{ country.name }}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="country.hasError('required')"
-          >Please select a country.</mat-error
-        >
+        <input matInput type="text" formControlName="country" />
+        <mat-hint *ngIf="patientForm.get('country')?.touched && patientForm.get('country')?.errors" class="mat-mdc-form-field-error">
+          Country is required
+        </mat-hint>
       </mat-form-field>
-      <mat-form-field appearance="fill">
+
+      <mat-form-field>
         <mat-label>State</mat-label>
-        <mat-select
-          [formControl]="state"
-          name="state"
-          [errorStateMatcher]="matcher"
-        >
-          <mat-option *ngFor="let state of states" [value]="state">
-            {{ state }}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="state.hasError('required')"
-          >Please select a state.</mat-error
-        >
+        <input matInput type="text" formControlName="state" />
+        <mat-hint *ngIf="patientForm.get('state')?.touched && patientForm.get('state')?.errors" class="mat-mdc-form-field-error">
+          State is required
+        </mat-hint>
       </mat-form-field>
-      <mat-form-field appearance="fill">
+
+      <mat-form-field>
         <mat-label>City</mat-label>
-        <mat-select [formControl]="city" name="city" [errorStateMatcher]="matcher">
-          <mat-option *ngFor="let city of cities" [value]="city">
-            {{ city }}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="city.hasError('required')"
-          >Please select a city.</mat-error
-        >
+        <input matInput type="text" formControlName="city" />
+        <mat-hint *ngIf="patientForm.get('city')?.touched && patientForm.get('city')?.errors" class="mat-mdc-form-field-error">
+          City is required
+        </mat-hint>
       </mat-form-field>
   </form>
 </div>

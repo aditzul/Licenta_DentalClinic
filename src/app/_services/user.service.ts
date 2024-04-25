@@ -10,13 +10,13 @@ export class UserService {
 
   getAllUsers(): Observable<User[]> {
     return this.http.get<any>(`${environment.apiUrl}/Users/GetAllUsers`).pipe(
-      map(response => response.data)
+      map(response => Object.values(response.data))
     );
   }
 
   getAllMedics(): Observable<User[]> {
     return this.http.get<any>(`${environment.apiUrl}/Users/GetAllMedics`).pipe(
-      map(response => response.data)
+      map(response => Object.values(response.data))
     );
   }
 
