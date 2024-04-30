@@ -23,7 +23,7 @@ export class PatientService {
   
   getPatientById(ID: string): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/Patients/GetPatient/${ID}`).pipe(
-      map(response => response.data)
+      map(response => response.data[0])
     );
   }
 
@@ -46,13 +46,15 @@ export class PatientService {
     return this.http.delete(`${environment.apiUrl}/Patients/DeletePatient/${patient.id}`, { headers, responseType: 'text' as const });
   }
 
-  GetAllCommentsByPatientID(patient: Patient): Observable<PatientComment[]> {
-    return this.http.get<PatientComment[]>(`${environment.apiUrl}/Comments/GetAllCommentsByPatientID/${patient.id}`);
+  GetAllCommentsByPatientID(patient: Patient): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/Comments/GetAllCommentsByPatientID/${patient.id}`).pipe(
+      map(response => Object.values(response.data[0]))
+    );
   }
 
   AddComment(comment: PatientComment): Observable<any> {
     const commentDTO: PatientComment = Object.assign(comment, {
-      createD_AT: new Date().toISOString(),
+      created_at: new Date().toISOString(),
     });
 
     return this.http.post<PatientComment[]>(`${environment.apiUrl}/Comments/AddComment`, {

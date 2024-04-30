@@ -207,19 +207,24 @@
       </mat-toolbar>
       <mat-card appearance="outlined" class="comments">
         <mat-card-content>
-          <div class="comments-container" *ngIf="comments.length">
-            <div *ngFor="let comment of comments">
-              <mat-divider></mat-divider>
-              <p class="row comment-row">
-                <span class="label" style="margin-right: 10px;">{{ comment.createD_AT | date : "dd.MM.yyyy - HH:mm:ss" }}: </span>
-                <span class="value"> {{ comment.comment }}</span>
-                <span class="toolbar-spacer"></span>
-                <button mat-icon-button (click)="deleteComment(comment)">
-                  <mat-icon fontIcon="delete" color="warn"></mat-icon>
-                </button>
-              </p>
-              <mat-divider></mat-divider>
-            </div>
+          <div class="comments-container">
+            <!-- Parcurgem fiecare zi distinctă -->
+            <ng-container *ngFor="let day of commentsByDay | keyvalue">
+              <!-- Afisăm data ca titlu pentru fiecare grup -->
+              <h3 class="comment-day">{{ day.key }}</h3>
+              <!-- Afisăm comentariile pentru ziua respectivă -->
+              <div *ngFor="let comment of day.value">
+                <p class="row comment-row">
+                  <span class="label">{{ comment.created_at | date : "HH:mm:ss" }}: </span>
+                  <span style="margin-left: 5px" class="value">{{ comment.comment }}</span>
+                  <span class="toolbar-spacer"></span>
+                  <button mat-icon-button (click)="deleteComment(comment)">
+                    <mat-icon fontIcon="delete" color="warn"></mat-icon>
+                  </button>
+                </p>
+                <mat-divider></mat-divider>
+              </div>
+            </ng-container>
           </div>
           <form (ngSubmit)="addNewComment()">
             <mat-form-field class="full-width">

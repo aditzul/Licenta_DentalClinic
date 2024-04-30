@@ -1,17 +1,35 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { PatientService } from '../_services/patient.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MedicService } from '../_services/medic.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Patient, PatientComment, PatientHistory } from '../_models/patient';
-import { Medic } from '../_models/medic';
+import { User } from '../_models/user';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../_helpers/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PatientDialogComponent } from '../patient-dialog/patient-dialog.component';
+import { UserService } from '../_services/user.service';
+import { Pipe, PipeTransform } from '@angular/core';
 
+@Pipe({
+  name: 'filterByDay'
+})
+export class FilterByDayPipe implements PipeTransform {
+  transform(comments: PatientComment[]): { [key: string]: PatientComment[] } {
+    const commentsByDay: { [key: string]: PatientComment[] } = {};
 
+    comments.forEach(comment => {
+      const date = new Date(comment.created_at).toDateString();
+      if (!commentsByDay[date]) {
+        commentsByDay[date] = [];
+      }
+      commentsByDay[date].push(comment);
+    });
+
+    return commentsByDay;
+  }
+}
 @Component({
   selector: 'app-patient-details',
   templateUrl: './patient-details.component.html',
@@ -19,9 +37,8 @@ import { PatientDialogComponent } from '../patient-dialog/patient-dialog.compone
 })
 export class PatientDetailsComponent implements OnInit {
   patient: Patient = {};
-  medic: Medic = {};
+  medic: User = {};
   displayedColumns: string[] = ['id', 'hospital', 'intervention', 'interventioN_DATE', 'actions'];
-  comments: PatientComment[] = [];
   medicalHistory: MatTableDataSource<PatientHistory> = new MatTableDataSource<PatientHistory>();
   graphsError = false;
   newComment = '';
@@ -32,26 +49,19 @@ export class PatientDetailsComponent implements OnInit {
     intervention: '',
     interventioN_DATE: '',
   };
-
-  chartColors = {
-    red: 'rgb(244, 67, 54)',
-    blue: 'rgb(3,169,244)',
-    purple: 'rgb(63, 81, 181)',
-    black: 'rgb(0, 0, 0)',
-  };
-
-  public ekgChart: any;
-  public tempChart: any;
-  public pulseChart: any;
+  comments: PatientComment[] = [];
+  commentsByDay: { [key: string]: PatientComment[] } = {};
+  uniqueDays: string[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator = <MatPaginator>{};
-  medics: any
+  medics: any;
+Object: any;
 
   constructor(
     private patientService: PatientService,
-    private medicService: MedicService,
+    private userService: UserService,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar,    
+    private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private router: Router,
   ) {}
@@ -75,19 +85,20 @@ export class PatientDetailsComponent implements OnInit {
       if (patient.medic_id) {
         // Use your existing service method to fetch the medic
         const medic_id = Number(patient.medic_id);
-        this.medicService.getMedic({ id: medic_id }).subscribe((medic: Medic) => {
+        this.userService.getUser({ id: medic_id }).subscribe((medic: User) => {
           this.medic = medic;
         });
       }
 
-      this.getAllHistory();
       this.getAllComments();
+      this.getAllHistory();
+      console.log(this.commentsByDay)
     });
   }
 
   editPatient(patient: Patient) {
     const patientId: number = patient.id as number;
-    
+
     this.patientService.getPatientById(patientId.toString()).subscribe(
       (patientDetails: Patient) => {
         const dialogRef = this.dialog.open(PatientDialogComponent, {
@@ -96,11 +107,11 @@ export class PatientDetailsComponent implements OnInit {
             allMedics: this.medics,
           },
         });
-  
+
         dialogRef.afterClosed().subscribe((result) => {
           if (!result) return;
           const { patient, details } = result;
-  
+
           this.patientService.updatePatient(patient).subscribe(() => {
             this.getData(patientId.toString());
           });
@@ -121,7 +132,7 @@ export class PatientDetailsComponent implements OnInit {
 
     if (hospital && intervention && interventioN_DATE) {
       const history = Object.assign(this.newHistory, {
-        patienT_ID: this.patient.id,
+        patient_id: this.patient.id,
       });
       this.patientService.AddMedicalDataByPatientId(<PatientHistory>history).subscribe((data) => {
         this.loadingHistory = false;
@@ -149,11 +160,10 @@ export class PatientDetailsComponent implements OnInit {
     this.loadingComment = true;
 
     const comment = {
-      patienT_ID: this.patient.id,
-      MEDIC_ID: this.medic.id,
+      patient_id: this.patient.id,
       comment: this.newComment,
-      commenT_TYPE: true,
     };
+
     if (comment.comment == '') {
       this.snackBar.open('Nu poti adauga un comentariu gol.', 'close', {
         duration: 2000,
@@ -193,7 +203,20 @@ export class PatientDetailsComponent implements OnInit {
 
   getAllComments() {
     this.patientService.GetAllCommentsByPatientID(this.patient).subscribe((comments) => {
-      this.comments = comments;
+      this.commentsByDay = this.groupCommentsByDay(comments);
     });
+  }
+  
+  groupCommentsByDay(comments: PatientComment[]): { [key: string]: PatientComment[] } {
+    const groupedComments: { [key: string]: PatientComment[] } = {};
+    comments.forEach(comment => {
+      const commentDate = new Date(comment.created_at);
+      const dayKey = commentDate.toLocaleDateString('ro-RO');
+      if (!groupedComments[dayKey]) {
+        groupedComments[dayKey] = [];
+      }
+      groupedComments[dayKey].push(comment);
+    });
+    return groupedComments;
   }
 }

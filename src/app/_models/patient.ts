@@ -51,16 +51,14 @@ export interface SensorData {
 
 export interface PatientComment {
   id: number;
-  patienT_ID: number;
-  MEDIC_ID: number;
+  patient_id: number;
   comment: string;
-  commenT_TYPE: boolean;
-  createD_AT: string;
+  created_at: string;
 }
 
 export interface PatientHistory {
   id: number;
-  patienT_ID: number;
+  patient_id: number;
   hospital: string;
   intervention: string;
   interventioN_DATE: string;
