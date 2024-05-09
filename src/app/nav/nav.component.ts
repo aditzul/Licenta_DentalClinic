@@ -42,6 +42,38 @@ export class NavComponent {
           iconName: 'fa-calendar-alt',
         },
         {
+          displayName: 'Settings',
+          route: 'settings',
+          iconName: 'fa-cog',
+          // children: [
+          //   {
+          //     displayName: 'Communication',
+          //     route: 'settings/communication',
+          //     iconName: 'fa-comments',
+          //   },
+          //   {
+          //     displayName: 'Forms',
+          //     route: 'settings/forms',
+          //     iconName: 'fa-file-alt',
+          //   },
+          //   {
+          //     displayName: 'Company Data',
+          //     route: 'settings/company-data',
+          //     iconName: 'fa-building',
+          //   },
+          //   {
+          //     displayName: 'Works',
+          //     route: 'settings/works',
+          //     iconName: 'fa-tools',
+          //   },
+          //   {
+          //     displayName: 'Conditions',
+          //     route: 'settings/conditions',
+          //     iconName: 'fa-heartbeat',
+          //   }
+          // ]
+        },
+        {
           displayName: 'Admin',
           iconName: 'fa-user-gear',
           hidden: !this.isAdmin,
@@ -58,37 +90,6 @@ export class NavComponent {
             }
           ]
         },
-        {
-          displayName: 'Settings',
-          iconName: 'fa-cog',
-          children: [
-            {
-              displayName: 'Communication',
-              route: 'settings/communication',
-              iconName: 'fa-comments',
-            },
-            {
-              displayName: 'Forms',
-              route: 'settings/forms',
-              iconName: 'fa-file-alt',
-            },
-            {
-              displayName: 'Company Data',
-              route: 'settings/company-data',
-              iconName: 'fa-building',
-            },
-            {
-              displayName: 'Works',
-              route: 'settings/works',
-              iconName: 'fa-tools',
-            },
-            {
-              displayName: 'Conditions',
-              route: 'settings/conditions',
-              iconName: 'fa-heartbeat',
-            }
-          ]
-        },      
       ];
     });
   }

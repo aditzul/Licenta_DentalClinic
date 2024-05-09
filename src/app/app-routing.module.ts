@@ -8,7 +8,6 @@ import { NavComponent } from './nav/nav.component';
 import { PatientsComponent } from './patients/patients.component';
 import { UsersComponent } from './users/users.component';
 import { ProfileComponent } from './profile/profile.component';
-import { PatientViewComponent } from './patient-view/patient-view.component';
 import { PatientDetailsComponent } from './patient-details/patient-details.component';
 import { AppointmentsComponent } from './appointments/appointments.component';
 import { SettingsComponent } from './settings/settings.component';
@@ -27,10 +26,30 @@ const routes: Routes = [
         data: { breadcrumb: 'Home' },
       },
       {
-        path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full',
-        data: { breadcrumb: 'Home' },
+        path: 'dashboard',
+        component: DashboardComponent,
+        canActivate: [AuthGuard],
+        data: { roles: [Role.Admin, Role.Medic], breadcrumb: 'Dashboard' },
+      },
+      {
+        path: 'patients',
+        component: PatientsComponent,
+        canActivate: [AuthGuard],
+        data: { roles: [Role.Admin, Role.Medic], breadcrumb: 'Patients' },
+        children: [
+          {
+            path: ':userId',
+            canActivate: [AuthGuard],
+            data: { roles: [Role.Admin, Role.Medic], breadcrumb: 'Details' },
+            component: PatientDetailsComponent,
+          },
+        ],
+      },
+      {
+        path: 'appointments',
+        component: AppointmentsComponent,
+        canActivate: [AuthGuard],
+        data: { roles: [Role.Admin, Role.Medic], breadcrumb: 'Appointments' },
       },
       {
         path: 'admin',
@@ -61,60 +80,7 @@ const routes: Routes = [
         path: 'settings',
         component: SettingsComponent,
         canActivate: [AuthGuard],
-        data: { roles: [Role.Admin], breadcrumb: 'Settings' },
-        children: [
-          {
-            path: 'communication',
-            component: SettingsComponent,
-            data: { breadcrumb: 'Communication' }
-          },
-          {
-            path: 'forms',
-            component: SettingsComponent,
-            data: { breadcrumb: 'Forms' }
-          },
-          {
-            path: 'company-data',
-            component: SettingsComponent,
-            data: { breadcrumb: 'Company Data' }
-          },
-          {
-            path: 'works',
-            component: SettingsComponent,
-            data: { breadcrumb: 'Works' }
-          },
-          {
-            path: 'conditions',
-            component: SettingsComponent,
-            data: { breadcrumb: 'Conditions' }
-          }
-        ]
-      },
-      {
-        path: 'dashboard',
-        component: DashboardComponent,
-        canActivate: [AuthGuard],
-        data: { roles: [Role.Admin, Role.Medic], breadcrumb: 'Dashboard' },
-      },
-      {
-        path: 'patients',
-        component: PatientsComponent,
-        canActivate: [AuthGuard],
-        data: { roles: [Role.Admin, Role.Medic], breadcrumb: 'Patients' },
-        children: [
-          {
-            path: ':userId',
-            canActivate: [AuthGuard],
-            data: { roles: [Role.Admin, Role.Medic], breadcrumb: 'Details' },
-            component: PatientDetailsComponent,
-          },
-        ],
-      },
-      {
-        path: 'appointments',
-        component: AppointmentsComponent,
-        canActivate: [AuthGuard],
-        data: { roles: [Role.Admin, Role.Medic], breadcrumb: 'Appointments' },
+        data: { roles: [Role.Admin, Role.Medic], breadcrumb: 'Settings' },
       },
       {
         path: 'profile',

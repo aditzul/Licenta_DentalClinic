@@ -1,0 +1,68 @@
+<main>
+  <div class="container">
+    <div class="column-container">
+      <div class="column details">
+        <form *ngIf="smsSettingsForm" [formGroup]="smsSettingsForm" class="smsSettingsForm">
+          <div class="form-columns">
+            <div class="form-column">
+              <div class="form-row">
+                <mat-slide-toggle (change)="onToggleChange($event)" [checked]="isEnabled">
+                  Enable SMS communication
+                </mat-slide-toggle>
+              </div>
+            </div>
+            <div class="form-column">
+              <div class="form-row" *ngIf="isEnabled">
+                <mat-form-field>
+                  <mat-label>SMS Send Hour</mat-label>
+                  <mat-select formControlName="SMS_SEND_HOUR" class="form-control">
+                    <mat-option *ngFor="let hour of hours" [value]="hour">
+                      {{ hour }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-hint *ngIf="smsSettingsForm.get('SMS_SEND_HOUR')?.touched && smsSettingsForm.get('SMS_SEND_HOUR')?.errors" class="mat-mdc-form-field-error">
+                    SMS Send Hour is required
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="form-row" *ngIf="isEnabled">
+                <mat-form-field>
+                  <mat-label>SMS Send Days</mat-label>
+                  <mat-select formControlName="SMS_SEND_DAYS" class="form-control">
+                    <mat-option *ngFor="let day of days" [value]="day.value">
+                      {{ day.value }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-hint *ngIf="smsSettingsForm.get('SMS_SEND_DAYS')?.touched && smsSettingsForm.get('SMS_SEND_DAYS')?.errors" class="mat-mdc-form-field-error">
+                    SMS Send Days is required
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="form-column">
+              <div class="form-row" *ngIf="isEnabled">
+                <mat-form-field>
+                  <mat-label>SMS Template</mat-label>
+                  <textarea 
+                    matInput 
+                    formControlName="SMS_TEMPLATE" 
+                    class="form-control" 
+                    cdkTextareaAutosize
+                    cdkAutosizeMinRows="8"
+                    cdkAutosizeMaxRows="10">
+                  </textarea>
+                  <mat-hint *ngIf="smsSettingsForm.get('SMS_TEMPLATE')?.touched && smsSettingsForm.get('SMS_TEMPLATE')?.errors" class="mat-mdc-form-field-error">
+                    SMS Template is required
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="form-row">
+                <button mat-raised-button color="primary" [disabled]="!smsSettingsForm.valid" (click)="saveForm()">Save</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>

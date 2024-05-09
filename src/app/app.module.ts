@@ -34,6 +34,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { CdkMenuModule } from '@angular/cdk/menu';
 import { SettingsComponent } from './settings/settings.component';
 import { SmsoApiComponent } from './smso-api/smso-api.component';
+import { CommunicationComponent } from './communication/communication.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
 
 @NgModule({
   declarations: [
@@ -59,6 +62,7 @@ import { SmsoApiComponent } from './smso-api/smso-api.component';
     NoRightClickDirective,
     SettingsComponent,
     SmsoApiComponent,
+    CommunicationComponent,
   ],
   imports: [
     BrowserModule, 
@@ -67,6 +71,7 @@ import { SmsoApiComponent } from './smso-api/smso-api.component';
     HttpClientModule, 
     MaterialModule,
     MatTabsModule,
+    MatSlideToggleModule,
     CdkMenuModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
   ],

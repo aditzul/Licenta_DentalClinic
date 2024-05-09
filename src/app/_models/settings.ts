@@ -7,6 +7,7 @@ export interface SMSOSettings {
     SMS_SEND_SMS: number;
     SMS_SEND_HOUR: string;
     SMS_SEND_DAYS: number;
+    SMS_TEMPLATE: string;
   }
   
   export interface CompanySettings {
