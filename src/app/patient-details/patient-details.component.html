@@ -8,7 +8,7 @@
               <img [src]="patient.sex === 'F' ? '../../assets/images/female-icon.png' : '../../assets/images/male-icon.png'" alt="Gender Icon" />
             </div>
           </mat-card-title>
-          <mat-card-title>{{ patient.first_name }} {{ patient.first_name }}</mat-card-title>
+          <mat-card-title>{{ patient.first_name }} {{ patient.last_name }}</mat-card-title>
           <mat-card-subtitle
             ><strong>{{ patient.age }} Ani</strong></mat-card-subtitle
           >
@@ -17,9 +17,11 @@
         <mat-card-content>
           <mat-divider></mat-divider>
           <p class="row">
-            <span class="label">Icons </span>
-            <span class="value">here some icons (aparat dentar etc.)</span>
+            <span class="label">Modifica date pacient </span>
           </p>
+          <button mat-icon-button (click)="editPatient(patient)">
+            <mat-icon fontIcon="edit" color="primary"></mat-icon>
+          </button>
         </mat-card-content>
       </mat-card>
     </div>
@@ -32,7 +34,9 @@
           <mat-divider></mat-divider>
           <p class="row">
             <span class="label">CNP: </span>
-            <span class="value">{{ patient.cnp }}</span>
+            <span class="value" *ngIf="patient.cnp; else editButton">
+              {{ patient.cnp }}
+            </span>
           </p>
           <mat-divider></mat-divider>
           <p class="row">
@@ -112,21 +116,36 @@
           <mat-divider></mat-divider>
           <p class="row">
             <span class="label">Programare viitoare: </span>
-            <span class="value">Fara programare / 01.01.2024 - 15:30</span>
-          </p>
+            <span class="value" *ngIf="futureAppointment; else noAppointment">
+              {{ futureAppointment | date: 'dd.MM.yyyy - HH:mm' }}
+            </span>
+            <ng-template #noAppointment>
+              <span class="value">Fara programare</span>
+            </ng-template>          </p>
           <mat-divider></mat-divider>
           <p class="row">
             <span class="label">Programari onorate: </span>
-            <span class="value">1</span>
+            <span class="value">{{ numConfirmedAppointments }}</span>
           </p>
           <mat-divider></mat-divider>
           <p class="row">
             <span class="label">Programari anulate: </span>
-            <span class="value">3</span>
+            <span class="value">{{ numCancelledAppointments }}</span>
+          </p>
+          <mat-divider></mat-divider>
+          <p class="row">
+            <mat-slide-toggle (change)="onToggleChange($event)" [checked]="isEnabled">
+              <strong>Comunicare prin SMS</strong>
+            </mat-slide-toggle>
           </p>
           <mat-divider></mat-divider>
           <p class="row">
             <span class="label"><a href="/appointments">Adauga programare</a></span>
+          </p>
+          <mat-divider></mat-divider>
+          <p class="row">
+            <span class="label"><a href="http://localhost:8080/Uploads/1_Adrian_Dragomiroiu/Documente/amm.py" download>Descarcă documentul</a>
+            </span>
           </p>
         </mat-card-content>
       </mat-card>
@@ -140,20 +159,35 @@
       <mat-toolbar color="primary">
         <span>Istoric programari</span>
         <span class="toolbar-spacer"></span>
-        <button mat-icon-button>
-          <mat-icon fontSet="fa-solid" fontIcon="fa-plus"></mat-icon>
-        </button>
       </mat-toolbar>
+      <mat-card appearance="outlined" class="appointment-history">
+        <mat-card-content>
+          <div *ngIf="appointments && appointments.length > 0; else noAppointments">
+            <div class="timeline">
+              <div *ngFor="let appointment of appointments" class="timeline-item" [ngClass]="{'confirmat': appointment.meta === 'Confirmat', 'anulat': appointment.meta === 'Anulat'}">
+                <div class="timeline-content">
+                  <div class="left">
+                    <div class="status">{{ appointment.meta }}</div>
+                  </div>
+                  <div class="right">
+                    <div class="date">{{ appointment.start | date: 'dd.MM.yyyy - HH:mm' }}</div>
+                  </div>
+                </div>
+              </div>              
+            </div>
+          </div>
+          <ng-template #noAppointments>
+            <div>Nu exista istoric de programari.</div>
+          </ng-template>
+        </mat-card-content>
+      </mat-card>
     </mat-tab>
-    <mat-tab label="Interventii">
+    <!-- <mat-tab label="Interventii">
       <mat-toolbar color="primary">
         <span>Interventii</span>
         <span class="toolbar-spacer"></span>
-        <button mat-icon-button>
-          <mat-icon fontSet="fa-solid" fontIcon="fa-plus"></mat-icon>
-        </button>
       </mat-toolbar>
-      <mat-card appearance="outlined" class="medical-history">
+      <mat-card appearance="outlined">
         <mat-card-content>
           <table mat-table [dataSource]="medicalHistory">
             <ng-container matColumnDef="id">
@@ -181,13 +215,13 @@
           </table>
         </mat-card-content>
       </mat-card>
-    </mat-tab>
+    </mat-tab> -->
 
     <mat-tab label="Imagistica">
       <mat-toolbar color="primary">
         <span>Imagistica</span>
         <span class="toolbar-spacer"></span>
-        <button mat-icon-button>
+        <button mat-icon-button (click)="uploadDocument('Imagistica')">
           <mat-icon fontSet="fa-solid" fontIcon="fa-plus"></mat-icon>
         </button>
       </mat-toolbar>
@@ -196,7 +230,7 @@
       <mat-toolbar color="primary">
         <span>Documente</span>
         <span class="toolbar-spacer"></span>
-        <button mat-icon-button>
+        <button mat-icon-button (click)="uploadDocument('Documente')">
           <mat-icon fontSet="fa-solid" fontIcon="fa-plus"></mat-icon>
         </button>
       </mat-toolbar>

@@ -24,7 +24,7 @@ export class SnackbarInterceptor implements HttpInterceptor {
             }      
             if (responseBody && responseBody.status === 200 && responseBody.message) {
               const message = responseBody.message;
-              this.snackBar.open(message, 'close', {
+              this.snackBar.open(message, 'Închide', {
                 duration: 2000,
                 panelClass: 'successSnack',
               });
@@ -35,7 +35,7 @@ export class SnackbarInterceptor implements HttpInterceptor {
       catchError((error) => {
         const message = error?.error?.message || 'Eroare';
         const errorMessage = error?.error?.error || '';
-        this.snackBar.open(message + ' ' + errorMessage, 'close', {
+        this.snackBar.open(message + ' ' + errorMessage, 'Închide', {
           panelClass: 'errorSnack',
         });
         return throwError(error);

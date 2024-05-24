@@ -23,7 +23,6 @@
         </div>
       </mat-toolbar-row>
     </mat-toolbar>
-    <div [cdkContextMenuTriggerFor]="context_menu">
       <div class="calendar-container">
         <!--       <app-calendar-header [(view)]="view" [(viewDate)]="viewDate">
                 </app-calendar-header> -->
@@ -70,7 +69,6 @@
         </div>
       </div>
     </div>
-  </div>
 </main>
 
 <ng-template #weekViewHourSegmentTemplate let-segment="segment" let-locale="locale" let-segmentHeight="segmentHeight" let-isTimeLabel="isTimeLabel">
@@ -86,11 +84,5 @@
     <div class="cal-time" *ngIf="isTimeLabel">
       {{ segment.date | calendarDate : "weekViewHour" : locale }}
     </div>
-  </div>
-</ng-template>
-
-<ng-template #context_menu>
-  <div class="example-menu" cdkMenu>
-    <button class="example-menu-item" cdkMenuItem>Delete</button>
   </div>
 </ng-template>

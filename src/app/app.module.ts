@@ -36,6 +36,9 @@ import { SettingsComponent } from './settings/settings.component';
 import { SmsoApiComponent } from './smso-api/smso-api.component';
 import { CommunicationComponent } from './communication/communication.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { UploadDialogComponent } from './_helpers/upload-dialog/upload-dialog.component';
+
 
 
 @NgModule({
@@ -63,6 +66,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     SettingsComponent,
     SmsoApiComponent,
     CommunicationComponent,
+    UploadDialogComponent,
   ],
   imports: [
     BrowserModule, 
@@ -74,6 +78,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatSlideToggleModule,
     CdkMenuModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
+    NgxMaterialTimepickerModule,
   ],
   providers: [
     DatePipe,

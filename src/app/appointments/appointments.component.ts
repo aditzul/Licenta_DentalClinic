@@ -2,7 +2,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AppointmentDialogComponent } from '../appointment-dialog/appointment-dialog.component';
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit } from '@angular/core';
 import { CalendarEvent, CalendarView, DAYS_OF_WEEK, CalendarEventTimesChangedEvent } from 'angular-calendar';
-import { addDays, isSameMonth, isSameDay, differenceInMinutes, format } from 'date-fns';
+import { addDays, isSameMinute, isSameMonth, isSameDay, differenceInMinutes, format } from 'date-fns';
 import { formatDate, registerLocaleData } from '@angular/common';
 import localeRo from '@angular/common/locales/ro';
 import { Output, EventEmitter } from '@angular/core';
@@ -14,8 +14,7 @@ import { addMinutes } from 'date-fns';
 import { AppointmentService } from '../_services/appointment.service';import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthenticationService } from '../_services/authentication.service';
 import { Role } from '../_models/user';
-import { Appointment } from '../_models/appointment';
-import { switchMap } from 'rxjs/operators';
+import { ConfirmDialogComponent, ConfirmDialogData } from '../_helpers/confirm-dialog/confirm-dialog.component';
 
 function floorToNearest(amount: number, precision: number) {
   return Math.floor(amount / precision) * precision;
@@ -70,7 +69,7 @@ export class CustomEventTitleFormatter extends CalendarEventTitleFormatter {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppointmentsComponent implements OnInit {
-  isAdd: boolean = true;
+  isAdd: boolean | undefined;
   lastAppointmentID: number | undefined; // Assuming ID is a number
   
   constructor(
@@ -98,8 +97,7 @@ export class AppointmentsComponent implements OnInit {
             this.refresh();
           },
           (error) => {
-            console.error('Error fetching appointments:', error);
-            this.snackBar.open('Error fetching appointments.', 'close', {
+            this.snackBar.open('Error fetching appointments.', 'Închide', {
               duration: 2000,
               panelClass: 'errorSnack',
             });
@@ -115,7 +113,7 @@ export class AppointmentsComponent implements OnInit {
             },
             (error) => {
               console.error('Error fetching appointments for medic:', error);
-              this.snackBar.open('Error fetching appointments for medic.', 'close', {
+              this.snackBar.open('Error fetching appointments for medic.', 'Închide', {
                 duration: 2000,
                 panelClass: 'errorSnack',
               });
@@ -237,8 +235,8 @@ export class AppointmentsComponent implements OnInit {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('contextmenu', preventContextMenu);
-  
-      this.openAppointmentDialog(start, end);
+      let id = 0
+      this.openAppointmentDialog(id, start, end, this.isAdd = true);
       document.body.removeChild(tooltipElement); // Remove the custom tooltip when dragging is finished
       this.dragToCreateActive = false;
       this.refresh();
@@ -261,10 +259,10 @@ export class AppointmentsComponent implements OnInit {
     this.refresh();
   }  
   
-  openAppointmentDialog(start: Date, end: Date, isAdd: boolean = true): void {
+  openAppointmentDialog(id: Number | undefined, start: Date, end: Date, isAdd: boolean): void {
     const dialogRef = this.dialog.open(AppointmentDialogComponent, {
-      width: '30%',
       data: {
+        eventId: id,
         startTime: formatDate(start, 'HH:mm', this.locale),
         endTime: formatDate(end, 'HH:mm', this.locale),
         startDate: formatDate(start, 'yyyy-MM-dd', this.locale),
@@ -274,7 +272,6 @@ export class AppointmentsComponent implements OnInit {
         isAdd: isAdd,
       },
     });
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.saveCalendarEventDialog(result);
@@ -287,9 +284,8 @@ export class AppointmentsComponent implements OnInit {
     const end = dialogData.end;
     const title = dialogData.title;
     const meta = dialogData.meta;
-    const patienT_ID = dialogData.PATIENT_ID;
-    const MEDIC_ID = dialogData.MEDIC_ID;
-  
+    const patient_id = dialogData.patient_id;
+    const medic_id = dialogData.medic_id;
     let primaryColor = '';
 
     switch (meta) {
@@ -303,11 +299,8 @@ export class AppointmentsComponent implements OnInit {
         primaryColor = '#dc3545';
         break;
     }
-
     this.appointmentService.getLastAppointmentID().subscribe(
-      (lastAppointmentID: number) => {
-        console.log('Last appointment ID:', lastAppointmentID); // Log the response
-  
+      (lastAppointmentID: number) => {  
         const newEvent: CalendarEvent = {
           id: lastAppointmentID + 1,
           title: title,
@@ -325,26 +318,22 @@ export class AppointmentsComponent implements OnInit {
             secondaryText: '#f8f9fa',
           },
         };
-  
-        console.log(newEvent);
-  
+
         // Add the appointment to the database
         this.appointmentService.addAppointment({
           start: start,
           end: end,
           title: title,
           meta: meta,
-          patienT_ID: patienT_ID,
-          MEDIC_ID: MEDIC_ID,
+          patient_id: patient_id,
+          medic_id: medic_id,
         }).subscribe(
           (response) => {
-            console.log('Appointment added successfully:', response);
             this.events = [...this.events, newEvent];
             this.refresh();
           },
           (error) => {
-            console.error('Error adding appointment:', error);
-            this.snackBar.open('Error adding appointment.', 'close', {
+            this.snackBar.open('Error adding appointment.', 'Închide', {
               duration: 2000,
               panelClass: 'errorSnack',
             });
@@ -357,29 +346,11 @@ export class AppointmentsComponent implements OnInit {
     );
   }  
 
-  public refresh() {
-    this.events = [...this.events];
-    this.cdr.detectChanges();
-  }
-
-  validateEventTimesChanged = ({ event, newStart, newEnd, allDay }: CalendarEventTimesChangedEvent, addCssClass = true) => {
-    if (event.allDay) {
-      return true;
-    }
-
-    delete event.cssClass;
-
+  validateEventTimesChanged = ({ event, newStart, newEnd, allDay }: CalendarEventTimesChangedEvent) => {
     // provide default values for newStart and newEnd
     newStart = newStart || new Date();
     newEnd = newEnd || new Date();
-
-    // don't allow dragging or resizing events to different days
-    const sameDay = isSameDay(newStart, newEnd);
-
-    if (!sameDay) {
-      return false;
-    }
-
+    if ((!isSameMinute(event.start, newStart) && !isSameMinute(event.end || new Date(), newEnd)) || (isSameMinute(event.start, newStart) && !isSameMinute(event.end || new Date(), newEnd))) {
     // don't allow dragging events to the same times as other events
     const overlappingEvent = this.events.find((otherEvent: any) => {
       return (
@@ -388,18 +359,16 @@ export class AppointmentsComponent implements OnInit {
         ((otherEvent.start < newStart && newStart < otherEvent.end) || (newEnd !== undefined && otherEvent.start < newEnd && newStart < otherEvent.end))
       );
     });
-
     if (overlappingEvent) {
-      console.log('overlapping');
-      if (addCssClass) {
-        console.log('added css class');
-        event.cssClass = 'invalid-position';
-      } else {
-        return false;
-      }
+      this.snackBar.open('Nu pot exista două programări în același timp.', 'Închide', {
+        duration: 2000,
+        panelClass: 'errorSnack',
+      });
+      return false
     }
-
-    return true;
+      return true
+    }
+    return false
   };
 
   eventTimesChanged(eventTimesChangedEvent: CalendarEventTimesChangedEvent): void {
@@ -419,18 +388,15 @@ export class AppointmentsComponent implements OnInit {
     const { id, start, end } = event;
     // Ensure that id is always a number
     const appointmentId: number = id as number;
-  
     // Assuming you have an 'id' property on your CalendarEvent that corresponds to the appointmentId
     this.appointmentService.updateAppointment(appointmentId, { start, end }).subscribe(
       (response) => {
-        console.log('Appointment updated successfully:', response);
         // Optionally, perform any actions after the appointment is updated in the database
         this.refresh();
       },
       (error) => {
-        console.error('Error updating appointment:', error);
         // Optionally, display an error message to the user
-        this.snackBar.open('Error updating appointment.', 'close', {
+        this.snackBar.open('Error updating appointment: ' + error, 'Închide', {
           duration: 2000,
           panelClass: 'errorSnack',
         });
@@ -442,7 +408,10 @@ export class AppointmentsComponent implements OnInit {
     this.isAdd = false; // Set isAdd to false when an existing event is clicked
     // Check if event.start and event.end are defined before passing them to the function
     if (event.start && event.end) {
-      this.openAppointmentDialog(event.start, event.end, this.isAdd);
+      if (typeof event.id === 'number') {
+        //this.openAppointmentDialog(event.id, event.start, event.end, this.isAdd)
+        this.deleteAppointment(event.id);
+    }
     } else {
       console.error('Event start or end is undefined');
     }
@@ -451,7 +420,6 @@ export class AppointmentsComponent implements OnInit {
   getLastAppointmentID(): void {
     this.appointmentService.getLastAppointmentID().subscribe(
       (lastAppointmentID: number) => {
-        console.log('Last appointment ID:', lastAppointmentID); // Log the response
         // You may assign the last appointment ID to a component variable if needed
         this.lastAppointmentID = lastAppointmentID;
       },
@@ -459,12 +427,28 @@ export class AppointmentsComponent implements OnInit {
         console.error('Error fetching last appointment ID:', error); // Log errors
       }
     );
-  }  
-  
-  deleteAppointment(): void {
-    // Implement the logic to delete the appointment
   }
+  
+  deleteAppointment(id: number) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Confirmare',
+        message: 'Ești sigur că vrei să ștergi această programare?',
+      } as ConfirmDialogData,
+    });
 
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        // User clicked 'Yes', proceed with deletion
+        this.appointmentService.deleteAppointment(id).subscribe(
+          () => {
+            this.refresh();
+          },
+        );
+      }
+    });
+  }
+  
   changeDay(date: Date) {
     this.viewDate = date;
     this.view = CalendarView.Day;
@@ -480,5 +464,11 @@ export class AppointmentsComponent implements OnInit {
 
   changeView(view: CalendarView) {
     this.view = view;
+  }
+
+
+  public refresh() {
+    this.events = [...this.events];
+    this.cdr.detectChanges();
   }
 }

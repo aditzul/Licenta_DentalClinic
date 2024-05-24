@@ -1,7 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Patient } from '../_models/patient';
 import { PatientService } from '../_services/patient.service';
+import { ConfirmDialogComponent, ConfirmDialogData } from '../_helpers/confirm-dialog/confirm-dialog.component';
+import { AppointmentService } from '../_services/appointment.service'; // Importă AppointmentService
 
 @Component({
   selector: 'app-appointment-dialog',
@@ -10,18 +12,18 @@ import { PatientService } from '../_services/patient.service';
 })
 export class AppointmentDialogComponent implements OnInit {
   inputData: any = {};
-  isAdd!: boolean; // Add this line to declare isAdd variable
   patients: Patient[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<AppointmentDialogComponent>,
-    private patientService: PatientService
+    private patientService: PatientService,
+    private dialog: MatDialog, // Injectează MatDialog
+    private appointmentService: AppointmentService // Injectează AppointmentService
   ) {}
 
   ngOnInit(): void {
     this.inputData = this.data;
-    this.isAdd = this.data.isAdd; // Initialize isAdd from the passed data
     this.getAllPatients();
   }
 
@@ -38,8 +40,8 @@ export class AppointmentDialogComponent implements OnInit {
     const endTime: string = this.inputData.endTime;
     const selectedPatient: string = this.inputData.selectedPatient.fullname;
     const selectedStatus: string = this.inputData.selectedStatus;
-    const patienT_ID = this.inputData.selectedPatient.PATIENT_ID;
-    const MEDIC_ID = this.inputData.selectedPatient.MEDIC_ID
+    const patient_id = this.inputData.selectedPatient.patient_id;
+    const medic_id = this.inputData.selectedPatient.medic_id
 
     // Combine date and time to create start and end Date objects
     const startDateTime: Date = new Date(`${startDate.toISOString().split('T')[0]}T${startTime}`);
@@ -51,8 +53,8 @@ export class AppointmentDialogComponent implements OnInit {
       end: endDateTime,
       title: selectedPatient,
       meta: selectedStatus,
-      patienT_ID: patienT_ID,
-      MEDIC_ID: MEDIC_ID,
+      patient_id: patient_id,
+      medic_id: medic_id,
     });
   }
 }

@@ -86,4 +86,8 @@ export class PatientService {
       ...historyDTO,
     });
   }
+
+  uploadDocument(data: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/UploadDocument`, data);
+  }
 }

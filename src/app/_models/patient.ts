@@ -17,6 +17,7 @@ export interface Patient {
   secondary_contact_phone?: string;
   medic_id?: string;
   created_at?: string;
+  send_sms?: number;
 }
 
 export interface AssignedPatientsData {

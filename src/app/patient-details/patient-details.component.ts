@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { PatientService } from '../_services/patient.service';
+import { AppointmentService } from '../_services/appointment.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -11,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PatientDialogComponent } from '../patient-dialog/patient-dialog.component';
 import { UserService } from '../_services/user.service';
 import { Pipe, PipeTransform } from '@angular/core';
+import { UploadDialogComponent, UploadDialogData } from '../_helpers/upload-dialog/upload-dialog.component';
 
 @Pipe({
   name: 'filterByDay'
@@ -38,9 +40,15 @@ export class FilterByDayPipe implements PipeTransform {
 export class PatientDetailsComponent implements OnInit {
   patient: Patient = {};
   medic: User = {};
+  appointments: any[] = [];
+  numConfirmedAppointments: number = 0;
+  numCancelledAppointments: number = 0;
+  futureAppointment: Date | null = null;
   displayedColumns: string[] = ['id', 'hospital', 'intervention', 'interventioN_DATE', 'actions'];
   medicalHistory: MatTableDataSource<PatientHistory> = new MatTableDataSource<PatientHistory>();
   graphsError = false;
+  isEnabled: boolean | undefined;
+  sms_send: number | undefined;
   newComment = '';
   loadingComment = false;
   loadingHistory = false;
@@ -55,10 +63,11 @@ export class PatientDetailsComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator = <MatPaginator>{};
   medics: any;
-Object: any;
+  Object: any;
 
   constructor(
     private patientService: PatientService,
+    private appointmentService: AppointmentService,
     private userService: UserService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
@@ -80,6 +89,7 @@ Object: any;
   getData(userId: string) {
     this.patientService.getPatientById(userId).subscribe((patient: Patient) => {
       this.patient = patient;
+      const patientID = patient.id;
 
       // Use MEDIC_ID directly from patient
       if (patient.medic_id) {
@@ -89,10 +99,10 @@ Object: any;
           this.medic = medic;
         });
       }
-
+      this.isEnabled = this.patient.send_sms == 1 ? true : false;
       this.getAllComments();
-      this.getAllHistory();
-      console.log(this.commentsByDay)
+      this.getPatientAppointments(patientID || 1);
+      //this.getAllHistory();
     });
   }
 
@@ -110,11 +120,7 @@ Object: any;
 
         dialogRef.afterClosed().subscribe((result) => {
           if (!result) return;
-          const { patient, details } = result;
-
-          this.patientService.updatePatient(patient).subscribe(() => {
-            this.getData(patientId.toString());
-          });
+          const { details } = result;
           this.patientService.updatePatient(<Patient>details).subscribe(() => {
             this.getData(patientId.toString());
           });
@@ -150,6 +156,21 @@ Object: any;
     }
   }
 
+  getPatientAppointments(patientID: number) {
+    this.appointmentService.getAllAppointmentsByPatientID(patientID).subscribe((response: any) => {
+        this.appointments = response.data[0]; // accesăm array-ul de întâlniri din obiectul data
+        this.numConfirmedAppointments = this.appointments.filter(appointment => appointment.meta === 'Confirmat').length;
+        this.numCancelledAppointments = this.appointments.filter(appointment => appointment.meta === 'Anulat').length;
+        const now = new Date();
+        const futureAppointments = this.appointments.filter(appointment => new Date(appointment.start) > now);
+        if (futureAppointments.length > 0) {
+          this.futureAppointment = new Date(futureAppointments[0].start);
+        } else {
+          this.futureAppointment = null; // Sau orice altă valoare pentru a indica lipsa unei programări viitoare
+        }    
+    });
+  }
+
   getAllHistory() {
     this.patientService.getMedicalDataByPatientId(this.patient).subscribe((history) => {
       this.medicalHistory.data = history;
@@ -165,7 +186,7 @@ Object: any;
     };
 
     if (comment.comment == '') {
-      this.snackBar.open('Nu poti adauga un comentariu gol.', 'close', {
+      this.snackBar.open('Nu poti adauga un comentariu gol.', 'Închide', {
         duration: 2000,
         panelClass: 'errorSnack',
       });
@@ -178,6 +199,29 @@ Object: any;
     }
   }
 
+  uploadDocument(type: string) {
+    const dialogRef = this.dialog.open(UploadDialogComponent, {
+      data: {
+        title: 'Incarca document',
+        fileType: type,
+      } as UploadDialogData,
+    });
+  
+    dialogRef.afterClosed().subscribe((file: File | null) => {
+      if (file) {
+        const patientInfo = {
+          patient_id: this.patient.id,
+          patient_folder: `${this.patient.id}_${this.patient.first_name}_${this.patient.last_name}`,
+          document_type: type,
+        };
+        const formData = new FormData();
+        formData.append('fileInfo', file); // Adaugă fișierul în FormData
+        formData.append('patientInfo', JSON.stringify(patientInfo)); // Convertște obiectul patientInfo în JSON și îl adaugă în FormData 
+        this.patientService.uploadDocument(formData).subscribe();
+      }
+    });
+  }
+  
   deleteComment(comment: PatientComment) {
     this.loadingComment = true;
 
@@ -218,5 +262,23 @@ Object: any;
       groupedComments[dayKey].push(comment);
     });
     return groupedComments;
+  }
+
+  onToggleChange(event: any) {
+    this.isEnabled = event.checked; // Actualizează valoarea isEnabled cu starea curentă a toggle-ului
+    console.log(this.isEnabled);
+
+    // Actualizează obiectul pacient cu noua valoare
+    this.patient.send_sms = this.isEnabled ? 1 : 0;
+
+    // Trimite actualizarea către server
+    this.patientService.updatePatient(this.patient).subscribe(
+      response => {
+        console.log('Patient updated successfully', response);
+      },
+      error => {
+        console.error('Error updating patient', error);
+      }
+    );
   }
 }

@@ -60,6 +60,7 @@ mat-card.patient-details {
 
 mat-card.patient-details,
 mat-card.medical-history,
+mat-card.appointment-history,
 mat-card.comments {
   height: 100%;
   mat-card-content {
@@ -81,7 +82,6 @@ mat-card.comments {
 }
 
 .comments {
-  max-height: 300px!important;
   form {
     margin-top: 16px;
   }  
@@ -147,4 +147,62 @@ mat-card.comments {
     height: 100px;
     object-fit: contain;
   }
+}
+
+.timeline {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #e9ecef;
+  left: 20px;
+  margin-left: -1.5px;
+}
+
+.timeline-item {
+  margin: 20px 0;
+  padding-left: 40px;
+  position: relative;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 2px solid blue;
+  top: 5px;
+  left: 12.5px;
+  z-index: 1;
+}
+
+.timeline-content {
+  padding: 10px 0;
+}
+
+.status {
+  font-weight: bold;
+}
+
+.date {
+  color: #6c757d;
+  font-size: 0.85rem;
+}
+
+.timeline-item.confirmat::before {
+  border: 2px solid green; /* Border verde pentru meta Confirmat */
+}
+
+.timeline-item.anulat::before {
+  border: 2px solid red; /* Border roșu pentru meta Anulat */
 }

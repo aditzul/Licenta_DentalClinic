@@ -86,11 +86,9 @@ export class PatientDialogComponent implements OnInit {
     details.secondary_contact_name = this.patientForm.get('secondary_contact_name')?.value;
     details.secondary_contact_phone = this.patientForm.get('secondary_contact_phone')?.value;
     details.medic_id = this.patientForm.get('medic_id')?.value;
-
     this.dialogRef.close({
       details,
-      patient: this.patient, // Include the patient data for identification
+      patient: details.id, // Include the patient data for identification
     });
-    console.log(details)
   }
 }

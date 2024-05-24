@@ -1,29 +1,46 @@
 <h1 mat-dialog-title>Programare noua - {{ inputData.startDate | date : "dd.MM.yyyy" }}</h1>
 <div mat-dialog-content>
-  <form>
-    <input type="time" [(ngModel)]="inputData.startTime" name="startTime">
-    <input type="time" [(ngModel)]="inputData.endTime" name="endTime">
-  </form>
-  <div class="example-container">
-    <mat-form-field>
-      <mat-label>Selecteaza pacient</mat-label>
-      <mat-select [(ngModel)]="inputData.selectedPatient" name="selectedPatient">
-        <mat-option *ngFor="let patient of patients" [value]="{ MEDIC_ID: patient.medic_id, patienT_ID: patient.id, fullname: patient.first_name + ' ' + patient.last_name}">
-          {{ patient.first_name }} {{ patient.last_name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Status</mat-label>
-      <mat-select [(ngModel)]="inputData.selectedStatus" name="selectedStatus">
-        <mat-option id='1' value="Confirmat">Confirmata</mat-option>
-        <mat-option id='1' value="Anulat">Anulata</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
+  <main>
+    <div class="container">
+      <div class="column-container">
+        <div class="column details">
+            <div class="form-columns">
+              <div class="form-column">
+                <div class="form-row">
+                  <mat-form-field>
+                    <mat-label>Inceput</mat-label>
+                    <input [(ngModel)]="inputData.startTime" name="startTime" matInput disabled>                  
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-label>Sfarsit</mat-label>
+                    <input [(ngModel)]="inputData.endTime" name="endTime" matInput disabled>
+                  </mat-form-field>
+                </div>
+                <div class="form-row">
+                  <mat-form-field>
+                    <mat-label>Selecteaza pacient</mat-label>
+                    <mat-select [(ngModel)]="inputData.selectedPatient" name="selectedPatient">
+                      <mat-option *ngFor="let patient of patients" [value]="{ medic_id: patient.medic_id, patient_id: patient.id, fullname: patient.first_name + ' ' + patient.last_name}">
+                        {{ patient.first_name }} {{ patient.last_name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-label>Status</mat-label>
+                    <mat-select [(ngModel)]="inputData.selectedStatus" name="selectedStatus">
+                      <mat-option id='1' value="Confirmat">Confirmata</mat-option>
+                      <mat-option id='1' value="Anulat">Anulata</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>
-<div mat-dialog-actions>
-  <button mat-button (click)="saveCalendarEventDialog()">Salveaza</button>
+<div mat-dialog-actions class="form-buttons">
   <button mat-button mat-dialog-close>Anuleaza</button>
+  <button mat-button (click)="saveCalendarEventDialog()">Salveaza</button>
 </div>
