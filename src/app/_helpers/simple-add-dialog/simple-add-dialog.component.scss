@@ -1,0 +1,19 @@
+mat-button-toggle-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  
+    mat-button-toggle {
+      flex: 1;
+  
+      mat-icon {
+        font-size: 30px;
+        height: 40px;
+        width: 100px;
+      }
+    }
+  }
+  
+  .form-buttons {
+    justify-content: space-between;
+  }

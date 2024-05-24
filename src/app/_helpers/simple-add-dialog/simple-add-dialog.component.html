@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<div mat-dialog-content>
+  <div class="container">
+    <form [formGroup]="addForm" class="user-form">
+        <mat-form-field>
+            <mat-label>{{ data.type }}</mat-label>
+            <input matInput type="text" formControlName="simpleAddFormField" />
+          </mat-form-field>
+    </form>
+  </div>
+</div>
+<div mat-dialog-actions class="form-buttons">
+  <button mat-button (click)="onNoClick()">Anulare</button>
+  <button mat-button (click)="onYesClick()" [disabled]="isDisabled()">Salvare</button>
+</div>

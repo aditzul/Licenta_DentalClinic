@@ -2,8 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Patient } from '../_models/patient';
 import { PatientService } from '../_services/patient.service';
-import { ConfirmDialogComponent, ConfirmDialogData } from '../_helpers/confirm-dialog/confirm-dialog.component';
-import { AppointmentService } from '../_services/appointment.service'; // Importă AppointmentService
 
 @Component({
   selector: 'app-appointment-dialog',
@@ -18,8 +16,6 @@ export class AppointmentDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<AppointmentDialogComponent>,
     private patientService: PatientService,
-    private dialog: MatDialog, // Injectează MatDialog
-    private appointmentService: AppointmentService // Injectează AppointmentService
   ) {}
 
   ngOnInit(): void {

@@ -38,6 +38,9 @@ import { CommunicationComponent } from './communication/communication.component'
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { UploadDialogComponent } from './_helpers/upload-dialog/upload-dialog.component';
+import { SettingsWorksComponent } from './settings-works/settings-works.component';
+import { SettingsConditionsComponent } from './settings-conditions/settings-conditions.component';
+import { SimpleAddDialogComponent } from './_helpers/simple-add-dialog/simple-add-dialog.component';
 
 
 
@@ -67,6 +70,9 @@ import { UploadDialogComponent } from './_helpers/upload-dialog/upload-dialog.co
     SmsoApiComponent,
     CommunicationComponent,
     UploadDialogComponent,
+    SettingsWorksComponent,
+    SettingsConditionsComponent,
+    SimpleAddDialogComponent,
   ],
   imports: [
     BrowserModule, 

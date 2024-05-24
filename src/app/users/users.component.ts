@@ -20,7 +20,6 @@ import { ConfirmDialogComponent, ConfirmDialogData } from '../_helpers/confirm-d
 })
 export class UsersComponent implements OnInit {
   users: User[] = [];
-  // medics: Medic[] = [];
   visibleRowIndex: number = -1;
   displayedColumns: string[] = ['id', 'role', 'username', 'full_name', 'created_at', 'actions'];
   dataSource = new MatTableDataSource(this.users);
@@ -72,10 +71,6 @@ export class UsersComponent implements OnInit {
       this.users = data;
       this.filterChange({ value: this.roleFilter });
     });
-
-    // this.userService.getAllMedics().subscribe((medics: User[]) => {
-    //   this.medics = medics;
-    // });
   }
 
   deleteUser(user: User) {
@@ -104,7 +99,6 @@ export class UsersComponent implements OnInit {
       data: {
         user: {},
         medic: null,
-        //allMedics: this.medics,
       },
     });
   
@@ -118,12 +112,9 @@ export class UsersComponent implements OnInit {
   }
 
   editUser(user: User) {
-    //const medic = this.medics.find((m) => user.role === Role.Medic) || null;
     const dialogRef = this.dialog.open(UserDialogComponent, {
       data: {
         user,
-        //medic,
-        //allMedics: this.medics,
       },
     });
 
@@ -132,20 +123,9 @@ export class UsersComponent implements OnInit {
       const { user, details } = result;
 
       this.userService.updateUser(user).subscribe(() => {
-        // if (user.role == Role.Admin) {
         this.refreshData();
-        // }
-
-        // if (user.role == Role.Medic) {
-        //   this.medicService.updateMedic(<Medic>details).subscribe(() => {
-        //     this.refreshData();
-        //   });
-        // }
       });
     });
   }
-}
-function displayPassword() {
-  throw new Error('Function not implemented.');
 }
 
