@@ -1,165 +1,20 @@
-<h1 mat-dialog-title>{{ isAdd ? 'Add' : 'Edit' }} Patient</h1>
+<h1 mat-dialog-title>{{ isAdd ? 'Adaugă un pacient nou' : 'Modifică date pacient' }}</h1>
 <div mat-dialog-content>
-<form *ngIf="patientForm" [formGroup]="patientForm" class="patient-form">
+  <form *ngIf="patientForm" [formGroup]="patientForm" class="patient-form">
     <div class="form-row">
-      <mat-form-field>
-        <mat-label>First name</mat-label>
-        <input matInput type="text" formControlName="first_name" />
-        <mat-hint *ngIf="patientForm.get('first_name')?.touched && patientForm.get('first_name')?.errors" class="mat-mdc-form-field-error">
-          First name is required
-        </mat-hint>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Last name</mat-label>
-        <input matInput type="text" formControlName="last_name" />
-        <mat-hint *ngIf="patientForm.get('last_name')?.touched && patientForm.get('last_name')?.errors" class="mat-mdc-form-field-error">
-          Last name is required
-        </mat-hint>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>CNP</mat-label>
-        <input matInput type="text" formControlName="cnp" />
-        <mat-hint *ngIf="patientForm.get('cnp')?.touched && patientForm.get('cnp')?.errors" class="mat-mdc-form-field-error">
-          CNP is required and must be a 13-digit number
-        </mat-hint>
-      </mat-form-field>
-    </div>
-
-    <div class="form-row">
-      <mat-form-field>
-        <mat-label>Birth Date</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="birth_date" />
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-hint *ngIf="patientForm.get('birth_date')?.touched && patientForm.get('birth_date')?.errors" class="mat-mdc-form-field-error">
-          Birth Date is required
-        </mat-hint>
-      </mat-form-field>
-
-      <div class="sex-container">
-        <mat-button-toggle-group name="sex" formControlName="sex">
-          <mat-button-toggle value="M" matTooltip="Male">
-            <mat-icon fontIcon="fa-mars" fontSet="fa-solid"></mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle value="F" matTooltip="Female"><mat-icon fontIcon="fa-venus" fontSet="fa-solid"></mat-icon></mat-button-toggle>
-        </mat-button-toggle-group>
+      <div *ngFor="let field of formFields" class="form-field">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ field.label }}</mat-label>
+          <input matInput [type]="field.type" [formControlName]="field.formControlName" />
+          <mat-hint *ngIf="patientForm.get(field.formControlName)?.touched && patientForm.get(field.formControlName)?.errors" class="floating-label">
+            Câmp obligatoriu
+          </mat-hint>
+        </mat-form-field>
       </div>
     </div>
-
-    <div class="form-row">
-
-      <mat-form-field>
-        <mat-label>Address</mat-label>
-        <input matInput type="text" formControlName="address" />
-        <mat-hint *ngIf="patientForm.get('address')?.touched && patientForm.get('address')?.errors" class="mat-mdc-form-field-error">
-          Address is required
-        </mat-hint>
-      </mat-form-field>
-    </div>
-
-    <div class="form-row">
-      <mat-form-field>
-        <mat-label>Phone</mat-label>
-        <input matInput type="tel" formControlName="phone" />
-        <mat-hint *ngIf="patientForm.get('phone')?.touched && patientForm.get('phone')?.errors" class="mat-mdc-form-field-error">
-          Phone is required and must be a 10-digit number
-        </mat-hint>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" />
-        <mat-hint *ngIf="patientForm.get('email')?.touched && patientForm.get('email')?.errors" class="mat-mdc-form-field-error">
-          Email is required and must be a valid email address
-        </mat-hint>
-      </mat-form-field>
-    </div>
-
-    <mat-form-field>
-      <mat-label>Physical File</mat-label>
-      <input matInput type="text" formControlName="phisical_file" />
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Secondary Contact Name</mat-label>
-      <input matInput type="text" formControlName="secondary_contact_name" />
-      <mat-hint *ngIf="patientForm.get('secondary_contact_name')?.touched && patientForm.get('secondary_contact_name')?.errors" class="mat-mdc-form-field-error">
-        Secondary Contact Name is required
-      </mat-hint>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Secondary Contact Phone</mat-label>
-      <input matInput type="tel" formControlName="secondary_contact_phone" />
-      <mat-hint *ngIf="patientForm.get('secondary_contact_phone')?.touched && patientForm.get('secondary_contact_phone')?.errors" class="mat-mdc-form-field-error">
-        Secondary Contact Phone is required
-      </mat-hint>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Secondary Contact Phone</mat-label>
-      <input matInput type="tel" formControlName="secondary_contact_phone" />
-      <mat-hint *ngIf="patientForm.get('secondary_contact_phone')?.touched && patientForm.get('secondary_contact_phone')?.errors" class="mat-mdc-form-field-error">
-        Secondary Contact Phone is required
-      </mat-hint>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Secondary Contact Phone</mat-label>
-      <input matInput type="tel" formControlName="secondary_contact_phone" />
-      <mat-hint *ngIf="patientForm.get('secondary_contact_phone')?.touched && patientForm.get('secondary_contact_phone')?.errors" class="mat-mdc-form-field-error">
-        Secondary Contact Phone is required
-      </mat-hint>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Secondary Contact Phone</mat-label>
-      <input matInput type="tel" formControlName="secondary_contact_phone" />
-      <mat-hint *ngIf="patientForm.get('secondary_contact_phone')?.touched && patientForm.get('secondary_contact_phone')?.errors" class="mat-mdc-form-field-error">
-        Secondary Contact Phone is required
-      </mat-hint>
-    </mat-form-field>
-
-    <mat-form-field>
-        <mat-label>Medic</mat-label>
-        <mat-select formControlName="medic_id" class="form-control">
-          <mat-option *ngFor="let medic of allMedics" [value]="medic.id">
-            {{ medic.first_name }} {{ medic.last_name }}
-          </mat-option>
-        </mat-select>
-        <mat-hint *ngIf="patientForm.get('medic_id')?.touched && patientForm.get('medic_id')?.errors" class="mat-mdc-form-field-error">
-          Medic is required
-        </mat-hint>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Country</mat-label>
-        <input matInput type="text" formControlName="country" />
-        <mat-hint *ngIf="patientForm.get('country')?.touched && patientForm.get('country')?.errors" class="mat-mdc-form-field-error">
-          Country is required
-        </mat-hint>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>State</mat-label>
-        <input matInput type="text" formControlName="state" />
-        <mat-hint *ngIf="patientForm.get('state')?.touched && patientForm.get('state')?.errors" class="mat-mdc-form-field-error">
-          State is required
-        </mat-hint>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>City</mat-label>
-        <input matInput type="text" formControlName="city" />
-        <mat-hint *ngIf="patientForm.get('city')?.touched && patientForm.get('city')?.errors" class="mat-mdc-form-field-error">
-          City is required
-        </mat-hint>
-      </mat-form-field>
   </form>
 </div>
 <div mat-dialog-actions class="form-buttons">
-    <button mat-button (click)="onNoClick()">Cancel</button>
-    <button mat-button (click)="onSubmit()">Ok</button>
+  <button mat-button (click)="onNoClick()">Anulare</button>
+  <button mat-button (click)="onSubmit()">Salvare</button>
 </div>

@@ -27,51 +27,24 @@ export class NavComponent {
       this.user = user;
       this.navItems = [
         {
-          displayName: 'Dashboard',
+          displayName: 'Acasă',
           route: 'dashboard',
           iconName: 'fa-chart-line',
         },
         {
-          displayName: 'Patients',
+          displayName: 'Pacienți',
           route: 'patients',
           iconName: 'fa-hospital-user',
         },
         {
-          displayName: 'Appointments',
+          displayName: 'Programări',
           route: 'appointments',
           iconName: 'fa-calendar-alt',
         },
         {
-          displayName: 'Settings',
+          displayName: 'Setări',
           route: 'settings',
           iconName: 'fa-cog',
-          // children: [
-          //   {
-          //     displayName: 'Communication',
-          //     route: 'settings/communication',
-          //     iconName: 'fa-comments',
-          //   },
-          //   {
-          //     displayName: 'Forms',
-          //     route: 'settings/forms',
-          //     iconName: 'fa-file-alt',
-          //   },
-          //   {
-          //     displayName: 'Company Data',
-          //     route: 'settings/company-data',
-          //     iconName: 'fa-building',
-          //   },
-          //   {
-          //     displayName: 'Works',
-          //     route: 'settings/works',
-          //     iconName: 'fa-tools',
-          //   },
-          //   {
-          //     displayName: 'Conditions',
-          //     route: 'settings/conditions',
-          //     iconName: 'fa-heartbeat',
-          //   }
-          // ]
         },
         {
           displayName: 'Admin',
@@ -79,12 +52,12 @@ export class NavComponent {
           hidden: !this.isAdmin,
           children: [
             {
-              displayName: 'Users',
+              displayName: 'Utilizatori',
               route: 'admin/users',
               iconName: 'fa-users',
             },
             {
-              displayName: 'SMSO API',
+              displayName: 'API SMSO',
               route: 'admin/smso-api',
               iconName: 'fa-cubes',
             }

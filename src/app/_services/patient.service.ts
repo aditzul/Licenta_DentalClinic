@@ -71,10 +71,6 @@ export class PatientService {
     });
   }
 
-  uploadDocument(data: any): Observable<any> {
-    return this.http.post<any>(`${environment.apiUrl}/UploadDocument`, data);
-  }
-
   getTeethHistory(ID: number, tooth_id: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/TeethHistory/GetTeethHistory/${ID}/${tooth_id}`).pipe(
       map(response => response.data)
@@ -101,6 +97,16 @@ export class PatientService {
     return this.http.post<PatientComment[]>(`${environment.apiUrl}/MedicalHistory/AddMedicalHistory`, {
       ...historyDTO,
     });
+  }
+
+  uploadDocument(data: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/UploadDocument`, data);
+  }
+
+  getFilesList(patientInfo: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/GetFilesList`, { patientInfo }).pipe(
+      map(response => response.data)
+    );
   }
 
 }

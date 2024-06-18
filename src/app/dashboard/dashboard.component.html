@@ -1,24 +1,24 @@
 <main *ngIf="loaded">
   <div class="cards section">
-    <app-simple-card [title]="cardsData.totalPatients" message="Total Patients" icon="fa-users" classes="blue"></app-simple-card>
-    <app-simple-card [title]="cardsData.malePatients" message="Male Patients" icon="fa-mars" classes="green"></app-simple-card>
-    <app-simple-card [title]="cardsData.femalePatients" message="Female Patients" icon="fa-venus" classes="yellow"></app-simple-card>
-    <app-simple-card [title]="cardsData.averageAge" message="Average Patient Age" icon="fa-user-clock" classes="red"></app-simple-card>
+    <app-simple-card [title]="cardsData.totalPatients" message="Total pacienți înregistrați" icon="fa-users" classes="green"></app-simple-card>
+    <app-simple-card [title]="cardsData.malePatients" message="Pacienți de sex masculin" icon="fa-mars" classes="blue"></app-simple-card>
+    <app-simple-card [title]="cardsData.femalePatients" message="Pacienți de sex feminin" icon="fa-venus" classes="red"></app-simple-card>
+    <app-simple-card [title]="cardsData.averageAge + ' ani'" message="Medie de vârstă pacienți" icon="fa-user-clock" classes="yellow"></app-simple-card>
   </div>
 
   <div class="section charts">
     <div class="chart-container">
-      <h2>Patients distributed by Sex</h2>
+      <h2>Pacienți repartizați pe sex</h2>
       <canvas id="sexChart">{{ sexChart }}</canvas>
     </div>
     <div class="chart-container">
-      <h2>Patients distributed by age groups</h2>
+      <h2>Pacienți repartizați pe grupe de vârstă</h2>
       <canvas id="ageChart">{{ ageChart }}</canvas>
     </div>
   </div>
 
   <div class="section table">
-    <app-patient-table [patients]="lastPatients" title="Last Patients"></app-patient-table>
+    <app-patient-table [patients]="lastPatients" title="Ultimii pacienți înregistrați"></app-patient-table>
   </div>
 </main>
 

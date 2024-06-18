@@ -1,54 +1,71 @@
 form {
-    display: flex;
-    flex-direction: column;
-  
-    &.details-form {
-      margin-top: 20px;
-    }
-  
-    .form-row {
-      display: flex;
-      gap: 10px;
-    }
-  
-    .sex-container {
-      height: 56px;
-      flex: 1;
-  
-      mat-button-toggle-group {
-        height: 100%;
-  
-        mat-button-toggle {
-          align-items: center;
-          display: flex;
-  
-          mat-icon {
-            font-size: 30px;
-            height: 40px;
-            width: 70px;
-          }
-        }
-      }
-    }
+  display: flex;
+  flex-direction: column;
+
+  &.details-form {
+    margin-top: 20px;
+    width: 100%;
   }
-  
-  mat-button-toggle-group {
+
+  .form-row {
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-  
-    mat-button-toggle {
-      flex: 1;
-  
-      mat-icon {
-        font-size: 30px;
-        height: 40px;
-        width: 100px;
-      }
-    }
-  }
-  
-  .form-buttons {
+    flex-wrap: wrap;
+    gap: 10px;
     justify-content: space-between;
   }
-  
+
+  .form-field {
+    flex-basis: calc(33.33% - 10px);
+    position: relative;
+  }
+
+  .mat-form-field {
+    width: 100%;
+  }
+
+  .floating-label {
+    position: absolute;
+    top: -20px; /* Ajustează această valoare în funcție de necesitate */
+    left: 0;
+    font-size: 12px; /* Ajustează dimensiunea fontului */
+    color: red; /* Schimbă culoarea în funcție de preferințe */
+    transition: all 0.3s ease-in-out;
+    display: inline-block;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+    transition: border-color 0.3s ease-in-out;
+  }
+
+  .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    border-color: red; /* Schimbă culoarea bordurii atunci când câmpul este focusat */
+  }
+}
+
+.patient-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.mat-button-toggle-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.mat-button-toggle {
+  flex: 1;
+
+  mat-icon {
+    font-size: 30px;
+    height: 40px;
+    width: 100px;
+  }
+}

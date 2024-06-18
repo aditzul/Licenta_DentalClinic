@@ -37,26 +37,6 @@ export class PatientTableComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource.data = this.patients;
-    this.loadPatients();
-  }
-
-  private loadPatients() {
-    const userRole = this.authService.userValue?.role;
-  
-    if (userRole === Role.Admin) {
-      this.patientService.getAllPatients().subscribe((patients: Patient[]) => {
-        this.patients = patients;
-      });
-    } else if (userRole === Role.Medic) {
-      const medic_id = this.authService.userValue?.id;
-      if (medic_id) {
-        this.patientService.getPatientsByMedicID(medic_id.toString()).subscribe((response: any) => {
-          this.patients = response;
-        });
-      } else {
-        console.error('Medic ID not found in user details.');
-      }
-    }
   }
 
   ngAfterViewInit() {

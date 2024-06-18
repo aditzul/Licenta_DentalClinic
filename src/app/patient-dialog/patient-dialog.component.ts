@@ -9,6 +9,12 @@ import { Patient, PatientDialog } from '../_models/patient';
 import { User } from '../_models/user';
 import { UserService } from '../_services/user.service';
 
+interface FormField {
+  label: string;
+  formControlName: string;
+  type: string;
+}
+
 @Component({
   selector: 'app-patient-dialog',
   templateUrl: './patient-dialog.component.html',
@@ -20,13 +26,77 @@ export class PatientDialogComponent implements OnInit {
   allMedics: User[] = [];
   patient: Patient | undefined;
   submitted: boolean = false;
+  formFields: FormField[] = [
+    {
+      label: 'Prenume',
+      formControlName: 'first_name',
+      type: 'text',
+    },
+    {
+      label: 'Nume',
+      formControlName: 'last_name',
+      type: 'text',
+    },
+    {
+      label: 'CNP',
+      formControlName: 'cnp',
+      type: 'text',
+    },
+    {
+      label: 'Adresă',
+      formControlName: 'address',
+      type: 'text',
+    },
+    {
+      label: 'Telefon',
+      formControlName: 'phone',
+      type: 'tel',
+    },
+    {
+      label: 'Email',
+      formControlName: 'email',
+      type: 'email',
+    },
+    {
+      label: 'Țară',
+      formControlName: 'country',
+      type: 'text',
+    },
+    {
+      label: 'Județ',
+      formControlName: 'state',
+      type: 'text',
+    },
+    {
+      label: 'Oraș',
+      formControlName: 'city',
+      type: 'text',
+    },
+    {
+      label: 'Număr dosar fizic',
+      formControlName: 'phisical_file',
+      type: 'text',
+    },
+    {
+      label: 'Nume contact secundar',
+      formControlName: 'secondary_contact_name',
+      type: 'text',
+    },
+    {
+      label: 'Telefon contact secundar',
+      formControlName: 'secondary_contact_phone',
+      type: 'tel',
+    },
+    
+  ];
 
   constructor(
     public dialogRef: MatDialogRef<PatientDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: PatientDialog,
     private userService: UserService,
   ) {
-    this.isAdd = !this.data.patient?.id  }
+    this.isAdd = !this.data.patient?.id
+  }
 
   ngOnInit() {
     this.userService.getAllMedics().subscribe(
