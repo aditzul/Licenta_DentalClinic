@@ -5,7 +5,7 @@ import { Patient, Sex } from '../_models/patient';
 import { Medic } from '../_models/medic';
 import { AuthenticationService } from '../_services/authentication.service';
 import { Role, User } from '../_models/user';
-import Chart from 'chart.js/auto';
+import { Chart } from 'chart.js/auto';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -17,21 +17,18 @@ export class DashboardComponent implements OnInit {
   public sexChart: any;
   public ageChart: any;
   patients: Patient[] = [];
-  medics: Medic[] = [];
-  currentMedic: Medic = {};
   currentUser: User = {};
   cardsData = {
     totalPatients: '',
     femalePatients: '',
     malePatients: '',
-    averageAge: '',
+    averageAge: 0,
   };
   loaded = false;
   lastPatients: Patient[] = [];
 
   constructor(
     private patientService: PatientService,
-    private medicService: MedicService,
     private authService: AuthenticationService,
     private datePipe: DatePipe
   ) {}
@@ -40,10 +37,6 @@ export class DashboardComponent implements OnInit {
     this.currentUser = this.authService.userValue || {};
 
     this.loadPatients();
-
-    this.medicService.getAllMedics().subscribe((medics: Medic[]) => {
-      this.medics = medics;
-    });
   }
 
   loadPatients() {
@@ -71,8 +64,6 @@ export class DashboardComponent implements OnInit {
 
   processData() {
     this.loaded = true;
-    //this.currentMedic = this.medics.find((m) => m.useR_ID === this.currentUser.id) || {};
-    //console.log(this.currentMedic) - NU MERGE
     this.createCardsData();
     this.lastPatients = this.computeLastPatients(this.patients);
 
@@ -94,7 +85,7 @@ export class DashboardComponent implements OnInit {
     this.cardsData.totalPatients = this.patients.length.toString();
     this.cardsData.femalePatients = this.computePercentage(this.patients.length, femalePatients).toFixed(2).toString() + '%';
     this.cardsData.malePatients = this.computePercentage(this.patients.length, malePatients).toFixed(2).toString() + '%';
-    this.cardsData.averageAge = (this.patients.reduce((accum: number, reducer: any) => accum + reducer.age, 0) / this.patients.length).toFixed(2).toString();
+    this.cardsData.averageAge = Math.round(this.patients.reduce((accum: number, reducer: any) => accum + reducer.age, 0) / this.patients.length);
 
   }
 
@@ -143,77 +134,19 @@ export class DashboardComponent implements OnInit {
           {
             label: 'Total',
             data: [...Object.keys(patientsByAge).map((key) => patientsByAge[key].age.length)],
-            backgroundColor: '#f44336',
+            backgroundColor: '#4CAF50',
             stack: 'stack1',
           },
           {
-            label: 'Males',
+            label: 'Masculin',
             data: [...Object.keys(patientsByAge).map((key) => patientsByAge[key].males.length)],
-            backgroundColor: '#4CAF50',
-            stack: 'stack2',
-          },
-          {
-            label: 'Female',
-            data: [...Object.keys(patientsByAge).map((key) => patientsByAge[key].females.length)],
-            backgroundColor: '#FF9800',
-            stack: 'stack2',
-          },
-        ],
-      },
-      options: {
-        aspectRatio: 2.5,
-      },
-    });
-  }
-
-  createSexChart(patients: Patient[]) {
-    const patientsByDate: any = {};
-
-    patients.forEach((patient: Patient) => {
-      const date = new Date(<string>patient.created_at);
-      const label = date.toISOString().split('T')[0];
-
-      if (!patientsByDate[label]) {
-        patientsByDate[label] = {
-          male: [],
-          female: [],
-        };
-      }
-
-      if (patient.sex === Sex.Male) {
-        patientsByDate[label].male.push(patient.id);
-      }
-
-      if (patient.sex === Sex.Female) {
-        patientsByDate[label].female.push(patient.id);
-      }
-    });
-
-    const sortedDates = Object.keys(patientsByDate).sort(this.sortByDate);
-
-    this.sexChart = new Chart('sexChart', {
-      type: 'bar', //this denotes tha type of chart
-
-      data: {
-        // values on X-Axis
-        labels: [...sortedDates.map((d) => this.datePipe.transform(d, 'dd.MM.yyyy'))],
-        datasets: [
-          {
-            label: 'Total',
-            data: [...Object.keys(patientsByDate).map((key) => patientsByDate[key].male.length + patientsByDate[key].female.length)],
             backgroundColor: '#03a9f4',
-            stack: 'stack1',
-          },
-          {
-            label: 'Males',
-            data: [...Object.keys(patientsByDate).map((key) => patientsByDate[key].male.length)],
-            backgroundColor: '#4CAF50',
             stack: 'stack2',
           },
           {
-            label: 'Female',
-            data: [...Object.keys(patientsByDate).map((key) => patientsByDate[key].female.length)],
-            backgroundColor: '#FF9800',
+            label: 'Feminin',
+            data: [...Object.keys(patientsByAge).map((key) => patientsByAge[key].females.length)],
+            backgroundColor: '#F44336',
             stack: 'stack2',
           },
         ],
@@ -223,6 +156,39 @@ export class DashboardComponent implements OnInit {
       },
     });
   }
+
+createSexChart(patients: Patient[]) {
+  const patientsBySex = {
+    male: 0,
+    female: 0,
+  };
+
+  patients.forEach((patient: Patient) => {
+    if (patient.sex === Sex.Male) {
+      patientsBySex.male++;
+    } else if (patient.sex === Sex.Female) {
+      patientsBySex.female++;
+    }
+  });
+
+  this.sexChart = new Chart('sexChart', {
+    type: 'pie', // this denotes the type of chart
+
+    data: {
+      labels: ['Masculin', 'Feminin'],
+      datasets: [
+        {
+          data: [patientsBySex.male, patientsBySex.female],
+          backgroundColor: ['#03a9f4', '#F44336'],
+        },
+      ],
+    },
+    options: {
+      aspectRatio: 2.5,
+    },
+  });
+}
+
 
   computePercentage(total: number, rest: number) {
     return (rest / total) * 100;

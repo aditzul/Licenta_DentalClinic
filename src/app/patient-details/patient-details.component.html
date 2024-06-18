@@ -17,7 +17,7 @@
         <mat-card-content>
           <mat-divider></mat-divider>
           <p class="row">
-            <span class="label">Modifica date pacient </span>
+            <span class="label"><a href="C:\Users\Adrian\Desktop\Licenta2\DentalAPI\Uploads\1_Adrian_Dragomiroiu\Imagistica\blog.jpg">Deschide</a></span>
           </p>
           <button mat-icon-button (click)="editPatient(patient)">
             <mat-icon fontIcon="edit" color="primary"></mat-icon>
@@ -151,7 +151,7 @@
       </mat-card>
     </div>
   </div>
-  <mat-tab-group animationDuration="0ms">
+  <mat-tab-group #tabGroup (selectedTabChange)="tabChanged($event)" animationDuration="0ms">
     <mat-tab label="Schema dentara">
       <mat-toolbar color="primary">Schema dentara</mat-toolbar>
     </mat-tab>

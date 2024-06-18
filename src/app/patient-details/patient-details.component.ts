@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Patient, PatientComment, PatientHistory } from '../_models/patient';
-import { User } from '../_models/user';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../_helpers/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,6 +12,8 @@ import { PatientDialogComponent } from '../patient-dialog/patient-dialog.compone
 import { UserService } from '../_services/user.service';
 import { Pipe, PipeTransform } from '@angular/core';
 import { UploadDialogComponent, UploadDialogData } from '../_helpers/upload-dialog/upload-dialog.component';
+import {FormControl} from '@angular/forms';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Pipe({
   name: 'filterByDay'
@@ -38,8 +39,8 @@ export class FilterByDayPipe implements PipeTransform {
   styleUrls: ['./patient-details.component.scss'],
 })
 export class PatientDetailsComponent implements OnInit {
+  selected = new FormControl(0);
   patient: Patient = {};
-  medic: User = {};
   appointments: any[] = [];
   numConfirmedAppointments: number = 0;
   numCancelledAppointments: number = 0;
@@ -64,6 +65,7 @@ export class PatientDetailsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator = <MatPaginator>{};
   medics: any;
   Object: any;
+  filelist: any;
 
   constructor(
     private patientService: PatientService,
@@ -86,22 +88,21 @@ export class PatientDetailsComponent implements OnInit {
     this.medicalHistory.paginator = this.paginator;
   }
 
+  tabChanged = (tabChangeEvent: MatTabChangeEvent): void => {
+   if (tabChangeEvent.tab.textLabel == 'Imagistica') {
+    this.getDocuments();
+   } else if(tabChangeEvent.tab.textLabel == 'Documente') {
+    this.getImagistica();
+   }
+  }
+
   getData(userId: string) {
     this.patientService.getPatientById(userId).subscribe((patient: Patient) => {
       this.patient = patient;
-      const patientID = patient.id;
-
-      // Use MEDIC_ID directly from patient
-      if (patient.medic_id) {
-        // Use your existing service method to fetch the medic
-        const medic_id = Number(patient.medic_id);
-        this.userService.getUser({ id: medic_id }).subscribe((medic: User) => {
-          this.medic = medic;
-        });
-      }
+      const patientID: number = patient.id as number;
       this.isEnabled = this.patient.send_sms == 1 ? true : false;
       this.getAllComments();
-      this.getPatientAppointments(patientID || 1);
+      this.getPatientAppointments(patientID);
       //this.getAllHistory();
     });
   }
@@ -227,8 +228,8 @@ export class PatientDetailsComponent implements OnInit {
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
-        title: 'Confirmation',
-        message: 'Are you sure you want to delete this comment?',
+        title: 'Confirmare',
+        message: 'Esti sigur ca doresti sa stergi acest comentariu?',
       } as ConfirmDialogData,
     });
 
@@ -242,6 +243,33 @@ export class PatientDetailsComponent implements OnInit {
           },
         );
       }
+    });
+  }
+
+
+  getDocuments() {
+    const patientInfo = {
+      patient_id: this.patient.id,
+      patient_folder: `${this.patient.id}_${this.patient.first_name}_${this.patient.last_name}`,
+      document_type: 'Documente',
+    };
+
+    this.patientService.getFilesList(patientInfo).subscribe((filelist: any) => {
+      this.filelist = filelist;
+      console.log('Documente', filelist)
+    });
+  }
+
+  getImagistica() {
+    const patientInfo = {
+      patient_id: this.patient.id,
+      patient_folder: `${this.patient.id}_${this.patient.first_name}_${this.patient.last_name}`,
+      document_type: 'Imagistica',
+    };
+
+    this.patientService.getFilesList(patientInfo).subscribe((filelist: any) => {
+      this.filelist = filelist;
+      console.log('Imagistica', filelist)
     });
   }
 

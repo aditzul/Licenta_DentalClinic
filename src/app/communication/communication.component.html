@@ -7,39 +7,39 @@
             <div class="form-column">
               <div class="form-row">
                 <mat-slide-toggle (change)="onToggleChange($event)" [checked]="isEnabled">
-                  Enable SMS communication
+                  Activează comunicarea prin SMS
                 </mat-slide-toggle>
               </div>
               <div class="form-row">
               </div>
               <div class="form-row">
-                <button mat-raised-button color="primary" [disabled]="!smsSettingsForm.valid" (click)="saveForm()">Save</button>
+                <button mat-raised-button color="primary" [disabled]="!smsSettingsForm.valid" (click)="saveForm()">Salvare</button>
               </div>
             </div>
             <div class="form-column">
               <div class="form-row" *ngIf="isEnabled">
                 <mat-form-field>
-                  <mat-label>SMS Send Hour</mat-label>
+                  <mat-label>Oră trimitere SMS</mat-label>
                   <mat-select formControlName="SMS_SEND_HOUR" class="form-control">
                     <mat-option *ngFor="let hour of hours" [value]="hour">
                       {{ hour }}
                     </mat-option>
                   </mat-select>
                   <mat-hint *ngIf="smsSettingsForm.get('SMS_SEND_HOUR')?.touched && smsSettingsForm.get('SMS_SEND_HOUR')?.errors" class="mat-mdc-form-field-error">
-                    SMS Send Hour is required
+                    Oră trimitere SMS este un câmp obligatoriu
                   </mat-hint>
                 </mat-form-field>
               </div>
               <div class="form-row" *ngIf="isEnabled">
                 <mat-form-field>
-                  <mat-label>SMS Send Days</mat-label>
+                  <mat-label>Zile anterioare progamării</mat-label>
                   <mat-select formControlName="SMS_SEND_DAYS" class="form-control">
                     <mat-option *ngFor="let day of days" [value]="day.value">
                       {{ day.value }}
                     </mat-option>
                   </mat-select>
                   <mat-hint *ngIf="smsSettingsForm.get('SMS_SEND_DAYS')?.touched && smsSettingsForm.get('SMS_SEND_DAYS')?.errors" class="mat-mdc-form-field-error">
-                    SMS Send Days is required
+                    Zile anterioare progamării este un câmp obligatoriu
                   </mat-hint>
                 </mat-form-field>
               </div>
@@ -47,7 +47,7 @@
             <div class="form-column">
               <div class="form-row" *ngIf="isEnabled">
                 <mat-form-field>
-                  <mat-label>SMS Template</mat-label>
+                  <mat-label>Template SMS</mat-label>
                   <textarea 
                     matInput 
                     formControlName="SMS_TEMPLATE" 
@@ -57,7 +57,7 @@
                     cdkAutosizeMaxRows="10">
                   </textarea>
                   <mat-hint *ngIf="smsSettingsForm.get('SMS_TEMPLATE')?.touched && smsSettingsForm.get('SMS_TEMPLATE')?.errors" class="mat-mdc-form-field-error">
-                    SMS Template is required
+                    Template SMS este un câmp obligatoriu
                   </mat-hint>
                 </mat-form-field>
               </div>

@@ -90,4 +90,11 @@ export class PatientService {
   uploadDocument(data: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/UploadDocument`, data);
   }
+
+  getFilesList(patientInfo: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/GetFilesList`, { patientInfo }).pipe(
+      map(response => response.data)
+    );
+  }
+
 }
