@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 20px;
+  }
+
+  rect {
+    cursor: pointer;
+    transition: fill 0.3s;
+  }
+  
+  rect:hover {
+    fill: lightgray;
+  }
+  
+  .selected {
+    fill: yellow;
+  }
+
+  .extracted {
+    fill: gray!important;
+  }
+  
+  .touched {
+    fill: yellow;
+  }

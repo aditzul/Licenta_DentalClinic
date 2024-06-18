@@ -1,0 +1,68 @@
+<mat-toolbar color="primary">
+    <h1>{{ isAdd ? 'Adauga' : 'Modifica' }} interventie</h1>
+</mat-toolbar>
+<div mat-dialog-content>
+    <form *ngIf="teethAddHistoryForm" [formGroup]="teethAddHistoryForm">
+        <div class="form-row">
+            <mat-form-field>
+                <mat-label>Lucrare</mat-label>
+                <mat-select formControlName="work_id" class="form-control">
+                    <mat-option *ngFor="let work of allWorks" [value]="work.id">
+                    {{ work.work_name }}
+                    </mat-option>
+                </mat-select>
+                <mat-hint *ngIf="teethAddHistoryForm.get('work_id')?.touched && teethAddHistoryForm.get('work_id')?.errors" class="mat-mdc-form-field-error">
+                    Trebuie sa alegi o lucrare
+                </mat-hint>
+            </mat-form-field>
+        </div>
+
+        <div class="form-row">
+            <mat-form-field>
+                <mat-label>Observatii</mat-label>
+                <input matInput type="text" formControlName="comment" />
+            </mat-form-field> 
+        </div>
+        <div mat-dialog-actions class="form-buttons">
+            <button mat-button mat-dialog-close>Anuleaza</button>
+            <button mat-button (click)="addWork()">Salveaza</button>
+        </div>
+    </form>
+</div>
+
+<!-- <div mat-dialog-actions class="form-buttons">
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="onSubmit()">Ok</button>
+</div> -->
+<!-- <div mat-dialog-content>
+  <main>
+    <div class="container">
+      <div class="column-container">
+        <div class="column details">
+            <div class="form-columns">
+              <div class="form-column">
+                <div class="form-row">
+                  <mat-form-field>
+                    <mat-label>Selecteaza lucrare</mat-label>
+                    <mat-select [(ngModel)]="inputData.selectedPatient" name="selectedPatient">
+                      <mat-option *ngFor="let patient of patients" [value]="{ medic_id: patient.medic_id, patient_id: patient.id, fullname: patient.first_name + ' ' + patient.last_name}">
+                        {{ patient.first_name }} {{ patient.last_name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-label>Observatii</mat-label>
+                    <mat-select [(ngModel)]="inputData.selectedStatus" name="selectedStatus">
+                      <mat-option id='1' value="Confirmat">Confirmata</mat-option>
+                      <mat-option id='1' value="Anulat">Anulata</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+ -->

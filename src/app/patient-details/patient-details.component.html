@@ -153,7 +153,15 @@
   </div>
   <mat-tab-group animationDuration="0ms">
     <mat-tab label="Schema dentara">
-      <mat-toolbar color="primary">Schema dentara</mat-toolbar>
+      <mat-toolbar color="primary">
+        <span>Schema dentara</span>
+        <span class="toolbar-spacer"></span>
+      </mat-toolbar>
+      <mat-card appearance="outlined">
+          <mat-card-content>
+              <app-patient-dentalscheme></app-patient-dentalscheme>
+          </mat-card-content>
+        </mat-card>
     </mat-tab>
     <mat-tab label="Istoric programari">
       <mat-toolbar color="primary">

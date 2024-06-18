@@ -77,3 +77,23 @@ export interface PatientHistory {
   OldValue?: string;
   NewValue?: string;
 }
+
+export interface Tooth {
+  id: string;
+  patient_id: number;
+  tooth_id: number;
+  dental_work_id: number;
+  extracted?: number;
+  comment?: string;
+  date?: Date;
+  x: number;
+  y: number;
+}
+
+export interface ToothDraw {
+  id: string;
+  x: number;
+  y: number;
+  touched: boolean;
+  extracted: number;
+}

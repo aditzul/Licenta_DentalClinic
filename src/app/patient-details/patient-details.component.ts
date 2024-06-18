@@ -39,7 +39,6 @@ export class FilterByDayPipe implements PipeTransform {
 })
 export class PatientDetailsComponent implements OnInit {
   patient: Patient = {};
-  medic: User = {};
   appointments: any[] = [];
   numConfirmedAppointments: number = 0;
   numCancelledAppointments: number = 0;
@@ -90,15 +89,6 @@ export class PatientDetailsComponent implements OnInit {
     this.patientService.getPatientById(userId).subscribe((patient: Patient) => {
       this.patient = patient;
       const patientID = patient.id;
-
-      // Use MEDIC_ID directly from patient
-      if (patient.medic_id) {
-        // Use your existing service method to fetch the medic
-        const medic_id = Number(patient.medic_id);
-        this.userService.getUser({ id: medic_id }).subscribe((medic: User) => {
-          this.medic = medic;
-        });
-      }
       this.isEnabled = this.patient.send_sms == 1 ? true : false;
       this.getAllComments();
       this.getPatientAppointments(patientID || 1);

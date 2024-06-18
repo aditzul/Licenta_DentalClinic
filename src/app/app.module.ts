@@ -41,6 +41,9 @@ import { UploadDialogComponent } from './_helpers/upload-dialog/upload-dialog.co
 import { SettingsWorksComponent } from './settings-works/settings-works.component';
 import { SettingsConditionsComponent } from './settings-conditions/settings-conditions.component';
 import { SimpleAddDialogComponent } from './_helpers/simple-add-dialog/simple-add-dialog.component';
+import { PatientDentalschemeComponent } from './patient-dentalscheme/patient-dentalscheme.component';
+import { TeethHistoryDialogComponent } from './_helpers/teeth-history-dialog/teeth-history-dialog.component';
+import { TeethAddHistoryDialogComponent } from './_helpers/teeth-add-history-dialog/teeth-add-history-dialog.component';
 
 
 
@@ -73,6 +76,9 @@ import { SimpleAddDialogComponent } from './_helpers/simple-add-dialog/simple-ad
     SettingsWorksComponent,
     SettingsConditionsComponent,
     SimpleAddDialogComponent,
+    PatientDentalschemeComponent,
+    TeethHistoryDialogComponent,
+    TeethAddHistoryDialogComponent,
   ],
   imports: [
     BrowserModule, 

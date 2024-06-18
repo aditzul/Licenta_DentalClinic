@@ -71,6 +71,22 @@ export class PatientService {
     });
   }
 
+  uploadDocument(data: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/UploadDocument`, data);
+  }
+
+  getTeethHistory(ID: number, tooth_id: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/TeethHistory/GetTeethHistory/${ID}/${tooth_id}`).pipe(
+      map(response => response.data)
+    );
+  }
+
+  getTeethHistoryByPatientID(ID: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/TeethHistory/GetTeethHistoryByPatientID/${ID}`).pipe(
+      map(response => response.data)
+    );
+  }
+
   //TO CHECK HERE BELOW WHAT I KEEP AND WHAT I DELETE
 
   getMedicalDataByPatientId(patient: Patient): Observable<PatientHistory[]> {
@@ -87,7 +103,4 @@ export class PatientService {
     });
   }
 
-  uploadDocument(data: any): Observable<any> {
-    return this.http.post<any>(`${environment.apiUrl}/UploadDocument`, data);
-  }
 }

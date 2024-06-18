@@ -38,7 +38,6 @@ export class PatientDialogComponent implements OnInit {
         console.error('Error fetching medics:', error);
       }
     );
-
   }
 
   initializeForm() {

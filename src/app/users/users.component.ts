@@ -26,7 +26,7 @@ export class UsersComponent implements OnInit {
   roleFilter?: string = 'clear';
   @ViewChild(MatPaginator) paginator: MatPaginator = <MatPaginator>{};
   @ViewChild(MatSort) sort: MatSort = <MatSort>{};
-  constructor(private userService: UserService, private medicService: MedicService, public dialog: MatDialog, private snackBar: MatSnackBar) {
+  constructor(private userService: UserService, public dialog: MatDialog) {
     
   }
 
