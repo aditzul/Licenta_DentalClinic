@@ -1,27 +1,27 @@
 <main>
   <div class="container">
-    <mat-toolbar color="primary">SMSO API</mat-toolbar>
+    <mat-toolbar color="primary">API SMSO</mat-toolbar>
     <div class="column-container">
       <div class="column details">
         <form *ngIf="smsoApiForm" [formGroup]="smsoApiForm" class="smso-api-form">
           <div class="form-row">
             <mat-form-field appearance="fill" class="full-width">
-              <mat-label>API Key</mat-label>
+              <mat-label>Cheie API</mat-label>
               <input matInput type="text" formControlName="SMSO_API_KEY" />
-              <mat-error *ngIf="smsoApiForm.get('SMSO_API_KEY')?.hasError('required')">API Key is required</mat-error>
+              <mat-error *ngIf="smsoApiForm.get('SMSO_API_KEY')?.hasError('required')">Câmp obligatoriu</mat-error>
             </mat-form-field>
           </div>
           
           <div class="form-row">
             <mat-form-field appearance="fill" class="full-width">
-              <mat-label>Sender ID</mat-label>
+              <mat-label>ID</mat-label>
               <input matInput type="text" formControlName="SMSO_SENDER_ID" />
-              <mat-error *ngIf="smsoApiForm.get('SMSO_SENDER_ID')?.hasError('required')">Sender ID is required</mat-error>
+              <mat-error *ngIf="smsoApiForm.get('SMSO_SENDER_ID')?.hasError('required')">Câmp obligatoriu</mat-error>
             </mat-form-field>
           </div>
           
           <div class="form-row">
-            <button mat-raised-button color="primary" (click)="saveForm()">Save</button>
+            <button mat-raised-button color="primary" (click)="saveForm()">Salvare</button>
           </div>
         </form>                   
       </div>

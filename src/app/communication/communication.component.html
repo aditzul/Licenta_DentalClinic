@@ -25,9 +25,9 @@
                       {{ hour }}
                     </mat-option>
                   </mat-select>
-                  <mat-hint *ngIf="smsSettingsForm.get('SMS_SEND_HOUR')?.touched && smsSettingsForm.get('SMS_SEND_HOUR')?.errors" class="mat-mdc-form-field-error">
-                    Oră trimitere SMS este un câmp obligatoriu
-                  </mat-hint>
+                  <mat-error *ngIf="smsSettingsForm.get('SMS_SEND_HOUR')?.touched && smsSettingsForm.get('SMS_SEND_HOUR')?.errors" class="mat-mdc-form-field-error">
+                    Câmp obligatoriu
+                  </mat-error>
                 </mat-form-field>
               </div>
               <div class="form-row" *ngIf="isEnabled">
@@ -38,16 +38,16 @@
                       {{ day.value }}
                     </mat-option>
                   </mat-select>
-                  <mat-hint *ngIf="smsSettingsForm.get('SMS_SEND_DAYS')?.touched && smsSettingsForm.get('SMS_SEND_DAYS')?.errors" class="mat-mdc-form-field-error">
-                    Zile anterioare progamării este un câmp obligatoriu
-                  </mat-hint>
+                  <mat-error *ngIf="smsSettingsForm.get('SMS_SEND_DAYS')?.touched && smsSettingsForm.get('SMS_SEND_DAYS')?.errors" class="mat-mdc-form-field-error">
+                    Câmp obligatoriu
+                  </mat-error>
                 </mat-form-field>
               </div>
             </div>
             <div class="form-column">
               <div class="form-row" *ngIf="isEnabled">
                 <mat-form-field>
-                  <mat-label>Template SMS</mat-label>
+                  <mat-label>Șablon SMS</mat-label>
                   <textarea 
                     matInput 
                     formControlName="SMS_TEMPLATE" 
@@ -56,9 +56,9 @@
                     cdkAutosizeMinRows="8"
                     cdkAutosizeMaxRows="10">
                   </textarea>
-                  <mat-hint *ngIf="smsSettingsForm.get('SMS_TEMPLATE')?.touched && smsSettingsForm.get('SMS_TEMPLATE')?.errors" class="mat-mdc-form-field-error">
-                    Template SMS este un câmp obligatoriu
-                  </mat-hint>
+                  <mat-error *ngIf="smsSettingsForm.get('SMS_TEMPLATE')?.touched && smsSettingsForm.get('SMS_TEMPLATE')?.errors" class="mat-mdc-form-field-error">
+                    Câmp obligatoriu
+                  </mat-error>
                 </mat-form-field>
               </div>
             </div>

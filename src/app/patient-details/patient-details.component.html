@@ -258,12 +258,12 @@
           </div>
           <form (ngSubmit)="addNewComment()">
             <mat-form-field class="full-width">
-              <mat-label>Lasa un comentariu</mat-label>
+              <mat-label>Scrie un comentariu</mat-label>
               <textarea name="comment" [(ngModel)]="newComment" matInput placeholder="Ex. Pentru urmatoarea programare..."></textarea>
             </mat-form-field>
             <button mat-raised-button color="primary">
               <span *ngIf="loadingComment" class="spinner-border spinner-border-sm me-1"></span>
-              Salveaza
+              Salvează
             </button>
           </form>
         </mat-card-content>

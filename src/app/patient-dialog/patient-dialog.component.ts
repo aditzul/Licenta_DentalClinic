@@ -174,8 +174,6 @@ export class PatientDialogComponent implements OnInit {
         Validators.required,
         validateCNP() // Validare custom pentru CNP-ul românesc
       ]),
-      birth_date: new FormControl(this.data.patient?.birth_date || '', Validators.required),
-      sex: new FormControl(this.data.patient?.sex || '', Validators.required),
       country: new FormControl(this.data.patient?.country || '', [Validators.required]),
       state: new FormControl(this.data.patient?.state || '', [Validators.required]),
       city: new FormControl(this.data.patient?.city || '', [Validators.required]),
@@ -214,12 +212,4 @@ export class PatientDialogComponent implements OnInit {
       patient: details.id, // Includem datele pacientului pentru identificare
     });
   }
-
-  // isDisabled() {
-  //   if (this.patientForm.status === 'INVALID') {
-  //     console.log(this.patientForm.status)
-  //     return true;
-  //   }
-  //   return false;
-  // }
 }
