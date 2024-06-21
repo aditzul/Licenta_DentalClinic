@@ -24,11 +24,11 @@
       </button>
 
       <button class="profile-menu" mat-button [matMenuTriggerFor]="menu">
-        {{ user?.role === 0 ? "Admin" : user?.username }}
+        {{ user?.role === 0 ? "Admin" : "Dr. " + user?.first_name + " " + user?.last_name }}
       </button>
       <mat-menu #menu="matMenu">
         <button *ngIf="false" mat-menu-item [routerLink]="'profile'">Profile</button>
-        <button mat-menu-item (click)="logout()">Logout</button>
+        <button mat-menu-item (click)="logout()">Deconectare</button>
       </mat-menu>
     </mat-toolbar>
 

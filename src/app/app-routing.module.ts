@@ -29,7 +29,7 @@ const routes: Routes = [
         path: 'dashboard',
         component: DashboardComponent,
         canActivate: [AuthGuard],
-        data: { roles: [Role.Admin, Role.Medic], breadcrumb: 'Acasă' },
+        data: { roles: [Role.Admin, Role.Medic], breadcrumb: 'Tablou bord' },
       },
       {
         path: 'patients',

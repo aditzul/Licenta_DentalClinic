@@ -1,0 +1,42 @@
+<table mat-table [dataSource]="dataSource" matSort>
+    <!-- Denumire fișier Column -->
+    <ng-container matColumnDef="file_nice_name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tip fișier</th>
+      <td mat-cell *matCellDef="let document">{{ document.file_nice_name }}</td>
+    </ng-container>
+  
+    <!-- Dată încărcare Column -->
+    <ng-container matColumnDef="created_at">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Dată încărcare</th>
+      <td mat-cell *matCellDef="let document">{{ document.created_at | date: "dd.MM.yyyy" }}</td>
+    </ng-container>
+  
+    <!-- Acțiuni Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Acțiuni</th>
+      <td mat-cell *matCellDef="let document">
+        <div class="action-buttons">
+          <button mat-icon-button (click)="deleteDocument(document)">
+            <mat-icon fontIcon="delete" color="warn">delete</mat-icon>
+          </button>
+          <button mat-icon-button (click)="viewDocument(document)">
+            <mat-icon fontSet="fa-solid" fontIcon="fa-eye" color="primary"></mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  
+    <!-- Mesaj afișat atunci când nu există date potrivite. -->
+    <tr class="mat-row" *matNoDataRow>
+      <ng-container *ngIf="dataSource.data.length === 0">
+        <td class="mat-cell" colspan="3"><span style="margin: 20px;">Nu există documente încărcate</span></td>
+      </ng-container>
+    </tr>
+  </table>
+  
+  <mat-paginator [pageSizeOptions]="[5, 10, 25]" [pageSize]="5" showFirstLastButtons aria-label="Paginare documente">
+  </mat-paginator>
+  

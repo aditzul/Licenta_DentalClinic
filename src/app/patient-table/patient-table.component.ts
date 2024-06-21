@@ -1,15 +1,12 @@
 import { Patient } from './../_models/patient';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { PatientService } from '../_services/patient.service';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../_helpers/confirm-dialog/confirm-dialog.component';
 import { PatientDialogComponent } from '../patient-dialog/patient-dialog.component';
-import { AuthenticationService } from '../_services/authentication.service';
-import { Role } from '../_models/user';
 
 @Component({
   selector: 'app-patient-table',
@@ -31,8 +28,6 @@ export class PatientTableComponent implements OnInit {
     private router: Router,
     private patientService: PatientService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
-    private authService: AuthenticationService,
   ) {}
 
   ngOnInit() {
@@ -79,8 +74,8 @@ export class PatientTableComponent implements OnInit {
   deletePatient(patient: Patient) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
-        title: 'Confirmation',
-        message: 'Are you sure you want to delete this patient?',
+        title: 'Confirmare',
+        message: 'Ești sigur că vrei să ștergi acest pacient?',
       } as ConfirmDialogData,
     });
 

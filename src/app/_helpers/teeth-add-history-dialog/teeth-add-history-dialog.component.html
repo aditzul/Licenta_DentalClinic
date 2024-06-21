@@ -1,20 +1,20 @@
 <mat-toolbar color="primary">
-    <h1>{{ isAdd ? 'Adauga' : 'Modifica' }} interventie</h1>
+    <span>{{ isAdd ? 'Adaugă' : 'Modifică' }} intervenție</span>
 </mat-toolbar>
 <div mat-dialog-content>
     <form *ngIf="teethAddHistoryForm" [formGroup]="teethAddHistoryForm">
         <div class="form-row">
-            <mat-form-field>
-                <mat-label>Lucrare</mat-label>
-                <mat-select formControlName="work_id" class="form-control">
-                    <mat-option *ngFor="let work of allWorks" [value]="work.id">
-                    {{ work.work_name }}
-                    </mat-option>
-                </mat-select>
-                <mat-hint *ngIf="teethAddHistoryForm.get('work_id')?.touched && teethAddHistoryForm.get('work_id')?.errors" class="mat-mdc-form-field-error">
-                    Trebuie sa alegi o lucrare
-                </mat-hint>
-            </mat-form-field>
+          <mat-form-field>
+            <mat-label>Lucrare</mat-label>
+            <mat-select formControlName="work" class="form-control" [compareWith]="compareWorkObjects">
+              <mat-option *ngFor="let work of allWorks" [value]="{ work_id: work.id, work_name: work.work_name }">
+                {{ work.work_name }}
+              </mat-option>
+            </mat-select>
+            <mat-hint *ngIf="teethAddHistoryForm.get('work')?.touched && teethAddHistoryForm.get('work')?.errors" class="mat-mdc-form-field-error">
+              Câmp obligatoriu
+            </mat-hint>
+          </mat-form-field>          
         </div>
 
         <div class="form-row">
@@ -24,8 +24,8 @@
             </mat-form-field> 
         </div>
         <div mat-dialog-actions class="form-buttons">
-            <button mat-button mat-dialog-close>Anuleaza</button>
-            <button mat-button (click)="addWork()">Salveaza</button>
+            <button mat-button mat-dialog-close>Anulare</button>
+            <button mat-button (click)="addWork()" [disabled]="isDisabled()">Salvare</button>
         </div>
     </form>
 </div>

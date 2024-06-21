@@ -1,9 +1,8 @@
 import { environment } from 'src/environments/environment';
-import { User } from '../_models/user';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map, of, switchMap } from 'rxjs';
-import { AssignedPatientsData, Patient, PatientComment, PatientHistory, SensorData, SensorSessionData } from '../_models/patient';
+import { Patient, PatientComment, PatientHistory, Tooth } from '../_models/patient';
 
 @Injectable({ providedIn: 'root' })
 export class PatientService {
@@ -71,6 +70,16 @@ export class PatientService {
     });
   }
 
+  uploadDocument(data: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/UploadDocument`, data);
+  }
+
+  getFilesList(ID: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/GetFilesList/${ID}`).pipe(
+      map(response => response)
+    );
+  }
+
   getTeethHistory(ID: number, tooth_id: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/TeethHistory/GetTeethHistory/${ID}/${tooth_id}`).pipe(
       map(response => response.data)
@@ -83,30 +92,19 @@ export class PatientService {
     );
   }
 
-  //TO CHECK HERE BELOW WHAT I KEEP AND WHAT I DELETE
-
-  getMedicalDataByPatientId(patient: Patient): Observable<PatientHistory[]> {
-    return this.http.get<PatientHistory[]>(`${environment.apiUrl}/MedicalHistory/GetAllMedicalHistory/${patient.id}`);
+  addTeethHistory(body: Tooth): Observable<any> {
+    return this.http.post<PatientComment[]>(`${environment.apiUrl}/TeethHistory/AddTeethHistory`, body);
   }
 
-  AddMedicalDataByPatientId(history: PatientHistory): Observable<any> {
-    const historyDTO: PatientHistory = Object.assign(history, {
-      createD_AT: new Date().toISOString(),
-    });
-
-    return this.http.post<PatientComment[]>(`${environment.apiUrl}/MedicalHistory/AddMedicalHistory`, {
-      ...historyDTO,
-    });
+  editTeethHistory(body: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/TeethHistory/UpdateTeethHistory/${body.id}`, body);
   }
 
-  uploadDocument(data: any): Observable<any> {
-    return this.http.post<any>(`${environment.apiUrl}/UploadDocument`, data);
+  deleteTeethHistory(ID: number): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/TeethHistory/DeleteTeethHistory/${ID}`);
   }
 
-  getFilesList(patientInfo: any): Observable<any> {
-    return this.http.post<any>(`${environment.apiUrl}/GetFilesList`, { patientInfo }).pipe(
-      map(response => response.data)
-    );
+  sendSMS(data: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/SMSO/SendSMS`, data);
   }
-
 }

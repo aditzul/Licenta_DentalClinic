@@ -1,25 +1,27 @@
-<h1 mat-dialog-title>{{ isAdd ? 'Add' : 'Edit' }} User</h1>
+<mat-toolbar color="primary">
+  <span>{{ isAdd ? 'Adaugă un utilizator nou' : 'Modifică date utilizator' }}</span>
+</mat-toolbar>
 <div mat-dialog-content>
   <form [formGroup]="userForm" class="user-form">
     <div class="form-row">
       <mat-form-field>
-        <mat-label>Username</mat-label>
+        <mat-label>Nume utilizator</mat-label>
         <input matInput type="text" formControlName="username" />
-        <mat-hint *ngIf="userForm.get('username')?.touched && userForm.get('username')?.errors" class="mat-mdc-form-field-error">
-          Username is required
-        </mat-hint>        
+        <mat-error *ngIf="userForm.get('username')?.touched && userForm.get('username')?.errors" class="mat-mdc-form-field-error">
+          Câmp obligatoriu
+        </mat-error>        
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Password</mat-label>
+        <mat-label>Parolă</mat-label>
         <input matInput type="password" formControlName="password" class="form-control" />
         <mat-hint *ngIf="userForm.get('password')?.touched && userForm.get('password')?.errors" class="mat-mdc-form-field-error">
-          Password is required
+          Câmp obligatoriu
         </mat-hint>
       </mat-form-field>
     </div>
 
-    <mat-label>Role: </mat-label>
+    <mat-label>Rol: </mat-label>
       <mat-button-toggle-group name="role" formControlName="role">
         <mat-button-toggle value="0" matTooltip="Admin">
           <mat-icon fontSet="fa-solid" fontIcon="fa-user-gear"></mat-icon>
@@ -31,73 +33,40 @@
       </mat-button-toggle-group>
       <br/>
     <div class="form-row">
-      <mat-label>Details:</mat-label>
+      <mat-label>Detalii:</mat-label>
     </div>
 
     <div class="form-row">
       <mat-form-field>
-        <mat-label>First name</mat-label>
+        <mat-label>Prenume</mat-label>
         <input matInput type="text" formControlName="first_name" />
         <mat-hint *ngIf="userForm.get('first_name')?.touched && userForm.get('first_name')?.errors" class="mat-mdc-form-field-error">
-          First name is required
+          Câmp obligatoriu
         </mat-hint>
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Last name</mat-label>
+        <mat-label>Nume</mat-label>
         <input matInput type="text" formControlName="last_name" />
         <mat-hint *ngIf="userForm.get('last_name')?.touched && userForm.get('last_name')?.errors" class="mat-mdc-form-field-error">
-          Last name is required
+          Câmp obligatoriu
         </mat-hint>
       </mat-form-field>
     </div>
 
     <div class="form-row">
       <mat-form-field>
-        <mat-label>Phone</mat-label>
+        <mat-label>Telefon</mat-label>
         <input matInput type="tel" formControlName="phone" />
         <mat-hint *ngIf="userForm.get('phone')?.touched && userForm.get('phone')?.errors" class="mat-mdc-form-field-error">
-          Phone is required
+          Câmp obligatoriu
         </mat-hint>
       </mat-form-field>
     </div>
 
   </form>
-
-  <!-- <form [formGroup]="detailsForm" class="details-form" *ngIf="userForm.get('role')?.value === '1' || userForm.get('role')?.value === '2'">
-    <mat-label>{{ userForm.get('role')?.value === '1' ? 'Medic' : '' }} Details:</mat-label>
-
-    <div class="form-row">
-      <mat-form-field>
-        <mat-label>First name</mat-label>
-        <input matInput type="text" formControlName="first_name" />
-        <mat-hint *ngIf="detailsForm.get('first_name')?.touched && detailsForm.get('first_name')?.errors" class="mat-mdc-form-field-error">
-          First name is required
-        </mat-hint>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Last name</mat-label>
-        <input matInput type="text" formControlName="last_name" />
-        <mat-hint *ngIf="detailsForm.get('last_name')?.touched && detailsForm.get('last_name')?.errors" class="mat-mdc-form-field-error">
-          Last name is required
-        </mat-hint>
-      </mat-form-field>
-
-    </div>
-
-    <div class="form-row">
-      <mat-form-field>
-        <mat-label>Phone</mat-label>
-        <input matInput type="tel" formControlName="phone" />
-        <mat-hint *ngIf="detailsForm.get('phone')?.touched && detailsForm.get('phone')?.errors" class="mat-mdc-form-field-error">
-          Phone is required
-        </mat-hint>
-      </mat-form-field>
-    </div>
-  </form> -->
 </div>
 <div mat-dialog-actions class="form-buttons">
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button (click)="onSubmit()" [disabled]="isDisabled()">Ok</button>
+  <button mat-button (click)="onNoClick()">Anulare</button>
+  <button mat-button (click)="onSubmit()" [disabled]="isDisabled()">Salvare</button>
 </div>

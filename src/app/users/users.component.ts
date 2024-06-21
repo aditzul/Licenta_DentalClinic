@@ -1,4 +1,3 @@
-import { MedicService } from './../_services/medic.service';
 import { Role, User } from './../_models/user';
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { UserService } from '../_services/user.service';
@@ -6,10 +5,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
-import { Medic } from '../_models/medic';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../_helpers/confirm-dialog/confirm-dialog.component';
 
 

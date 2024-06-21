@@ -27,7 +27,7 @@ export class NavComponent {
       this.user = user;
       this.navItems = [
         {
-          displayName: 'Acasă',
+          displayName: 'Tablou bord',
           route: 'dashboard',
           iconName: 'fa-chart-line',
         },

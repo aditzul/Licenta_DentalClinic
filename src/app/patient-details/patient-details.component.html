@@ -9,19 +9,21 @@
             </div>
           </mat-card-title>
           <mat-card-title>{{ patient.first_name }} {{ patient.last_name }}</mat-card-title>
-          <mat-card-subtitle
-            ><strong>{{ patient.age }} Ani</strong></mat-card-subtitle
-          >
+          <mat-card-subtitle>
+            <strong>{{ patient.age }} Ani</strong>
+          </mat-card-subtitle>
           <mat-card-subtitle>{{ patient.sex === "F" ? "Pacientă" : "Pacient" }} clinică</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <mat-divider></mat-divider>
           <p class="row">
-            <span class="label"><a href="C:\Users\Adrian\Desktop\Licenta2\DentalAPI\Uploads\1_Adrian_Dragomiroiu\Imagistica\blog.jpg">Deschide</a></span>
+            <span class="label">
+              <button mat-button color="primary" (click)="editPatient(patient)">
+                <i class="fas fa-edit"></i>
+                <span> Modifică date pacient</span>
+              </button>
+            </span>
           </p>
-          <button mat-icon-button (click)="editPatient(patient)">
-            <mat-icon fontIcon="edit" color="primary"></mat-icon>
-          </button>
         </mat-card-content>
       </mat-card>
     </div>
@@ -48,7 +50,7 @@
           </p>
           <mat-divider></mat-divider>
           <p class="row">
-            <span class="label">Data nastere: </span>
+            <span class="label">Dată naștere: </span>
             <span class="value" *ngIf="patient.birth_date; else editButton">
               {{ patient.birth_date | date : "dd.MM.yyyy" }}
             </span>
@@ -99,7 +101,7 @@
           </p>
           <mat-divider></mat-divider>
           <p class="row">
-            <span class="label">Adresa: </span>
+            <span class="label">Adresă: </span>
             <span class="value" *ngIf="patient.address; else editButton">
               {{ patient.address }}
             </span>
@@ -110,7 +112,7 @@
     <div class="column details">
       <mat-card appearance="outlined" class="patient-details">
         <mat-card-header>
-          <mat-card-title> Programari </mat-card-title>
+          <mat-card-title> Programări </mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <mat-divider></mat-divider>
@@ -120,55 +122,66 @@
               {{ futureAppointment | date: 'dd.MM.yyyy - HH:mm' }}
             </span>
             <ng-template #noAppointment>
-              <span class="value">Fara programare</span>
-            </ng-template>          </p>
+              <span class="value">Fără programare</span>
+            </ng-template></p>
           <mat-divider></mat-divider>
           <p class="row">
-            <span class="label">Programari onorate: </span>
-            <span class="value">{{ numConfirmedAppointments }}</span>
-          </p>
-          <mat-divider></mat-divider>
-          <p class="row">
-            <span class="label">Programari anulate: </span>
-            <span class="value">{{ numCancelledAppointments }}</span>
-          </p>
+            <span class="label">
+              <button mat-button color="primary" routerLink="/appointments">
+                <i class="fas fa-calendar-alt"></i>
+                <span> Adaugă programare</span>
+              </button>
+            </span>
+          </p>          
           <mat-divider></mat-divider>
           <p class="row">
             <mat-slide-toggle (change)="onToggleChange($event)" [checked]="isEnabled">
               <strong>Comunicare prin SMS</strong>
             </mat-slide-toggle>
           </p>
+          <div *ngIf="isEnabled">
+            <mat-divider></mat-divider>
+            <p class="row">
+              <span class="label">
+                <button mat-button color="primary" (click)="sendSMS(patient)">
+                  <i class="fas fa-comment-sms"></i>
+                  <span> Notifică prin SMS</span>
+                </button>
+              </span>
+            </p>   
+          </div>
           <mat-divider></mat-divider>
           <p class="row">
-            <span class="label"><a href="/appointments">Adauga programare</a></span>
+            <span class="label">Programări onorate: </span>
+            <span class="value">{{ numConfirmedAppointments }}</span>
           </p>
           <mat-divider></mat-divider>
           <p class="row">
-            <span class="label"><a href="http://localhost:8080/Uploads/1_Adrian_Dragomiroiu/Documente/amm.py" download>Descarcă documentul</a>
-            </span>
+            <span class="label">Programări anulate: </span>
+            <span class="value">{{ numCancelledAppointments }}</span>
           </p>
         </mat-card-content>
       </mat-card>
     </div>
   </div>
-  <mat-tab-group #tabGroup (selectedTabChange)="tabChanged($event)" animationDuration="0ms">
-    <mat-tab label="Schema dentara">
+  <mat-tab-group #tabGroup animationDuration="0ms">
+    <mat-tab label="Schemă dentară">
       <mat-toolbar color="primary">
-        <span>Schema dentara</span>
+        <span>Schemă dentară</span>
         <span class="toolbar-spacer"></span>
       </mat-toolbar>
       <mat-card appearance="outlined">
           <mat-card-content>
               <app-patient-dentalscheme></app-patient-dentalscheme>
           </mat-card-content>
-        </mat-card>
+      </mat-card>
     </mat-tab>
-    <mat-tab label="Istoric programari">
+    <mat-tab label="Istoric programări">
       <mat-toolbar color="primary">
-        <span>Istoric programari</span>
+        <span>Istoric programări</span>
         <span class="toolbar-spacer"></span>
       </mat-toolbar>
-      <mat-card appearance="outlined" class="appointment-history">
+      <mat-card appearance="outlined" class="">
         <mat-card-content>
           <div *ngIf="appointments && appointments.length > 0; else noAppointments">
             <div class="timeline">
@@ -185,54 +198,24 @@
             </div>
           </div>
           <ng-template #noAppointments>
-            <div>Nu exista istoric de programari.</div>
+            <div>Nu există istoric de programări.</div>
           </ng-template>
         </mat-card-content>
       </mat-card>
     </mat-tab>
-    <!-- <mat-tab label="Interventii">
+    <mat-tab label="Imagistică">
       <mat-toolbar color="primary">
-        <span>Interventii</span>
+        <span>Imagistică</span>
         <span class="toolbar-spacer"></span>
-      </mat-toolbar>
-      <mat-card appearance="outlined">
-        <mat-card-content>
-          <table mat-table [dataSource]="medicalHistory">
-            <ng-container matColumnDef="id">
-              <th mat-header-cell *matHeaderCellDef>Entry no.</th>
-              <td mat-cell *matCellDef="let history">{{ history.id }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="hospital">
-              <th mat-header-cell *matHeaderCellDef>Hospital</th>
-              <td mat-cell *matCellDef="let history">{{ history.hospital }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="intervention">
-              <th mat-header-cell *matHeaderCellDef>Intervention</th>
-              <td mat-cell *matCellDef="let history">{{ history.intervention }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="interventionDate">
-              <th mat-header-cell *matHeaderCellDef>Intervention Date</th>
-              <td mat-cell *matCellDef="let history">{{ history.interventioN_DATE | date : "dd.MM.yyyy - HH:mm:ss" }}</td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="['id', 'hospital', 'intervention', 'interventionDate']"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['id', 'hospital', 'intervention', 'interventionDate']"></tr>
-          </table>
-        </mat-card-content>
-      </mat-card>
-    </mat-tab> -->
-
-    <mat-tab label="Imagistica">
-      <mat-toolbar color="primary">
-        <span>Imagistica</span>
-        <span class="toolbar-spacer"></span>
-        <button mat-icon-button (click)="uploadDocument('Imagistica')">
+        <button mat-icon-button (click)="uploadDocument('Imagistică')">
           <mat-icon fontSet="fa-solid" fontIcon="fa-plus"></mat-icon>
         </button>
       </mat-toolbar>
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          <app-patient-documents-table [documents]="patientData['Imagistică']"></app-patient-documents-table>
+        </mat-card-content>
+      </mat-card>
     </mat-tab>
     <mat-tab label="Documente">
       <mat-toolbar color="primary">
@@ -242,12 +225,17 @@
           <mat-icon fontSet="fa-solid" fontIcon="fa-plus"></mat-icon>
         </button>
       </mat-toolbar>
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          <app-patient-documents-table [documents]="patientData['Documente']"></app-patient-documents-table>
+        </mat-card-content>
+      </mat-card>
     </mat-tab>
     <mat-tab label="Comentarii">
       <mat-toolbar color="primary">
         <span>Comentarii</span>
       </mat-toolbar>
-      <mat-card appearance="outlined" class="comments">
+      <mat-card appearance="outlined" class="">
         <mat-card-content>
           <div class="comments-container">
             <!-- Parcurgem fiecare zi distinctă -->

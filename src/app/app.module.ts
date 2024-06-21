@@ -44,6 +44,7 @@ import { SimpleAddDialogComponent } from './_helpers/simple-add-dialog/simple-ad
 import { PatientDentalschemeComponent } from './patient-dentalscheme/patient-dentalscheme.component';
 import { TeethHistoryDialogComponent } from './_helpers/teeth-history-dialog/teeth-history-dialog.component';
 import { TeethAddHistoryDialogComponent } from './_helpers/teeth-add-history-dialog/teeth-add-history-dialog.component';
+import { PatientDocumentsTableComponent } from './patient-documents-table/patient-documents-table.component';
 
 
 
@@ -79,6 +80,7 @@ import { TeethAddHistoryDialogComponent } from './_helpers/teeth-add-history-dia
     PatientDentalschemeComponent,
     TeethHistoryDialogComponent,
     TeethAddHistoryDialogComponent,
+    PatientDocumentsTableComponent,
   ],
   imports: [
     BrowserModule, 

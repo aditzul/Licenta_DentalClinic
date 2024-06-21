@@ -78,7 +78,7 @@ export class PatientsComponent implements OnInit {
       if (medicId) {
         this.patientService.getPatientsByMedicID(medicId.toString()).subscribe((assignedPatientsData) => {
           this.loaded = true;
-          this.patients = assignedPatientsData?.assignedPatients || [];
+          this.patients = assignedPatientsData;
         });
       } else {
         console.error('Medic ID not found in user details.');

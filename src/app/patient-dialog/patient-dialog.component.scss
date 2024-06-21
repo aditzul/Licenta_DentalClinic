@@ -8,29 +8,9 @@ form {
   }
 
   .form-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: space-between;
-  }
-
-  .form-field {
-    flex-basis: calc(33.33% - 10px);
-    position: relative;
-  }
-
-  .mat-form-field {
-    width: 100%;
-  }
-
-  .floating-label {
-    position: absolute;
-    top: -20px; /* Ajustează această valoare în funcție de necesitate */
-    left: 0;
-    font-size: 12px; /* Ajustează dimensiunea fontului */
-    color: red; /* Schimbă culoarea în funcție de preferințe */
-    transition: all 0.3s ease-in-out;
-    display: inline-block;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
   }
 
   .mat-form-field-appearance-outline .mat-form-field-outline {
@@ -62,7 +42,6 @@ form {
 
 .mat-button-toggle {
   flex: 1;
-
   mat-icon {
     font-size: 30px;
     height: 40px;

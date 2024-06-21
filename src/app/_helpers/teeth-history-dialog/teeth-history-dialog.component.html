@@ -1,9 +1,10 @@
 <mat-toolbar color="primary">
-<span>Istoric interventii</span>
-<span class="toolbar-spacer"></span>
-<button mat-icon-button (click)="addHistory()">
-    <mat-icon fontSet="fa-solid" fontIcon="fa-plus"></mat-icon>
-</button>
+    <span *ngIf="!isExtracted">Istoric intervenții</span>
+    <span *ngIf="isExtracted">Istoric intervenții - Extras</span>
+    <span class="toolbar-spacer"></span>
+    <button mat-icon-button (click)="addHistory()" [disabled]="isExtracted">
+      <mat-icon fontSet="fa-solid" fontIcon="fa-plus"></mat-icon>
+    </button>
 </mat-toolbar>
 
 <table mat-table [dataSource]="dataSource" matSort>
@@ -15,10 +16,10 @@
 </ng-container>
 
 <!-- Dată realizare Column -->
-<ng-container matColumnDef="date">
+<ng-container matColumnDef="created_at">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Dată realizare</th>
     <td mat-cell *matCellDef="let tooth">
-    {{ tooth.date | date : "dd.MM.yyyy" }}
+    {{ tooth.created_at | date : "dd.MM.yyyy" }}
     </td>
 </ng-container>
 
@@ -30,7 +31,7 @@
 
 <!-- Actiuni Column -->
 <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef>Actiuni</th>
+    <th mat-header-cell *matHeaderCellDef>Acțiuni</th>
     <td mat-cell *matCellDef="let tooth">
     <button mat-icon-button (click)="editHistory(tooth)">
         <mat-icon fontIcon="edit"></mat-icon>

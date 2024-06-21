@@ -34,14 +34,21 @@ export class AppointmentService {
     );
   }
 
-  getAllAppointmentsByPatientID(patientID: number): Observable<any[]> {
-    const url = `${environment.apiUrl}/Appointments/GetAllAppointmentsByPatientID/${patientID}`;
-    return this.http.get<any[]>(url);
+  // getAllAppointmentsByPatientID(patientID: number): Observable<any[]> {
+  //   const url = `${environment.apiUrl}/Appointments/GetAllAppointmentsByPatientID/${patientID}`;
+  //   return this.http.get<any[]>(url);
+  // }
+
+  getAllAppointmentsByPatientID(patientID: number): Observable<Appointment[]> {
+    return this.http.get<any>(`${environment.apiUrl}/Appointments/GetAllAppointmentsByPatientID/${patientID}`).pipe(
+      map(response => response.data[0])
+    );
   }
 
-  getAllAppointmentsByMedicID(medicID: number): Observable<any[]> {
-    const url = `${environment.apiUrl}/Appointments/GetAllAppointmentsByMedicID/${medicID}`;
-    return this.http.get<any[]>(url);
+  getAllAppointmentsByMedicID(medicID: number): Observable<Appointment[]> {
+    return this.http.get<any>(`${environment.apiUrl}/Appointments/GetAllAppointmentsByMedicID/${medicID}`).pipe(
+      map(response => response.data[0])
+    );
   }
 
 }

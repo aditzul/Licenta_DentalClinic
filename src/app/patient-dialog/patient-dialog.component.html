@@ -1,4 +1,6 @@
-<h1 mat-dialog-title>{{ isAdd ? 'Adaugă un pacient nou' : 'Modifică date pacient' }}</h1>
+<mat-toolbar color="primary">
+  <span>{{ isAdd ? 'Adaugă un pacient nou' : 'Modifică date pacient' }}</span>
+</mat-toolbar>
 <div mat-dialog-content>
   <form *ngIf="patientForm" [formGroup]="patientForm" class="patient-form">
     <div class="form-row">
@@ -6,9 +8,15 @@
         <mat-form-field appearance="outline">
           <mat-label>{{ field.label }}</mat-label>
           <input matInput [type]="field.type" [formControlName]="field.formControlName" />
-          <mat-hint *ngIf="patientForm.get(field.formControlName)?.touched && patientForm.get(field.formControlName)?.errors" class="floating-label">
+          <mat-error *ngIf="patientForm.get(field.formControlName)?.touched && patientForm.get(field.formControlName)?.hasError('required')">
             Câmp obligatoriu
-          </mat-hint>
+          </mat-error>
+          <mat-error *ngIf="patientForm.get(field.formControlName)?.touched && patientForm.get(field.formControlName)?.hasError('invalidCNP')">
+            CNP invalid
+          </mat-error>
+          <mat-error *ngIf="patientForm.get(field.formControlName)?.touched && patientForm.get(field.formControlName)?.hasError('invalidPhoneNumberRO')">
+            Număr de telefon invalid
+          </mat-error>
         </mat-form-field>
       </div>
     </div>

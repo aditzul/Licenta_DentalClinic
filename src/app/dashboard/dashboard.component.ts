@@ -1,8 +1,6 @@
-import { MedicService } from './../_services/medic.service';
 import { Component, OnInit } from '@angular/core';
 import { PatientService } from '../_services/patient.service';
 import { Patient, Sex } from '../_models/patient';
-import { Medic } from '../_models/medic';
 import { AuthenticationService } from '../_services/authentication.service';
 import { Role, User } from '../_models/user';
 import { Chart } from 'chart.js/auto';
@@ -86,7 +84,6 @@ export class DashboardComponent implements OnInit {
     this.cardsData.femalePatients = this.computePercentage(this.patients.length, femalePatients).toFixed(2).toString() + '%';
     this.cardsData.malePatients = this.computePercentage(this.patients.length, malePatients).toFixed(2).toString() + '%';
     this.cardsData.averageAge = Math.round(this.patients.reduce((accum: number, reducer: any) => accum + reducer.age, 0) / this.patients.length);
-
   }
 
   createAgeChart(patients: Patient[]) {

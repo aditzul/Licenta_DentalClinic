@@ -2,7 +2,7 @@
   <mat-card class="box">
     <mat-card-header>
       <mat-toolbar color="primary">
-        <span>Login</span>
+        <span>Autentificare</span>
       </mat-toolbar>
     </mat-card-header>
     <mat-card-content>
@@ -10,16 +10,16 @@
         <mat-form-field>
           <mat-label>Nume utilizator</mat-label>
           <input matInput type="text" formControlName="username" />
-          <mat-hint *ngIf="submitted && f['username'].errors" class="mat-mdc-form-field-error"> Nume utilizator este un câmp obligatoriu </mat-hint>
+          <mat-error *ngIf="submitted && f['username'].errors" class="mat-mdc-form-field-error">Câmp obligatoriu</mat-error>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Parolă</mat-label>
           <input matInput type="password" formControlName="password" class="form-control" />
-          <mat-hint *ngIf="submitted && f['password'].errors" class="mat-mdc-form-field-error"> Parolă este un câmp obligatoriu </mat-hint>
+          <mat-error *ngIf="submitted && f['password'].errors" class="mat-mdc-form-field-error">Câmp obligatoriu</mat-error>
         </mat-form-field>
         <button mat-raised-button color="primary" [disabled]="loading">
           <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
-          Login
+          Conectare
         </button>
       </form>
     </mat-card-content>

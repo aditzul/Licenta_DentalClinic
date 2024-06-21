@@ -1,23 +1,40 @@
-mat-button-toggle-group {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-  
-    mat-button-toggle {
-      flex: 1;
-  
-      mat-icon {
-        font-size: 30px;
-        height: 40px;
-        width: 100px;
-      }
-    }
-  }
-  
-  .form-buttons {
-    justify-content: space-between;
-  }
-  
-  .file-name {
-    margin-top: 10px;
-  }
+.form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1em;
+}
+
+#fileInput {
+  margin-top: 1em;
+}
+
+.file-name {
+  margin-top: 0.5em;
+  color: #757575;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.custom-file-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+  transition: background-color 0.3s;
+}
+
+.custom-file-button:hover {
+  background-color: #e0e0e0;
+}
+
+.button-icon {
+  margin-right: 8px;
+}

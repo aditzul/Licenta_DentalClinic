@@ -1,18 +1,18 @@
 <main *ngIf="loaded">
   <div class="cards section">
     <app-simple-card [title]="cardsData.totalPatients" message="Total pacienți înregistrați" icon="fa-users" classes="green"></app-simple-card>
-    <app-simple-card [title]="cardsData.malePatients" message="Pacienți de sex masculin" icon="fa-mars" classes="blue"></app-simple-card>
-    <app-simple-card [title]="cardsData.femalePatients" message="Pacienți de sex feminin" icon="fa-venus" classes="red"></app-simple-card>
+    <app-simple-card [title]="cardsData.malePatients" message="Pacienți de gen masculin" icon="fa-mars" classes="blue"></app-simple-card>
+    <app-simple-card [title]="cardsData.femalePatients" message="Pacienți de gen feminin" icon="fa-venus" classes="red"></app-simple-card>
     <app-simple-card [title]="cardsData.averageAge + ' ani'" message="Medie de vârstă pacienți" icon="fa-user-clock" classes="yellow"></app-simple-card>
   </div>
 
   <div class="section charts">
     <div class="chart-container">
-      <h2>Pacienți repartizați pe sex</h2>
+      <h2>Pacienți repartizați în funcție de gen</h2>
       <canvas id="sexChart">{{ sexChart }}</canvas>
     </div>
     <div class="chart-container">
-      <h2>Pacienți repartizați pe grupe de vârstă</h2>
+      <h2>Pacienți repartizați în funcție de vârstă</h2>
       <canvas id="ageChart">{{ ageChart }}</canvas>
     </div>
   </div>

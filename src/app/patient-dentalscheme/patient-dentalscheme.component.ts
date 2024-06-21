@@ -37,18 +37,6 @@ export class PatientDentalschemeComponent {
     });
   }
 
-  getTeethHistory(userId: number, tooth_id: number) {
-    this.patientService.getTeethHistory(userId, tooth_id).subscribe((teeth: Tooth[]) => {
-      this.teeth = teeth;
-        const dialogRef = this.dialog.open(TeethHistoryDialogComponent, {
-          data: {
-            teeth,
-            tooth_id,
-          }
-        });
-    });
-  }
-
   generateTeeth() {
     const toothWidth = 40;
     const spacing = 12;
@@ -65,7 +53,8 @@ export class PatientDentalschemeComponent {
         resultIds.push(Number(this.result[key].tooth_id)); // Converteste string-ul la numar
       }
     }
-  
+
+    // Generare cadran stanga-sus (21 to 28)
     for (let i = 0; i < 8; i++) {
       const toothId = `${18 - i}`;
       const touched = resultIds.includes(Number(toothId));
@@ -152,13 +141,18 @@ export class PatientDentalschemeComponent {
   }
   
 
-  selectTooth(toothId: number) {
+  selectTooth(tooth_id: number) {
     const selectedToothId = this.selectedTooth ? this.selectedTooth.toString() : null;
-    this.selectedTooth = selectedToothId === toothId.toString() ? null : toothId.toString();
+    this.selectedTooth = selectedToothId === tooth_id.toString() ? null : tooth_id.toString();
     this.route.params.subscribe((params) => {
-      const { userId } = params;
-      this.getTeethHistory(userId, toothId);
+      const patientID: number = +params['userId']
+      const data = {
+        patient_id: patientID,
+        tooth_id: tooth_id,
+      }
+      const dialogRef = this.dialog.open(TeethHistoryDialogComponent, {
+        data: data
+      });
     });
   }
-  
 }

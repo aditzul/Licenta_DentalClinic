@@ -54,6 +54,7 @@
 }
 
 mat-card.patient-details {
+  min-height: 400px;
   align-items: center;
   text-align: center;
 }
@@ -205,4 +206,15 @@ mat-card.comments {
 
 .timeline-item.anulat::before {
   border: 2px solid red; /* Border roșu pentru meta Anulat */
+}
+
+.inline-button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-left: 30px;
+}
+
+.inline-text {
+  margin-left: 5px; /* Ajustează spațiul între iconiță și text după necesitate */
 }

@@ -7,6 +7,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Tooth } from '../../_models/patient';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../confirm-dialog/confirm-dialog.component';
 import { TeethAddHistoryDialogComponent } from '../teeth-add-history-dialog/teeth-add-history-dialog.component';
+import { PatientService } from './../../_services/patient.service'; // Asigură-te că ai importat serviciul pacientului
 
 @Component({
   selector: 'app-teeth-history-dialog',
@@ -15,34 +16,43 @@ import { TeethAddHistoryDialogComponent } from '../teeth-add-history-dialog/teet
 })
 export class TeethHistoryDialogComponent implements OnInit, AfterViewInit {
   teeth: Tooth[] = [];
-  displayedColumns: string[] = ['work_name', 'comment', 'date', 'actions'];
+  displayedColumns: string[] = ['work_name', 'comment', 'created_at', 'actions'];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  dataSource = new MatTableDataSource<Tooth>();
+  dataSource: MatTableDataSource<Tooth> = new MatTableDataSource<Tooth>();
+  isExtracted: boolean = false; // Inițializează cu o valoare default
 
   constructor(
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<TeethHistoryDialogComponent>,
+    private patientService: PatientService,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
-    // Verificăm dacă data conține mai multe intrări
-    if (Object.keys(data).length > 0) {
-      // Parcurgem fiecare intrare și le adăugăm la this.teeth
-      for (const key in data) {
-        if (Object.prototype.hasOwnProperty.call(data, key)) {
-          this.teeth.push(data[key]);
-        }
-      }
-    }
-  }
+  ) {}
 
   ngOnInit(): void {
-    if (this.data && typeof this.data.teeth === 'object') {
-      this.teeth = Object.values(this.data.teeth);
-    } else {
-      this.teeth = this.data;
-    }
-    this.dataSource.data = this.teeth;
+    this.getData();
+  }
+
+  getData() {
+    this.patientService.getTeethHistory(this.data.patient_id, this.data.tooth_id).subscribe((teethData: any) => {
+      if (Array.isArray(teethData)) {
+        this.teeth = teethData;
+      } else if (typeof teethData === 'object' && teethData !== null) {
+        // Dacă nu este array, verificăm dacă este un obiect și îl convertim într-o array
+        this.teeth = Object.values(teethData);
+      } else {
+        console.warn('Invalid teeth data format:', teethData);
+        this.teeth = []; // În caz de format invalid, inițializăm cu array goală
+      }
+      
+      this.dataSource.data = this.teeth;
+
+      this.checkIfExtracted(); // Apelăm funcția după ce obținem datele
+    }, error => {
+      console.error('Error fetching teeth history:', error);
+      this.teeth = []; // În caz de eroare, asigurăm teeth este o array goală
+      this.dataSource.data = this.teeth;
+    });
   }
 
   ngAfterViewInit() {
@@ -53,57 +63,82 @@ export class TeethHistoryDialogComponent implements OnInit, AfterViewInit {
     };
   }
 
-  deleteHistory(tooth: { id: any; }) {
+  checkIfExtracted() {
+    if (Array.isArray(this.teeth)) {
+      this.isExtracted = this.teeth.some(tooth => tooth.extracted === 1);
+    } else {
+      console.warn('Teeth data is not an array:', this.teeth);
+      this.isExtracted = false; // Poți seta isExtracted cum consideri necesar în caz de eroare
+    }
+  }
+
+  async addHistory() {
+    const dialogRef = this.dialog.open(TeethAddHistoryDialogComponent, {
+      data: {
+        isAdd: true,
+        tooth_id: this.data.tooth_id,
+        patient_id: this.data.patient_id,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) return;
+      this.patientService.addTeethHistory(result).subscribe(() => {
+        this.getData(); // Reîncărcăm datele după adăugare
+      }, error => {
+        console.error('Error adding teeth history:', error);
+      });
+    });
+  }
+
+  editHistory(tooth: { id: any }) {
+    const dialogRef = this.dialog.open(TeethAddHistoryDialogComponent, {
+      data: {
+        isAdd: false,
+        tooth: tooth,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) return;
+      const body = {
+        id: result.details.id,
+        dental_work_id: result.details.dental_work_id,
+        comment: result.details.comment,
+        extracted: result.details.extracted,
+      };
+      this.patientService.editTeethHistory(body).subscribe(() => {
+        this.getData(); // Reîncărcăm datele după editare
+      }, error => {
+        console.error('Error editing teeth history:', error);
+      });
+    });
+  }
+
+  deleteHistory(tooth: { id: any }) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: 'Confirmare',
         message: 'Ești sigur că vrei să ștergi această intrare?',
       } as ConfirmDialogData,
     });
-    console.log(tooth.id)
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         // User clicked 'Yes', proceed with deletion
-        // this.userService.deleteUser(user).subscribe(
-        //   () => {
-        //     // Handle successful deletion
-        //     this.refreshData();
-        //   },
-        // );
+        this.patientService.deleteTeethHistory(tooth.id).subscribe(
+          () => {
+            // Handle successful deletion
+            this.getData(); // Reîncărcăm datele după ștergere
+          },
+          error => {
+            console.error('Error deleting teeth history:', error);
+          }
+        );
       }
     });
   }
 
-  async addHistory() {
-    const dialogRef = this.dialog.open(TeethAddHistoryDialogComponent, {
-      data: {
-        tooth_id: this.data.tooth_id,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      // if (!result) return;
-      // const { user, details } = result;
-      // this.userService.addUser(user).subscribe(() => {
-      // this.refreshData();
-      // });
-    });
-  }
-
-  editHistory(ID: number) {
-    // const dialogRef = this.dialog.open(UserDialogComponent, {
-    //   data: {
-    //     user,
-    //   },
-    // });
-
-    // dialogRef.afterClosed().subscribe((result) => {
-    //   if (!result) return;
-    //   const { user, details } = result;
-
-    //   this.userService.updateUser(user).subscribe(() => {
-    //     this.refreshData();
-    //   });
-    // });
+  onClose(result?: any): void {
+    this.dialogRef.close(result);
   }
 }

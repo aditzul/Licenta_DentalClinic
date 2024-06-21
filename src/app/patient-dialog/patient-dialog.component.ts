@@ -4,10 +4,67 @@ import {
   FormControl,
   FormGroup,
   Validators,
+  ValidatorFn,
+  AbstractControl,
+  ValidationErrors
 } from '@angular/forms';
 import { Patient, PatientDialog } from '../_models/patient';
 import { User } from '../_models/user';
 import { UserService } from '../_services/user.service';
+
+// Funcția de validare pentru număr de telefon românesc
+function validatePhoneNumberRO(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const phoneNumber = control.value;
+
+    // Expresia regulată pentru validarea numărului de telefon românesc
+    const roPhoneNumberPattern = /^(0[2-9][0-9]{8,9})$/;
+
+    // Verificăm dacă numărul de telefon respectă expresia regulată
+    if (roPhoneNumberPattern.test(phoneNumber)) {
+      return null; // Numărul de telefon este valid
+    } else {
+      return { 'invalidPhoneNumberRO': true }; // Numărul de telefon nu este valid
+    }
+  };
+}
+
+// Funcția de validare pentru CNP-ul românesc
+function validateCNP(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const cnp = control.value;
+
+    // Verificăm dacă CNP-ul este completat
+    if (!cnp) {
+      return { 'required': true };
+    }
+
+    // Expresia regulată pentru validarea CNP-ului românesc
+    const cnpPattern = /^\d{13}$/;
+
+    // Verificăm dacă CNP-ul respectă expresia regulată
+    if (cnpPattern.test(cnp)) {
+      // Verificăm și cifra de control
+      const controlDigit = parseInt(cnp.charAt(12), 10);
+      const digits = cnp.substring(0, 12).split('').map(Number);
+      const weights = [2, 7, 9, 1, 4, 6, 3, 5, 8, 2, 7, 9];
+      let sum = 0;
+      for (let i = 0; i < 12; i++) {
+        sum += digits[i] * weights[i];
+      }
+      const remainder = sum % 11;
+      const validControlDigit = (remainder === 10 ? 1 : remainder) === controlDigit;
+
+      if (!validControlDigit) {
+        return { 'invalidCNP': true };
+      }
+
+      return null; // CNP-ul este valid
+    } else {
+      return { 'invalidCNP': true }; // CNP-ul nu este valid
+    }
+  };
+}
 
 interface FormField {
   label: string;
@@ -87,7 +144,6 @@ export class PatientDialogComponent implements OnInit {
       formControlName: 'secondary_contact_phone',
       type: 'tel',
     },
-    
   ];
 
   constructor(
@@ -114,14 +170,20 @@ export class PatientDialogComponent implements OnInit {
     this.patientForm = new FormGroup({
       first_name: new FormControl(this.data.patient?.first_name || '', Validators.required),
       last_name: new FormControl(this.data.patient?.last_name || '', Validators.required),
-      cnp: new FormControl(this.data.patient?.cnp || '', [Validators.required, Validators.pattern(/^\d{13}$/)]),
+      cnp: new FormControl(this.data.patient?.cnp || '', [
+        Validators.required,
+        validateCNP() // Validare custom pentru CNP-ul românesc
+      ]),
       birth_date: new FormControl(this.data.patient?.birth_date || '', Validators.required),
       sex: new FormControl(this.data.patient?.sex || '', Validators.required),
       country: new FormControl(this.data.patient?.country || '', [Validators.required]),
-      state: new FormControl(this.data.patient?.state || '', [Validators.required,]),
-      city: new FormControl(this.data.patient?.city || '', [Validators.required,]),
+      state: new FormControl(this.data.patient?.state || '', [Validators.required]),
+      city: new FormControl(this.data.patient?.city || '', [Validators.required]),
       address: new FormControl(this.data.patient?.address || '', Validators.required),
-      phone: new FormControl(this.data.patient?.phone || '', [Validators.required, Validators.pattern(/^\d{10}$/)]),
+      phone: new FormControl(this.data.patient?.phone || '', [
+        Validators.required,
+        validatePhoneNumberRO() // Validare custom pentru număr de telefon românesc
+      ]),
       email: new FormControl(this.data.patient?.email || '', [Validators.required, Validators.email]),
       phisical_file: new FormControl(this.data.patient?.phisical_file || ''),
       secondary_contact_name: new FormControl(this.data.patient?.secondary_contact_name || ''),
@@ -136,28 +198,28 @@ export class PatientDialogComponent implements OnInit {
 
   onSubmit(): void {
     this.submitted = true;
-    const details: any = {};
+    if (this.patientForm.invalid) {
+      return; // Împiedicăm trimiterea formularului dacă nu este valid
+    }
+
+    const details = this.patientForm.value;
+
+    // Dacă este un pacient existent, setăm ID-ul
     if (this.data.patient) {
-      // If it's an existing patient, set its ID
       details.id = this.data.patient.id;
     }
 
-    // Assign values from form controls to details object
-    details.first_name = this.patientForm.get('first_name')?.value;
-    details.last_name = this.patientForm.get('last_name')?.value;
-    details.cnp = this.patientForm.get('cnp')?.value;
-    details.birth_date = this.patientForm.get('birth_date')?.value;
-    details.sex = this.patientForm.get('sex')?.value;
-    details.address = this.patientForm.get('address')?.value;
-    details.phone = this.patientForm.get('phone')?.value;
-    details.email = this.patientForm.get('email')?.value;
-    details.phisical_file = this.patientForm.get('phisical_file')?.value;
-    details.secondary_contact_name = this.patientForm.get('secondary_contact_name')?.value;
-    details.secondary_contact_phone = this.patientForm.get('secondary_contact_phone')?.value;
-    details.medic_id = this.patientForm.get('medic_id')?.value;
     this.dialogRef.close({
       details,
-      patient: details.id, // Include the patient data for identification
+      patient: details.id, // Includem datele pacientului pentru identificare
     });
   }
+
+  // isDisabled() {
+  //   if (this.patientForm.status === 'INVALID') {
+  //     console.log(this.patientForm.status)
+  //     return true;
+  //   }
+  //   return false;
+  // }
 }

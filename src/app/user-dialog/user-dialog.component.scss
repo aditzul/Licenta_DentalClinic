@@ -4,6 +4,7 @@ form {
 
   &.details-form {
     margin-top: 20px;
+    width: 100%;
   }
 
   .form-row {
@@ -11,6 +12,14 @@ form {
     gap: 10px;
   }
 
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+    transition: border-color 0.3s ease-in-out;
+  }
+
+  .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    border-color: red; /* Schimbă culoarea bordurii atunci când câmpul este focusat */
+  }
+  
   .sex-container {
     height: 56px;
     flex: 1;

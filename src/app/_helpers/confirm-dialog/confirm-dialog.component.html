@@ -1,4 +1,6 @@
-<h2 mat-dialog-title>{{ data.title }}</h2>
+<mat-toolbar color="primary">
+  <span>{{ data.title }}</span>
+</mat-toolbar>
 <div mat-dialog-content>{{ data.message }}</div>
 <div mat-dialog-actions class="form-buttons">
   <button mat-button (click)="onNoClick()">Nu</button>
