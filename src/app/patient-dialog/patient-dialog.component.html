@@ -7,7 +7,16 @@
       <div *ngFor="let field of formFields" class="form-field">
         <mat-form-field appearance="outline">
           <mat-label>{{ field.label }}</mat-label>
-          <input matInput [type]="field.type" [formControlName]="field.formControlName" />
+          <ng-container [ngSwitch]="field.type">
+            <input *ngSwitchCase="'text'" matInput [type]="field.type" [formControlName]="field.formControlName" />
+            <input *ngSwitchCase="'tel'" matInput [type]="field.type" [formControlName]="field.formControlName" />
+            <input *ngSwitchCase="'email'" matInput [type]="field.type" [formControlName]="field.formControlName" />
+            <mat-select *ngSwitchCase="'select'" [formControlName]="field.formControlName">
+              <mat-option *ngFor="let medic of allMedics" [value]="medic.id">
+                {{ medic.first_name }} {{ medic.last_name }}
+              </mat-option>
+            </mat-select>
+          </ng-container>
           <mat-error *ngIf="patientForm.get(field.formControlName)?.touched && patientForm.get(field.formControlName)?.hasError('required')">
             Câmp obligatoriu
           </mat-error>
@@ -20,6 +29,7 @@
         </mat-form-field>
       </div>
     </div>
+    
   </form>
 </div>
 <div mat-dialog-actions class="form-buttons">

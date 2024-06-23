@@ -1,4 +1,3 @@
-import { Medic } from './medic';
 import { Patient } from './patient';
 
 export enum Role {
@@ -15,6 +14,12 @@ export interface User {
   phone?: string;
   role?: Role;
   created_at?: string;
+}
+
+export interface Medic {
+  id: number;
+  first_name: string;
+  last_name: string;
 }
 
 export interface UserDialog {

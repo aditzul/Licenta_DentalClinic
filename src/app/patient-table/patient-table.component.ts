@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { PatientService } from '../_services/patient.service';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../_helpers/confirm-dialog/confirm-dialog.component';
 import { PatientDialogComponent } from '../patient-dialog/patient-dialog.component';
+import { AuthenticationService } from '../_services/authentication.service';
+import { Role } from '../_models/user';
 
 @Component({
   selector: 'app-patient-table',
@@ -21,12 +23,15 @@ export class PatientTableComponent implements OnInit {
   displayedColumns: string[] = ['id', 'sex', 'first_name', 'last_name', 'age', 'cnp', 'created_at', 'actions'];
 
   dataSource = new MatTableDataSource(this.patients);
+  currentUser = this.authService.userValue || {};
+  loaded = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator = <MatPaginator>{};
 
   constructor(
     private router: Router,
     private patientService: PatientService,
+    private authService: AuthenticationService,
     private dialog: MatDialog,
   ) {}
 
@@ -95,10 +100,7 @@ export class PatientTableComponent implements OnInit {
   }
 
   private refreshData() {
-    this.patientService.getAllPatients().subscribe((patients: Patient[]) => {
-      this.patients = patients;
-      this.dataSource.data = this.patients;
-    });
+    window.location.reload();
   }
 
 }

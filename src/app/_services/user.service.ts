@@ -1,5 +1,5 @@
 import { environment } from 'src/environments/environment';
-import { User } from '../_models/user';
+import { User, Medic} from '../_models/user';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map, of } from 'rxjs';
@@ -14,7 +14,7 @@ export class UserService {
     );
   }
 
-  getAllMedics(): Observable<User[]> {
+  getAllMedics(): Observable<Medic[]> {
     return this.http.get<any>(`${environment.apiUrl}/Users/GetAllMedics`).pipe(
       map(response => Object.values(response.data))
     );

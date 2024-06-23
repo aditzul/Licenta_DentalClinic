@@ -9,7 +9,7 @@ import {
   ValidationErrors
 } from '@angular/forms';
 import { Patient, PatientDialog } from '../_models/patient';
-import { User } from '../_models/user';
+import { Medic } from '../_models/user';
 import { UserService } from '../_services/user.service';
 
 // Funcția de validare pentru număr de telefon românesc
@@ -80,7 +80,7 @@ interface FormField {
 export class PatientDialogComponent implements OnInit {
   isAdd: boolean;
   patientForm!: FormGroup;
-  allMedics: User[] = [];
+  allMedics: Medic[] = [];
   patient: Patient | undefined;
   submitted: boolean = false;
   formFields: FormField[] = [
@@ -98,6 +98,11 @@ export class PatientDialogComponent implements OnInit {
       label: 'CNP',
       formControlName: 'cnp',
       type: 'text',
+    },
+    {
+      label: 'Medic',
+      formControlName: 'medic_id',
+      type: 'select',
     },
     {
       label: 'Adresă',
@@ -156,7 +161,7 @@ export class PatientDialogComponent implements OnInit {
 
   ngOnInit() {
     this.userService.getAllMedics().subscribe(
-      (medics: User[]) => {
+      (medics: Medic[]) => {
         this.allMedics = medics;
         this.initializeForm();
       },
