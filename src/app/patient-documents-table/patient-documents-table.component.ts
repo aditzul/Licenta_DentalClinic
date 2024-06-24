@@ -56,14 +56,14 @@ export class PatientDocumentsTableComponent implements OnInit, OnChanges, AfterV
   deleteDocument(document: any): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
-        title: 'Confirmation',
-        message: 'Are you sure you want to delete this patient?',
+        title: 'Confirmare',
+        message: 'Ești sigur că vrei să ștergi acest document?',
       } as ConfirmDialogData,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.patientService.deletePatient(document).subscribe(
+        this.patientService.deleteDocument(document).subscribe(
           () => {
             this.dataSource.data = this.dataSource.data.filter(p => p.id !== document.id);
           },

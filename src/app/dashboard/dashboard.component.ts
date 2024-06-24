@@ -80,10 +80,10 @@ export class DashboardComponent implements OnInit {
     const malePatients = this.patients.filter((p) => p.sex === Sex.Male).length;
     const femalePatients = this.patients.filter((p) => p.sex === Sex.Female).length;
 
-    this.cardsData.totalPatients = this.patients.length.toString();
-    this.cardsData.femalePatients = this.computePercentage(this.patients.length, femalePatients).toFixed(2).toString() + '%';
-    this.cardsData.malePatients = this.computePercentage(this.patients.length, malePatients).toFixed(2).toString() + '%';
-    this.cardsData.averageAge = Math.round(this.patients.reduce((accum: number, reducer: any) => accum + reducer.age, 0) / this.patients.length);
+    this.cardsData.totalPatients = this.patients.length === 0 ? '0' : this.patients.length.toString();
+    this.cardsData.femalePatients = this.patients.length === 0 ? '0%' : this.computePercentage(this.patients.length, femalePatients).toFixed(2).toString() + '%';
+    this.cardsData.malePatients = this.patients.length === 0 ? '0%' : this.computePercentage(this.patients.length, malePatients).toFixed(2).toString() + '%';
+    this.cardsData.averageAge = this.patients.length === 0 ? 0 : Math.round(this.patients.reduce((accum: number, reducer: any) => accum + reducer.age, 0) / this.patients.length);    
   }
 
   createAgeChart(patients: Patient[]) {
